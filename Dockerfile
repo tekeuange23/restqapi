@@ -24,4 +24,4 @@ ENV NODE_ENV=production
 
 COPY . .
 
-CMD [ "npm", "restqa" ]
+CMD [ "npm", "run", "restqa" ]

@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "restqa": "cucumber-js --require src --format json",
+    "restqa": "cucumber-js --require src --format formatter/index.js",
     "restqa:sample": "cucumber-js --require src sample-project --format formatter/index.js"
   },
   "dependencies": {

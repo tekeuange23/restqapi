@@ -1,17 +1,24 @@
 const { Before, BeforeAll, After, AfterAll } = require('cucumber')
-const Config = require('../../config')
 const Apis = require('../support/apis')
 const Utils = require('../support/utils')
+const Config = require('../../config')
+const { v4: uuidv4 } = require('uuid')
+const moment = require('moment')
 
 
 BeforeAll(function () {
-  console.log('Starting new script')
-
+  global.restqa = {
+    startTime:  moment().format(),
+    uuid : uuidv4(),
+    CONFIG : Config
+  }
+  console.log('Starting Test: ', global.restqa.uuid)
 })
 
 Before(async function (scenario) {
+
+  this.CONFIG = Config
   this.logs = Utils.logs(this.parameters['serve-mode'])
-  this.CONFIG = await Config()
   this.skipped = false
 
   this.apis = new Apis(this.CONFIG, this.logs.getId())
@@ -30,7 +37,7 @@ Before('@wip', function () {
 
 After(function () {
   let attachements = {
-    logId : this.logs.getId(),
+    //logId : this.logs.getId(),
     skipped: this.skipped
   }
   this.attach(JSON.stringify(attachements), 'application/json')

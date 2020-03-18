@@ -40,7 +40,6 @@ Given.method = function (method) {
 }
 
 Given.header = function (property, value) {
-  console.log(property, value)
   value = this.apis.notebook.get(value)
   this.api.request.setHeader(property, value)
 }

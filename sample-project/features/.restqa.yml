@@ -1,5 +1,0 @@
----
-
-environements:
-  - name: sit
-    url: http://test.com

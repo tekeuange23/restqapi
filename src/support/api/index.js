@@ -7,9 +7,10 @@ const api = function (options) {
   const run = async function () {
     try {
       let options = this.request.getOptions()
-      logs.info(options)
+      //console.log(options)
+ //     logs.info(options)
       const result = await got(options)
-      console.log(result.restqa)
+//      console.log(result.restqa)
       this.response = new Response(result.restqa)
     } catch (e) {
       console.log('--------', e)

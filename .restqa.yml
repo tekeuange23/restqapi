@@ -1,0 +1,22 @@
+---
+
+environments:
+  - name: local
+    url: http://host.docker.internal:8000
+    reports:
+      - type: elastic-search
+        config:
+          url: 'http://host.docker.internal:9200'
+          index: 'restqa-bdd-rest-api'
+      - type: http
+        config:
+          url: 'https://httpdump.io/lb8f7'
+          method: 'POST'
+  - name: sit
+    url: http://34.68.216.66
+    reports:
+      - type: elastic-search
+        config:
+          url: 'http://35.184.102.237:9200'
+          index: 'restqa-bdd-rest-api'
+

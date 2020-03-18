@@ -3,18 +3,20 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "restqa": "cucumber-js --require src",
-    "restqa:sample": "cucumber-js --require src sample-project"
+    "restqa": "cucumber-js --require src --format json",
+    "restqa:sample": "cucumber-js --require src sample-project --format formatter/index.js"
   },
   "dependencies": {
-    "cucumber": "^3.2.1",
+    "async": "^3.2.0",
+    "cucumber": "^6.0.5",
     "dot-object": "^1.6.0",
     "dotenv": "^4.0.0",
     "g11n-pipeline-flatten": "^2.0.1",
     "got": "^10.6.0",
     "moment": "^2.18.1",
-    "uuid": "^3.3.3",
-    "winston": "^3.2.1"
+    "uuid": "^3.4.0",
+    "winston": "^3.2.1",
+    "yaml": "^1.8.2"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

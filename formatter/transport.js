@@ -7,6 +7,8 @@ module.exports = function (testRunResult, logger) {
     let config = global.restqa.CONFIG
     result = JSON.parse(result)
 
+    if (!result.length) return
+
     let metadata = {
       id: global.restqa.uuid,
       startTime: global.restqa.startTime,

@@ -23,5 +23,6 @@ COPY --from=builder node_modules node_modules
 ENV NODE_ENV=production
 
 COPY . .
+RUN ln -s /app/bin/restqapi /usr/bin/restqapi
 
-CMD [ "npm", "run", "restqa" ]
+CMD ["restqapi"]

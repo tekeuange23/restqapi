@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+
+const { program } = require('commander')
+const path = require('path')
+const cucumber = require('cucumber')
+const stream = require('stream')
+
+let package = require('../package.json')
+
+program
+  .version(package.version)
+  .option('-c, --config <config>', 'add the specified type of cheese')
+
+
+program.parse(process.argv)
+program.config = program.config || path.join(process.cwd(), '.restqa.yml')
+
+program.on('--help', () => {
+  /* eslint-disable no-console */
+  console.log(
+    '  For more details please visit https://github.com/resqa/restqapi'
+  )
+  /* eslint-enable no-console */
+})
+console.log(program.config)
+let customOptions = [
+  '--require',
+  './src',
+  '--world-parameters',
+  `{"configFile": "${program.config}"}`,
+  '--format',
+  './formatter/index.js:toto.js',
+]
+
+const options  = {
+  argv: process.argv.concat(customOptions),
+  cwd: path.join(__dirname, '../'),
+  stdout: process.stdout
+}
+
+const cucumberCli = new cucumber.Cli(options);
+
+const success = cucumberCli.run()
+  .then(_ => {
+    console.log(_)
+  })
+  .catch(err => {
+    console.log(err.stack)
+  })

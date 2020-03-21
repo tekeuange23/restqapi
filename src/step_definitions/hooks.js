@@ -5,19 +5,19 @@ const Config = require('../../config')
 const { v4: uuidv4 } = require('uuid')
 const moment = require('moment')
 
+global.restqa = {}
 
 BeforeAll(function () {
-  global.restqa = {
-    startTime:  moment().format(),
-    uuid : uuidv4(),
-    CONFIG : Config
-  }
+  global.restqa.startTime =  moment().format(),
+  global.restqa.uuid = uuidv4()
   console.log('Starting Test: ', global.restqa.uuid)
 })
 
 Before(async function (scenario) {
 
-  this.CONFIG = Config
+  global.restqa.CONFIG = global.restqa.CONFIG || new Config(this.parameters.configFile)
+
+  this.CONFIG = global.restqa.CONFIG
   this.logs = Utils.logs(this.parameters['serve-mode'])
   this.skipped = false
 

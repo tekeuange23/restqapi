@@ -1,13 +1,14 @@
 {
-  "name": "@openapi/e2e",
-  "version": "0.0.1",
+  "name": "@restqa/restqapi",
+  "version": "0.0.2",
   "private": true,
   "scripts": {
-    "restqa": "cucumber-js --require src --format formatter/index.js",
-    "restqa:sample": "cucumber-js --require src sample-project --format formatter/index.js"
+    "start:dev": "restqapi -c ./sample-project/.restqa.yml ./sample-project",
+    "start": "restqapi"
   },
   "dependencies": {
     "async": "^3.2.0",
+    "commander": "^5.0.0",
     "cucumber": "^6.0.5",
     "dot-object": "^1.6.0",
     "dotenv": "^4.0.0",
@@ -17,6 +18,9 @@
     "uuid": "^3.4.0",
     "winston": "^3.2.1",
     "yaml": "^1.8.2"
+  },
+  "bin": {
+    "restqapi": "./bin/restqapi"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

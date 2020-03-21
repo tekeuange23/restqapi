@@ -6,7 +6,6 @@ module.exports = function (testRunResult) {
   return function(result) {
     let config = global.restqa.CONFIG
     result = JSON.parse(result)
- //   result = require('../test.json')
 
     let metadata = {
       id: global.restqa.uuid,

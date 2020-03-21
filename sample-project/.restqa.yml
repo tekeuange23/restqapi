@@ -12,11 +12,11 @@ environments:
         config:
           url: 'https://httpdump.io/lb8f7'
           method: 'POST'
-  - name: sit
-    url: http://34.68.216.66
+  - name: uat
+    url: http://34.71.230.96
     reports:
       - type: elastic-search
         config:
-          url: 'http://35.184.102.237:9200'
+          url: 'http://34.71.181.81:9200'
           index: 'restqa-bdd-rest-api'
 

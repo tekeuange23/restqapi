@@ -1,7 +1,7 @@
 const Transporters = require('./transporters')
 const moment = require('moment')
 
-module.exports = function (testRunResult) {
+module.exports = function (testRunResult, logger) {
 
   return function(result) {
     let config = global.restqa.CONFIG
@@ -72,9 +72,16 @@ module.exports = function (testRunResult) {
 
     if (!config.api.reports) return
 
-    config.api.reports.forEach(report => {
-      Transporters[report.type].call(this, report.config, testRun)     
+    let reporters = config.api.reports.map(report => {
+      return Transporters[report.type].call(this, report.config, testRun)     
     })
+
+    Promise.all(reporters)
+      .then(result => {
+        logger(result.flat().join('\n'))
+      })
+      .catch(err => {
+        logger(err)
+      })
   }
 }
-

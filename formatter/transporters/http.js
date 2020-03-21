@@ -13,9 +13,16 @@ module.exports = function (config, result) {
     responseType: 'json',
     json: result
   }
- return got(options)
-    .then(res => {
-      console.log(res.statusCode)
-    })
+
+  return new Promise((resolve, reject) => {
+    got(options)
+      .then(res => {
+        resolve(`[HTTP REPORT][${res.statusCode}] - ${config.url}`)
+      })
+      .catch(err => {
+        console.log(err)
+        reject(`[HTTP REPORT][${err.response.statusCode}] - ${config.url} : ${JSON.stringify(err.response.body)}`)
+      })
+  })
 }
 

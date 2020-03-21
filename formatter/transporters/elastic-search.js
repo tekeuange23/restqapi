@@ -17,29 +17,37 @@ module.exports = function (config, testRun) {
     responseType: 'json'
   }
 
-   const q = $async.queue(function(opt, callback) {
-       got(opt)
-         .then(response => {
-           console.log(response.statusCode)
-           callback()
-         })
-         .catch(callback)
-   }, 5)
+  let result = []
 
-   q.error(function(err, task) {
-     console.error(err.response.body);
-   })
+  return new Promise((resolve, reject) => {
 
-  let { features } = testRun
-  delete testRun.features
+    const q = $async.queue(function(opt, callback) {
+      got(opt)
+        .then(res => {
+          result.push(`[HTTP ELK][${res.statusCode}] - ${config.url} - index : ${index}`)
+          callback()
+        })
+        .catch(callback)
+    }, 5)
 
+    q.error(function(err, task) {
+      result.push(`[HTTP ELK][${err.response.statusCode}] - ${config.url} - index : ${index}`)
+      console.log(err)
+    })
 
-  q.push(Object.assign({json: testRun}, options))
-  features.forEach(feature => {
-    q.push(Object.assign({json: feature}, options))
-    scenarios = feature.elements.forEach(scenario => {
-      q.push(Object.assign({json: scenario}, options))
+    q.drain(() => {
+      resolve(result)
+    })
+
+    let { features } = testRun
+    delete testRun.features
+
+    q.push(Object.assign({json: testRun}, options))
+    features.forEach(feature => {
+      q.push(Object.assign({json: feature}, options))
+      scenarios = feature.elements.forEach(scenario => {
+        q.push(Object.assign({json: scenario}, options))
+      })
     })
   })
 }
-

@@ -29,7 +29,7 @@ let customOptions = [
   '--world-parameters',
   `{"configFile": "${program.config}"}`,
   '--format',
-  './formatter/index.js:toto.js',
+  './formatter/index.js:restqa-reports.txt',
 ]
 
 const options  = {
@@ -41,9 +41,15 @@ const options  = {
 const cucumberCli = new cucumber.Cli(options);
 
 const success = cucumberCli.run()
-  .then(_ => {
-    console.log(_)
+  .then(result => {
+    const exitCode = result.success ? 0 : 1
+    if (result.shouldExitImmediately) {
+      process.exit(exitCode)
+    } else {
+      process.exitCode = exitCode
+    }
   })
   .catch(err => {
-    console.log(err.stack)
+    console.error(error) // eslint-disable-line no-console
+    process.exit(1)
   })

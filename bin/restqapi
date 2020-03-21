@@ -40,7 +40,7 @@ const options  = {
 
 const cucumberCli = new cucumber.Cli(options);
 
-const success = cucumberCli.run()
+cucumberCli.run()
   .then(result => {
     const exitCode = result.success ? 0 : 1
     if (result.shouldExitImmediately) {
@@ -50,6 +50,6 @@ const success = cucumberCli.run()
     }
   })
   .catch(err => {
-    console.error(error) // eslint-disable-line no-console
+    console.error(err) // eslint-disable-line no-console
     process.exit(1)
   })

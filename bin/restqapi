@@ -3,17 +3,12 @@
 const { program } = require('commander')
 const path = require('path')
 const cucumber = require('cucumber')
-const stream = require('stream')
 
 let package = require('../package.json')
 
 program
   .version(package.version)
-  .option('-c, --config <config>', 'add the specified type of cheese')
-
-
-program.parse(process.argv)
-program.config = program.config || path.join(process.cwd(), '.restqa.yml')
+  .option('-c, --config <config>', 'Use a specific .restqa.yml file')
 
 program.on('--help', () => {
   /* eslint-disable no-console */
@@ -22,8 +17,14 @@ program.on('--help', () => {
   )
   /* eslint-enable no-console */
 })
-console.log(program.config)
+
+program.parse(process.argv)
+
+program.config = program.config || path.join(process.cwd(), '.restqa.yml')
+
 let customOptions = [
+  'node',
+  'cucumber-js',
   '--require',
   './src',
   '--world-parameters',
@@ -32,8 +33,11 @@ let customOptions = [
   './formatter/index.js:restqa-reports.txt',
 ]
 
+let paths = program.args.map(_ => path.resolve(_))
+if (!path.length) paths = [path.resolve('.')]
+
 const options  = {
-  argv: process.argv.concat(customOptions),
+  argv: customOptions.concat(paths),
   cwd: path.join(__dirname, '../'),
   stdout: process.stdout
 }

@@ -83,7 +83,8 @@ module.exports = function (testRunResult, logger) {
         logger(result.flat().join('\n'))
       })
       .catch(err => {
-        logger(err)
+        console.log(err)
+        //logger(err)
       })
   }
 }

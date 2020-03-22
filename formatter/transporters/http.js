@@ -20,7 +20,7 @@ module.exports = function (config, result) {
         resolve(`[HTTP REPORT][${res.statusCode}] - ${config.url}`)
       })
       .catch(err => {
-        console.log(err)
+        //console.log(err)
         reject(`[HTTP REPORT][${err.response.statusCode}] - ${config.url} : ${JSON.stringify(err.response.body)}`)
       })
   })

@@ -13,7 +13,7 @@ const api = function (options) {
 //      console.log(result.restqa)
       this.response = new Response(result.restqa)
     } catch (e) {
-      console.log('--------', e)
+      //console.log('--------', e)
       //logs.error(e.error)
       if (e.response) {
         logs.info(e.response)

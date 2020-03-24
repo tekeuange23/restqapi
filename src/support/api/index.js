@@ -8,9 +8,9 @@ const api = function (options) {
     try {
       let options = this.request.getOptions()
       //console.log(options)
- //     logs.info(options)
+      //logs.info(options)
       const result = await got(options)
-//      console.log(result.restqa)
+      //console.log(result.restqa)
       this.response = new Response(result.restqa)
     } catch (e) {
       //console.log('--------', e)

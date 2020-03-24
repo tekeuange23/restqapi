@@ -8,6 +8,7 @@ const Request = function (baseUrl, id) {
     hostname: url.hostname,
     port: url.port,
     protocol: url.protocol,
+    pathname: url.pathname,
     responseType: 'json',
     //strictSSL: false,
     hooks: {
@@ -23,17 +24,6 @@ const Request = function (baseUrl, id) {
         }
       ]
     }
-    /*
-    transform: (body, response) => {
-      return {
-        body,
-        headers: response.headers,
-        statusCode: response.statusCode,
-        timing: response.timingPhases.total,
-        curl: response.request.req.toCurl()
-      }
-    }
-    */
   }
 
   const getOptions = () => {
@@ -50,7 +40,8 @@ const Request = function (baseUrl, id) {
   }
 
   const setPath = path => {
-    this.options.pathname = path
+    if ('/' === this.options.pathname) this.options.pathname = ''
+    this.options.pathname +=  path
   }
 
   const setHeader = (property, value) => {

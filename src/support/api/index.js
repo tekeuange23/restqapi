@@ -10,7 +10,6 @@ const api = function (options) {
       //console.log(options)
       //logs.info(options)
       const result = await got(options)
-      //console.log(result.restqa)
       this.response = new Response(result.restqa)
     } catch (e) {
       //console.log('--------', e)

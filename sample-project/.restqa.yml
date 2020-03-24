@@ -1,22 +1,31 @@
 ---
 
+code: BUAPI
+name: My Business API
+description: The decription of the business api
 environments:
   - name: local
     url: http://host.docker.internal:8000
+    default: true
     reports:
-      - type: elastic-search
-        config:
-          url: 'http://host.docker.internal:9200'
-          index: 'restqa-bdd-rest-api'
       - type: http
+        enabled: false
         config:
-          url: 'https://httpdump.io/lb8f7'
-          method: 'POST'
+          path: 'https://httpdump.io/lb8f7'
+      - type: file
+        enabled: true
+        config:
+          path: 'my-report.json'
   - name: uat
-    url: http://34.71.230.96
+    url: https://www.my-api-gateway.com
     reports:
       - type: elastic-search
+        enabled: true
         config:
-          url: 'http://34.71.181.81:9200'
-          index: 'restqa-bdd-rest-api'
-
+          url: 'http://my-enterprise-elk:9200'
+          index: 'custom-index-name'
+      - type: http
+        enabled: true
+        config:
+          url: 'https://custom-report-endpoint.com'
+          method: 'POST'

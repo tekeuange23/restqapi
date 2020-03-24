@@ -72,15 +72,18 @@ module.exports = function (testRunResult, logger) {
       features
     }
 
-    if (!config.api.reports) return
-
-    let reporters = config.api.reports.map(report => {
-      return Transporters[report.type].call(this, report.config, testRun)     
-    })
+    let reporters = config
+      .api
+      .reports
+      .filter(report => report.enabled)
+      .map(report => {
+        return Transporters[report.type].call(this, report.config, testRun)     
+      })
 
     Promise.all(reporters)
       .then(result => {
-        logger(result.flat().join('\n'))
+        console.log(result)
+        //logger(result.flat().join('\n'))
       })
       .catch(err => {
         console.log(err)

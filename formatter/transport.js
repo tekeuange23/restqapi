@@ -12,7 +12,7 @@ module.exports = function (testRunResult, logger) {
     let metadata = {
       id: global.restqa.uuid,
       startTime: global.restqa.startTime,
-      env: global.restqa.CONFIG.env,
+      env: global.restqa.env,
     }
 
     let features = result.map(feature => {
@@ -82,7 +82,9 @@ module.exports = function (testRunResult, logger) {
 
     Promise.all(reporters)
       .then(result => {
-        console.log(result)
+        //console.log(result)
+        console.log('\n\n')
+        console.log(result.flat().join('\n'))
         //logger(result.flat().join('\n'))
       })
       .catch(err => {

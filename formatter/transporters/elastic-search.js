@@ -6,6 +6,7 @@ const $async = require('async')
 module.exports = function (config, testRun) {
 
   const url = new URL(config.url)
+  config.index = config.index || 'restqa-bdd-rest-api' 
   let index = config.index + '-' + moment().format("YYYYMMDD");  
 
   let options = {
@@ -24,15 +25,16 @@ module.exports = function (config, testRun) {
     const q = $async.queue(function(opt, callback) {
       got(opt)
         .then(res => {
-          result.push(`[HTTP ELK][${res.statusCode}] - ${config.url} - index : ${index}`)
+          result.push(`[ELASTIC-SEARCH REPORT][${res.statusCode}] - ${config.url} - index : ${index}`)
           callback()
         })
         .catch(callback)
     }, 5)
 
     q.error(function(err, task) {
-      result.push(`[HTTP ELK][${err.response.statusCode}] - ${config.url} - index : ${index}`)
-      console.log(err)
+      let code = err.code
+      if (err.response) code = err.response.statusCode
+      result.push(`[ELASTIC-SEARCH REPORT][${code}] - ${config.url} - index : ${index}`)
     })
 
     q.drain(() => {

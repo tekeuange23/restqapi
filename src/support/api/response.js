@@ -5,6 +5,7 @@ const Response = function (result) {
 
   const { curl, statusCode, headers, body, timing } = result
   const dotBody = dot.dot(body || {})
+  console.log('--------', result)
   const jsonPathBody = flatten.flatten(body || {}, {flattenAll: true})
 
   const findInBody = (property) => {

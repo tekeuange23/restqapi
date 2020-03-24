@@ -1,14 +1,25 @@
 #!/usr/bin/env node
 
 const { program } = require('commander')
+const package = require('../package.json')
 const path = require('path')
 const cucumber = require('cucumber')
-
-let package = require('../package.json')
+const Cli = require('../src/cli')
 
 program
   .version(package.version)
+
+program
+  .command('steps [keyword]')
+  .description('Get the list of step by keyword : given | when | then')
+  .action(Cli.steps)
+
+program
+  .command('run')
+  .option('-e, --env <env>', 'Define the current environment')
   .option('-c, --config <config>', 'Use a specific .restqa.yml file')
+  .description('Get the list of step by keyword : given | when | then')
+  .action(Cli.run)
 
 program.on('--help', () => {
   /* eslint-disable no-console */
@@ -20,21 +31,19 @@ program.on('--help', () => {
 
 program.parse(process.argv)
 
-program.config = program.config || path.join(process.cwd(), '.restqa.yml')
+let cmd  = program.commands.find(_ => _.restqa)
+if (!cmd) process.exit(0)
+
+let {env, config, paths} = cmd.restqa
 
 let customOptions = [
   'node',
   'cucumber-js',
   '--require',
   './src',
-  '--world-parameters',
-  `{"configFile": "${program.config}"}`,
   '--format',
-  './formatter/index.js:restqa-reports.txt',
+  './formatter/index.js:restqa-reports.txt'
 ]
-
-let paths = program.args.map(_ => path.resolve(_))
-if (!path.length) paths = [path.resolve('.')]
 
 const options  = {
   argv: customOptions.concat(paths),

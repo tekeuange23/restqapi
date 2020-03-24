@@ -17,12 +17,14 @@ RUN npm ci --only=production
 # The instructions for second stage
 FROM node:12-alpine
 
-WORKDIR /app
+WORKDIR /restqa
 COPY --from=builder node_modules node_modules
 
 ENV NODE_ENV=production
 
 COPY . .
-RUN ln -s /app/bin/restqapi /usr/bin/restqapi
+RUN ln -s /restqa/bin/restqapi /usr/bin/restqapi
 
-CMD ["restqapi"]
+WORKDIR /app
+
+CMD ["restqapi", "run"]

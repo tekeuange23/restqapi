@@ -10,12 +10,14 @@ global.restqa = {}
 BeforeAll(function () {
   global.restqa.startTime =  moment().format(),
   global.restqa.uuid = uuidv4()
+  global.restqa.env = process.env.RESTQA_ENV && String(process.env.RESTQA_ENV).toLowerCase()
+  global.restqa.configFile = process.env.RESTQA_CONFIG
+  global.restqa.CONFIG = new Config(global.restqa)
+
   console.log('Starting Test: ', global.restqa.uuid)
 })
 
 Before(async function (scenario) {
-
-  global.restqa.CONFIG = global.restqa.CONFIG || new Config(this.parameters.configFile)
 
   this.CONFIG = global.restqa.CONFIG
   this.logs = Utils.logs(this.parameters['serve-mode'])

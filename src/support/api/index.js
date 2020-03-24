@@ -16,7 +16,7 @@ const api = function (options) {
       //console.log('--------', e)
       //logs.error(e.error)
       if (e.response) {
-        logs.info(e.response)
+        //logs.info(e.response)
         this.response = new Response(e.response.restqa)
       } else {
         throw e

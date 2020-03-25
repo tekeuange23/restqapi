@@ -9,6 +9,7 @@
     "lint:fix": "standard --fix"
   },
   "dependencies": {
+    "@restqa/cucumber-export": "0.0.2",
     "async": "^3.2.0",
     "chalk": "^3.0.0",
     "commander": "^5.0.0",

@@ -24,7 +24,7 @@ const api = function (options) {
   }
   return {
     config,
-    request: new Request(config.api.url, logs.getId()),
+    request: new Request(config.url, logs.getId()),
     response: null,
     run
   }

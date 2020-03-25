@@ -16,7 +16,7 @@ module.exports = function({env, configFile}) {
   }
   
   const file = fs.readFileSync(configFile, 'utf8')
-  const config = YAML.parse(file)
+  let config = YAML.parse(file)
   const envs = config.environments.map(env => env.name)
 
   if (!env) {
@@ -27,7 +27,7 @@ module.exports = function({env, configFile}) {
     error(`THE ENVIRONMENT NEEDS TO BE DEFINED AS (${envs.join(' | ')})`)
   }
   
-  config.api = config.environments.find(e => env === e.name.toLowerCase())
+  config = config.environments.find(e => env === e.name.toLowerCase())
 
   return config
 }

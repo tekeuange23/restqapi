@@ -1,5 +1,5 @@
-const winston = require('winston');
-const uuidv4 = require('uuid/v4');
+const winston = require('winston')
+const uuidv4 = require('uuid/v4')
 
 const prettyJson = winston.format.printf(info => {
   if (info.message.constructor === Object) {
@@ -8,25 +8,25 @@ const prettyJson = winston.format.printf(info => {
   return `${info.level}: ${info.message}`
 })
 
-module.exports = function(serverMode) {
+module.exports = function (serverMode) {
   serverMode = serverMode || false
 
   const logger = winston.createLogger({
     level: 'info',
     format: winston.format.combine(
       winston.format.simple(),
-      prettyJson,
+      prettyJson
     ),
     transports: [
-      new winston.transports.Console({format: winston.format.simple()})
+      new winston.transports.Console({ format: winston.format.simple() })
     ]
   })
 
-  let id = 'e2e-test-' + uuidv4()
+  const id = 'e2e-test-' + uuidv4()
   logger.getId = () => id
 
   if (serverMode) {
-    let options = {
+    const options = {
       filename: `/tmp/${logger.getId()}.log`
     }
     logger.add(new winston.transports.File(options))

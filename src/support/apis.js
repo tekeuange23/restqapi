@@ -10,9 +10,9 @@ function apis (config) {
   }
 
   const create = () => {
-    let options = {
+    const options = {
       config,
-      logs,
+      logs
     }
     const api = new Api(options)
     list.push(api)
@@ -26,9 +26,12 @@ function apis (config) {
     get length () {
       return list.length
     },
-    set logs(value) {
-      logs =  value
+    set logs (value) {
+      logs = value
     },
+    get logs () {
+      return logs
+    }
   }
 }
 

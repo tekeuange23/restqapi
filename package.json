@@ -9,7 +9,9 @@
     "lint:fix": "standard --fix"
   },
   "dependencies": {
-    "@restqa/cucumber-export": "0.0.2",
+    "@hapi/joi": "^17.1.1",
+    "@restqa/cucumber-export": "0.0.3",
+    "@restqa/restqdata": "0.0.1",
     "async": "^3.2.0",
     "chalk": "^3.0.0",
     "commander": "^5.0.0",
@@ -29,6 +31,8 @@
     "restqapi": "./bin/restqapi"
   },
   "devDependencies": {
-    "nodemon": "^1.11.0"
+    "jest": "^25.2.7",
+    "nodemon": "^1.11.0",
+    "standard": "^14.3.3"
   }
 }

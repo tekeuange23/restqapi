@@ -8,10 +8,8 @@ module.exports = [
   ['I add the query string parameters:', given.qs, 'Adding multiple query parameters to the request (table format)'],
   ['I add the request body:', given.jsonBody, 'Adding multiple query parameters to the request (table format)'],
 
-
-
   ['I need the scopes {string}', given.scopes, 'Define which scopes are required'],
-  ['I have an access token',  given.accessToken, 'Add bearer token to the request the access token'],
+  ['I have an access token', given.accessToken, 'Add bearer token to the request the access token'],
   ['I have an expired access token', given.expiredAccessToken, 'Add bearer token to the request header with expired token'],
   ['I have an invalid access token', given.invalidAccessToken, 'Add bearer token to the request header with invalid signature'],
   ['I have the method {string}', given.method, 'add the method to the request (ex: POST)'],

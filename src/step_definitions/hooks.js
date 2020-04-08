@@ -1,25 +1,41 @@
-const { Before, BeforeAll, After, AfterAll } = require('cucumber')
+const { defineParameterType, Before, BeforeAll, After, AfterAll } = require('cucumber')
 const Apis = require('../support/apis')
 const Utils = require('../support/utils')
-const Config = require('../../config')
+const Data = require('../support/data')
+const Config = require('../config')
 const { v4: uuidv4 } = require('uuid')
 const moment = require('moment')
 
 global.restqa = {}
 
+defineParameterType({
+  regexp: /(\{\{.*\}\})/,
+  transformer: function (value) {
+    const result = this.data.get(value)
+    return result
+  },
+  name: 'restqdata'
+})
+
 BeforeAll(function () {
-  global.restqa.startTime =  moment().format(),
+  global.restqa.startTime = moment().format()
   global.restqa.uuid = uuidv4()
   global.restqa.env = process.env.RESTQA_ENV && String(process.env.RESTQA_ENV).toLowerCase()
   global.restqa.configFile = process.env.RESTQA_CONFIG
   global.restqa.CONFIG = new Config(global.restqa)
 
+  global.restqa.data = new Data(global.restqa.CONFIG.environment.data)
+
   console.log('Starting Test: ', global.restqa.uuid)
 })
 
-Before(async function (scenario) {
+Before(async scenario => {
+  await global.restqa.data.parse(scenario)
+})
 
+Before(async function (scenario) {
   this.CONFIG = global.restqa.CONFIG
+  this.data = global.restqa.data
   this.logs = Utils.logs(this.parameters['serve-mode'])
   this.skipped = false
 
@@ -38,8 +54,8 @@ Before('@wip', function () {
 })
 
 After(function () {
-  let attachements = {
-    //logId : this.logs.getId(),
+  const attachements = {
+    // logId : this.logs.getId(),
     skipped: this.skipped
   }
   this.attach(JSON.stringify(attachements), 'application/json')

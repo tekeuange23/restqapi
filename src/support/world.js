@@ -1,3 +1,3 @@
-const { defineSupportCode, setWorldConstructor, setDefaultTimeout } = require('cucumber')
+const { setDefaultTimeout } = require('cucumber')
 
 setDefaultTimeout(300 * 1000)

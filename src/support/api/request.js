@@ -2,7 +2,7 @@ const dot = require('dot-object')
 const { URL } = require('url')
 
 const Request = function (baseUrl, id) {
-  let url = new URL(baseUrl)
+  const url = new URL(baseUrl)
 
   this.options = {
     hostname: url.hostname,
@@ -10,7 +10,7 @@ const Request = function (baseUrl, id) {
     protocol: url.protocol,
     pathname: url.pathname,
     responseType: 'json',
-    //strictSSL: false,
+    // strictSSL: false,
     hooks: {
       afterResponse: [
         response => {
@@ -33,15 +33,15 @@ const Request = function (baseUrl, id) {
   }
 
   const getId = () => {
-    if(!id) {
-      id = [ 'test-e2e', this.options.method, Math.floor(Math.random() * 1000), Date.now()].join('-')
+    if (!id) {
+      id = ['test-e2e', this.options.method, Math.floor(Math.random() * 1000), Date.now()].join('-')
     }
     return id
   }
 
   const setPath = path => {
-    if ('/' === this.options.pathname) this.options.pathname = ''
-    this.options.pathname +=  path
+    if (this.options.pathname === '/') this.options.pathname = ''
+    this.options.pathname += path
   }
 
   const setHeader = (property, value) => {

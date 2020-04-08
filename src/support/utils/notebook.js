@@ -1,10 +1,10 @@
-function Notebook() {
+function Notebook () {
   let _data = {}
   return {
-    addSet: function(data) {
+    addSet: function (data) {
       _data = data
     },
-    get: function(value) {
+    get: function (value) {
       var parameterList = value.match(/\{(.*?)\}/g)
       if (parameterList) {
         for (var i = 0; i < parameterList.length; i++) {
@@ -20,4 +20,3 @@ function Notebook() {
 }
 
 module.exports = Notebook
-

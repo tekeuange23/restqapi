@@ -1,8 +1,7 @@
-const dot = require('dot-object')
 const Given = {}
 
 Given.dataset = function (table) {
-  let data = table
+  const data = table
     .hashes()
     .find(row => row.Env.toLowerCase() === this.CONFIG.env.toLowerCase())
   this.apis.notebook.addSet(data)
@@ -17,23 +16,22 @@ Given.methodPath = function (method, path) {
   Given.path.call(this, path)
 }
 
-Given.headers = function(table) {
+Given.headers = function (table) {
   table.raw().forEach(args => Given.header.apply(this, args))
 }
 
-Given.qs = function(table) {
+Given.qs = function (table) {
   table.raw().forEach(args => Given.queryString.apply(this, args))
 }
 
-Given.jsonBody = function(table) {
+Given.jsonBody = function (table) {
   table.raw().forEach(args => Given.payload.apply(this, args))
 }
 
 Given.scopes = function (scopes) {
-  scopes = scopes.split(' ').map( _ => _.trim())
+  scopes = scopes.split(' ').map(_ => _.trim())
   this.api.iam.scopes = scopes
 }
-
 
 Given.method = function (method) {
   this.api.request.setMethod(method.toLowerCase())
@@ -54,8 +52,8 @@ Given.path = function (path) {
   this.api.request.setPath(encodeURI(path))
 }
 
-Given.accessToken = async  function () {
-  let token = await this.api.iam.getAccessToken()
+Given.accessToken = async function () {
+  const token = await this.api.iam.getAccessToken()
   this.api.request.setBearer(token)
 }
 
@@ -68,6 +66,8 @@ Given.invalidAccessToken = function () {
 }
 
 Given.payload = function (property, value) {
+  value = this.data.get(value)
+  // console.log('value', value)
   this.api.request.addPayload(property, value)
 }
 

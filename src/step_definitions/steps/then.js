@@ -8,6 +8,7 @@ module.exports = [
   ['{string} should not be on the response header', then.headerValueIsNotExist, 'Check if a property is in the response header'],
   ['the response should be empty array', then.shouldBeEmptyArrayResponse, 'Check a value in the body response that it is empty array'],
   ['the response should be empty', then.shouldBeEmptyResponse, 'Check a value in the body response that it is empty array'],
+  ['the response body at {string} should equal {restqdata}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)'],
   ['the response body at {string} should equal {string}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)'],
   ['the response body at {string} should equal {int}', then.shouldBeNumber, 'Check a value in the body response as a int (dot-object pattern)'],
   ['the response body at {string} should equal {float}', then.shouldBeNumber, 'Check a value in the body response as a float (dot-object pattern)'],

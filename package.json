@@ -4,9 +4,13 @@
   "private": true,
   "scripts": {
     "start:dev": "restqapi -c ./sample-project/.restqa.yml ./sample-project",
+    "start:library": "cucumber-js --require ./src ./sample-project",
     "start": "restqapi",
     "lint": "standard",
-    "lint:fix": "standard --fix"
+    "lint:fix": "standard --fix",
+    "test": "jest",
+    "test:watch": "jest --watch --coverage",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
@@ -30,6 +34,7 @@
   "bin": {
     "restqapi": "./bin/restqapi"
   },
+  "main": "src/restqapi/index.js",
   "devDependencies": {
     "jest": "^25.2.7",
     "nodemon": "^1.11.0",

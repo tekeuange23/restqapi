@@ -5,20 +5,33 @@ name: My Business API
 description: The decription of the business api
 environments:
   - name: local
-    url: http://host.docker.internal:8000
+    url: http://host.docker.internal:8080
     default: true
-    reports:
+    secrets:
+      gogo: <FOO>
+    data:
+      channel: google-sheet 
+      config:
+        id: <GOOGLE_SHEET_ID>
+        apikey: <GOOGLE_SHEET_APIKEY>
+      startSymbol: '{['
+      endSymbol: ']}'
+    outputs:
       - type: http
-        enabled: false
+        enabled: true
         config:
-          path: 'https://httpdump.io/lb8f7'
+          url: 'https://httpdump.io/truyu'
       - type: file
         enabled: true
         config:
           path: 'my-report.json'
+      - type: elastic-search
+        enabled: false
+        config:
+          url: 'http://host.docker.internal:9200'
   - name: uat
     url: https://www.my-api-gateway.com
-    reports:
+    outputs:
       - type: elastic-search
         enabled: true
         config:

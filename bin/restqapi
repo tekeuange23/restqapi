@@ -42,7 +42,7 @@ let customOptions = [
   '--require',
   './src',
   '--format',
-  './restqa-formatter'
+  './restqa-formatter:.restqa.log'
 ]
 
 const options  = {

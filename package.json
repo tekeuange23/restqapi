@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start:dev": "restqapi -c ./sample-project/.restqa.yml ./sample-project",
-    "start:library": "cucumber-js --require ./src ./sample-project",
+    "start:library": "export $(cat .env | xargs) && cucumber-js --require ./src/setup.js ./sample-project",
     "start": "restqapi",
     "lint": "standard",
     "lint:fix": "standard --fix",

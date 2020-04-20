@@ -1,28 +1,58 @@
 const assert = require('assert')
 const Then = {}
 
+/*
+ * =========================================
+ * Response API Default Functions
+ * =========================================
+ */
+
+
 Then.httpCode = function (code) {
-  assert.strictEqual(this.api.response.statusCode, code)
+  let received = this.api.response.statusCode
+  let err = `${this.api.response.request.prefix} The response httpCode is invalid, received ${received} should be ${code}`
+  assert.strictEqual(this.api.response.statusCode, code, err)
 }
 
 Then.httpTiming = function (timeMs) {
-  var responseTime = Math.round(this.api.response.timing)
-  assert.ok(responseTime < timeMs)
+  let received = Math.round(this.api.response.timing)
+  let err = `${this.api.response.request.prefix} The response time is invalid, received ${received} should be lower than ${timeMs}`
+  assert.ok(received < timeMs, err)
+}
+
+
+/*
+ * =========================================
+ * Response API Headers Functions
+ * =========================================
+ */
+
+
+Then.headerValueExist = function (property) {
+  let err = `${this.api.response.request.prefix} The response header should contain the ${property} property`
+  assert.notStrictEqual(this.api.response.findInHeader(property), undefined, err)
+}
+
+Then.headerValueNotExist = function (property) {
+  let err = `${this.api.response.request.prefix} The response header should not contain the ${property} property`
+  assert.strictEqual(this.api.response.findInHeader(property), undefined, err)
+}
+
+Then.headerValueEqual = function (header, value) {
+  let received =  this.api.response.findInHeader(header)
+  let err = `${this.api.response.request.prefix} The response header is invalid, the ${header} property should be ${value} but received ${received}`
+  assert.strictEqual(received, value, err)
 }
 
 Then.headers = function (table) {
-  table.raw().forEach(([key, value]) => {
-    assert.strictEqual(this.api.response.findInHeader(key), value)
-  })
+  table.raw().forEach(args => Then.headerValueEqual.apply(this, args))
 }
 
-Then.headerValueIsExist = function (property) {
-  assert.notStrictEqual(this.api.response.findInHeader(property), undefined)
-}
-
-Then.headerValueIsNotExist = function (property) {
-  assert.strictEqual(this.api.response.findInHeader(property), undefined)
-}
+/*
+ * =========================================
+ * Response API Body Functions
+ * =========================================
+ */
 
 Then.shouldBeEmptyArrayResponse = function () {
   assert.strictEqual(this.api.response.body.length, 0)
@@ -100,11 +130,11 @@ Then.shouldNotBeNull = function (property) {
   assert.notStrictEqual(val, undefined)
 }
 
-Then.headerValueShouldBeString = function (header, value) {
-  assert.strictEqual(this.api.response.findInHeader(header), value)
-}
-
-// Notebook --------------------------------
+/*
+ * =========================================
+ * Response API DataSet Functions
+ * =========================================
+ */
 
 Then.addHeaderPropertyToDataset = function(bodyProperty, propertyName) {
   let val = this.api.response.findInHeader(bodyProperty)

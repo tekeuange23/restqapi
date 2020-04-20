@@ -2,7 +2,7 @@ const dot = require('dot-object')
 const flatten = require('g11n-pipeline-flatten')
 
 const Response = function (result) {
-  const { curl, statusCode, headers, body, timing } = result
+  const { curl, request, statusCode, headers, body, timing } = result
 
   const isJson = (headers['content-type'] || '' ).match(/application\/json/i)
 
@@ -24,6 +24,7 @@ const Response = function (result) {
   }
 
   return {
+    request,
     timing,
     statusCode,
     headers,

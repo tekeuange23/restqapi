@@ -18,7 +18,12 @@ const Request = function (baseUrl, id) {
             body: response.body,
             timing: response.timings.phases.total,
             headers: response.headers,
-            statusCode: response.statusCode
+            statusCode: response.statusCode,
+            request: {
+              path : this.options.pathname,
+              method : this.options.method,
+              prefix: `[${this.options.method.toUpperCase()} ${response.req.path}]`
+            }
           }
           return response
         }

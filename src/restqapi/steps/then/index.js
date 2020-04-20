@@ -4,8 +4,9 @@ module.exports = [
   ['I should receive a response with the status {int}', then.httpCode, 'Check the response http code'],
   ['the response headers should contains:', then.headers, ''],
   ['the response time is under {int} ms', then.httpTiming, 'Check the response latency'],
-  ['{string} should be on the response header', then.headerValueIsExist, 'Check if a property is in the response header'],
-  ['{string} should not be on the response header', then.headerValueIsNotExist, 'Check if a property is in the response header'],
+  ['{string} should be on the response header', then.headerValueExist, 'Check if a property is in the response header'],
+  ['{string} should not be on the response header', then.headerValueNotExist, 'Check if a property is in the response header'],
+  ['the header {string} should be {string}', then.headerValueEqual, 'Check if a property in the response header has the exact string value'],
   ['the response should be empty array', then.shouldBeEmptyArrayResponse, 'Check a value in the body response that it is empty array'],
   ['the response should be empty', then.shouldBeEmptyResponse, 'Check a value in the body response that it is empty array'],
   ['the response body at {string} should equal {data}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)'],
@@ -20,8 +21,6 @@ module.exports = [
   ['the response body at {string} should not be null', then.shouldNotBeNull, 'Check if a value is not null in the body response (dot-object pattern)'],
   ['the response body at {string} should match {string}', then.shouldMatch, 'Check if a value match a specific regex'],
   ['the response list should contain {int} item', then.shouldBeArraySize, 'Check if the response list is of a certain size'],
-  ['the header {string} should be {string}', then.headerValueShouldBeString, 'Check if a property in the response header has the exact string value'],
   ['add the value {string} from the response body to the databook as {string}', then.addBodyPropertyToDataset, ''],
-  ['clean', () => {}, 'Cleaning the api buffer ??']
 ]
 

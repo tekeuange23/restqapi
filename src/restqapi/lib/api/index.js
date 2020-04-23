@@ -8,7 +8,7 @@ module.exports = function (options) {
   const run = async function () {
     try {
       const options = this.request.getOptions()
-      //console.log(options)
+      // console.log(options)
       const result = await got(options)
       this.response = new Response(result.restqa)
     } catch (e) {
@@ -26,7 +26,7 @@ module.exports = function (options) {
     request: new Request(config.url),
     response: null,
     run,
-    toJSON: function() {
+    toJSON: function () {
       return {
         request: this.request.getOptions(),
         response: this.response && this.response.getResult(),

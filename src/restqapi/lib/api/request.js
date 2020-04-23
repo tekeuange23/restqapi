@@ -20,8 +20,8 @@ const Request = function (baseUrl, id) {
             headers: response.headers,
             statusCode: response.statusCode,
             request: {
-              path : this.options.pathname,
-              method : this.options.method,
+              path: this.options.pathname,
+              method: this.options.method,
               prefix: `[${this.options.method.toUpperCase()} ${response.req.path}]`
             }
           }

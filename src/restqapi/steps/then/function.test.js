@@ -3,13 +3,11 @@ beforeEach(() => {
 })
 
 describe('#StepDefinition - then - functions', () => {
-
-
   test('Configuration', () => {
     const Then = require('./functions')
-    let fns  = Object.keys(Then)
+    const fns = Object.keys(Then)
     expect(fns.length).toBe(20)
-    let expectedFunctions = [
+    const expectedFunctions = [
       'httpCode',
       'httpTiming',
       'headerValueExist',
@@ -36,13 +34,12 @@ describe('#StepDefinition - then - functions', () => {
 
   describe('API Default Functions', () => {
     test('httpCode', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             statusCode: 201,
             request: {
@@ -62,13 +59,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('httpTiming - When timing is higher', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.ok = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             timing: 1000,
             request: {
@@ -87,13 +83,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('httpTiming - When timing is lower', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.ok = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             timing: 100,
             request: {
@@ -112,15 +107,13 @@ describe('#StepDefinition - then - functions', () => {
   })
 
   describe('API Headers Functions', () => {
-
     test('headerValueExist', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.notStrictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             findInHeader: jest.fn().mockReturnValue('xxx-yyy-zzz'),
             request: {
@@ -140,13 +133,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('headerValueNotExist', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             findInHeader: jest.fn().mockReturnValue('xxx-yyy-zzz'),
             request: {
@@ -166,13 +158,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('headerValueEqual', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             findInHeader: jest.fn().mockReturnValue('xxx-yyy-zzz'),
             request: {
@@ -192,11 +183,10 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('headers', () => {
-
       const Then = require('./functions')
       Then.headerValueEqual = jest.fn()
-      let table = {
-        raw: () =>{
+      const table = {
+        raw: () => {
           return [
             ['foo', 'bar'],
             ['abc', 'def']
@@ -215,15 +205,14 @@ describe('#StepDefinition - then - functions', () => {
 
   describe('API Body Functions', () => {
     test('shouldBeEmptyArrayResponse', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
-            body : [1, 2, 3],
+            body: [1, 2, 3],
             request: {
               prefix: '[POST /users]'
             }
@@ -241,13 +230,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeEmptyResponse', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             request: {
               prefix: '[POST /users]'
@@ -266,12 +254,11 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeNumber', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
+      const $this = {
         data: {
           get: jest.fn().mockReturnValue(456)
         },
@@ -302,13 +289,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeTrue', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             findInBody: jest.fn((_) => false),
             request: {
@@ -330,13 +316,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeFalse', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             findInBody: jest.fn((_) => true),
             request: {
@@ -358,13 +343,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeNull', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             findInBody: jest.fn((_) => 'my value'),
             request: {
@@ -386,13 +370,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeNull', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             findInBody: jest.fn((_) => 'my value'),
             request: {
@@ -414,12 +397,11 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeString - Boolean true case', () => {
-
-      let $this = {
+      const $this = {
         data: {
           get: jest.fn().mockReturnValue('true')
         },
-        api : {
+        api: {
           response: {
             findInBody: jest.fn((_) => 'my value'),
             request: {
@@ -440,12 +422,11 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeString - Boolean false case', () => {
-
-      let $this = {
+      const $this = {
         data: {
           get: jest.fn().mockReturnValue('false')
         },
-        api : {
+        api: {
           response: {
             findInBody: jest.fn((_) => 'my value'),
             request: {
@@ -466,12 +447,11 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeString - Boolean null case', () => {
-
-      let $this = {
+      const $this = {
         data: {
           get: jest.fn().mockReturnValue('null')
         },
-        api : {
+        api: {
           response: {
             findInBody: jest.fn((_) => 'my value'),
             request: {
@@ -492,16 +472,15 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeString - string', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
+      const $this = {
         data: {
           get: jest.fn().mockReturnValue('my-value')
         },
-        api : {
+        api: {
           response: {
             findInBody: jest.fn((_) => 'my value'),
             request: {
@@ -523,13 +502,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeEmpty', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             findInBody: jest.fn((_) => 'my value'),
             request: {
@@ -549,13 +527,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldNotBeNull', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.notStrictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             findInBody: jest.fn((_) => 'my value'),
             request: {
@@ -575,13 +552,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeArraySize', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.strictEqual = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             body: [1, 2, 3],
             request: {
@@ -601,13 +577,12 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldMatch', () => {
-
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.ok = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             findInBody: jest.fn((_) => 'my value'),
             request: {
@@ -626,15 +601,14 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('shouldBeNow ', () => {
-
       global.Date.now = jest.fn(() => new Date('2019-04-07T10:20:30Z').getTime())
 
-      let assert = require('assert')
+      const assert = require('assert')
       jest.mock('assert')
       assert.ok = jest.fn()
 
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           response: {
             findInBody: jest.fn((_) => '2019-04-07T10:21:30Z'),
             request: {
@@ -655,12 +629,11 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('addHeaderPropertyToDataset', () => {
-
-      let $this = {
+      const $this = {
         data: {
           set: jest.fn()
         },
-        api : {
+        api: {
           response: {
             findInHeader: jest.fn((_) => 'my value')
           }
@@ -679,12 +652,11 @@ describe('#StepDefinition - then - functions', () => {
     })
 
     test('addBodyPropertyToDataset', () => {
-
-      let $this = {
+      const $this = {
         data: {
           set: jest.fn()
         },
-        api : {
+        api: {
           response: {
             findInBody: jest.fn((_) => 'my value')
           }

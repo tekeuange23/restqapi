@@ -6,4 +6,3 @@ When.callApi = async function () {
 }
 
 module.exports = When
-

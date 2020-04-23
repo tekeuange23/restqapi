@@ -7,19 +7,17 @@ const Then = {}
  * =========================================
  */
 
-
 Then.httpCode = function (code) {
-  let received = this.api.response.statusCode
-  let err = `${this.api.response.request.prefix} The response httpCode is invalid, received ${received} should be ${code}`
+  const received = this.api.response.statusCode
+  const err = `${this.api.response.request.prefix} The response httpCode is invalid, received ${received} should be ${code}`
   assert.strictEqual(this.api.response.statusCode, code, err)
 }
 
 Then.httpTiming = function (timeMs) {
-  let received = Math.round(this.api.response.timing)
-  let err = `${this.api.response.request.prefix} The response time is invalid, received ${received} should be lower than ${timeMs}`
+  const received = Math.round(this.api.response.timing)
+  const err = `${this.api.response.request.prefix} The response time is invalid, received ${received} should be lower than ${timeMs}`
   assert.ok(received < timeMs, err)
 }
-
 
 /*
  * =========================================
@@ -27,20 +25,19 @@ Then.httpTiming = function (timeMs) {
  * =========================================
  */
 
-
 Then.headerValueExist = function (property) {
-  let err = `${this.api.response.request.prefix} The response header should contain the ${property} property`
+  const err = `${this.api.response.request.prefix} The response header should contain the ${property} property`
   assert.notStrictEqual(this.api.response.findInHeader(property), undefined, err)
 }
 
 Then.headerValueNotExist = function (property) {
-  let err = `${this.api.response.request.prefix} The response header should not contain the ${property} property`
+  const err = `${this.api.response.request.prefix} The response header should not contain the ${property} property`
   assert.strictEqual(this.api.response.findInHeader(property), undefined, err)
 }
 
 Then.headerValueEqual = function (header, value) {
-  let received =  this.api.response.findInHeader(header)
-  let err = `${this.api.response.request.prefix} The response header is invalid, the ${header} property should be ${value} but received ${received}`
+  const received = this.api.response.findInHeader(header)
+  const err = `${this.api.response.request.prefix} The response header is invalid, the ${header} property should be ${value} but received ${received}`
   assert.strictEqual(received, value, err)
 }
 
@@ -55,45 +52,44 @@ Then.headers = function (table) {
  */
 
 Then.shouldBeEmptyArrayResponse = function () {
-  let received = this.api.response.body.length
-  let err = `${this.api.response.request.prefix} The response body should return an empty array, but received an array with ${received} items`
+  const received = this.api.response.body.length
+  const err = `${this.api.response.request.prefix} The response body should return an empty array, but received an array with ${received} items`
   assert.strictEqual(received, 0, err)
 }
 
 Then.shouldBeEmptyResponse = function () {
-  let err = `${this.api.response.request.prefix} The response body should be empty`
+  const err = `${this.api.response.request.prefix} The response body should be empty`
   assert.strictEqual(this.api.response.body, undefined, err)
 }
 
-
 Then.shouldBeNumber = function (property, value) {
-  let received = this.api.response.findInBody(property)
+  const received = this.api.response.findInBody(property)
   value = this.data.get(value)
-  let err = `${this.api.response.request.prefix} The response body property ${property} should be ${value} but received ${received}`
+  const err = `${this.api.response.request.prefix} The response body property ${property} should be ${value} but received ${received}`
   assert.strictEqual(received, Number(value), err)
 }
 
 Then.shouldBeTrue = function (property) {
-  let received = this.api.response.findInBody(property)
-  let err = `${this.api.response.request.prefix} The response body property ${property} should be true but received ${received}`
+  const received = this.api.response.findInBody(property)
+  const err = `${this.api.response.request.prefix} The response body property ${property} should be true but received ${received}`
   assert.strictEqual(received, true, err)
 }
 
 Then.shouldBeFalse = function (property) {
-  let received = this.api.response.findInBody(property)
-  let err = `${this.api.response.request.prefix} The response body property ${property} should be false but received ${received}`
+  const received = this.api.response.findInBody(property)
+  const err = `${this.api.response.request.prefix} The response body property ${property} should be false but received ${received}`
   assert.strictEqual(received, false, err)
 }
 
 Then.shouldBeNull = function (property) {
-  let received = this.api.response.findInBody(property)
-  let err = `${this.api.response.request.prefix} The response body property ${property} should be null but received ${received}`
+  const received = this.api.response.findInBody(property)
+  const err = `${this.api.response.request.prefix} The response body property ${property} should be null but received ${received}`
   assert.strictEqual(received, null, err)
 }
 
 Then.shouldBeString = function (property, value) {
   value = this.data.get(value)
-  switch(value) {
+  switch (value) {
     case 'true':
       Then.shouldBeTrue(property)
       break
@@ -103,43 +99,43 @@ Then.shouldBeString = function (property, value) {
     case 'null':
       Then.shouldBeNull(property)
       break
-    default:
-      let received = this.api.response.findInBody(property)
-      let err = `${this.api.response.request.prefix} The response body property ${property} should be ${value} but received ${received}`
+    default: {
+      const received = this.api.response.findInBody(property)
+      const err = `${this.api.response.request.prefix} The response body property ${property} should be ${value} but received ${received}`
       assert.strictEqual(received, value, err)
+    }
   }
 }
 
 Then.shouldBeEmpty = function (property) {
-  let received = this.api.response.findInBody(property)
-  let err = `${this.api.response.request.prefix} The response body property ${property} should be empty but received ${received}`
+  const received = this.api.response.findInBody(property)
+  const err = `${this.api.response.request.prefix} The response body property ${property} should be empty but received ${received}`
   assert.strictEqual(received, '', err)
 }
 
 Then.shouldNotBeNull = function (property) {
-  let received = this.api.response.findInBody(property)
-  let err = `${this.api.response.request.prefix} The response body property ${property} should not be null but received null`
+  const received = this.api.response.findInBody(property)
+  const err = `${this.api.response.request.prefix} The response body property ${property} should not be null but received null`
   assert.notStrictEqual(received, null, err)
 }
 
 Then.shouldBeArraySize = function (value) {
-  let received = this.api.response.body.length
-  let err = `${this.api.response.request.prefix} The response body property should contain an array of ${value} items but received an array of ${received} items`
+  const received = this.api.response.body.length
+  const err = `${this.api.response.request.prefix} The response body property should contain an array of ${value} items but received an array of ${received} items`
   assert.strictEqual(received, value, err)
 }
 
 Then.shouldMatch = function (property, value) {
-  let received = String(this.api.response.findInBody(property))
-  let err = `${this.api.response.request.prefix} The response body property ${property} should match the regexp ${value} but received : ${received}`
-  let regex = new RegExp(value)
+  const received = String(this.api.response.findInBody(property))
+  const err = `${this.api.response.request.prefix} The response body property ${property} should match the regexp ${value} but received : ${received}`
+  const regex = new RegExp(value)
   assert.ok(regex.test(received), err)
 }
 
-
 Then.shouldBeNow = function (property) {
-  let received = this.api.response.findInBody(property)
-  let diff = Date.now() - new Date(received).getTime()
-  let err = `${this.api.response.request.prefix} The response body property ${property} should be close to now, but received : ${received}`
+  const received = this.api.response.findInBody(property)
+  const diff = Date.now() - new Date(received).getTime()
+  const err = `${this.api.response.request.prefix} The response body property ${property} should be close to now, but received : ${received}`
   assert.ok(diff < 60000, err)
 }
 
@@ -149,13 +145,13 @@ Then.shouldBeNow = function (property) {
  * =========================================
  */
 
-Then.addHeaderPropertyToDataset = function(headerProperty, dataKey) {
-  let val = this.api.response.findInHeader(headerProperty)
+Then.addHeaderPropertyToDataset = function (headerProperty, dataKey) {
+  const val = this.api.response.findInHeader(headerProperty)
   this.data.set(dataKey, val)
 }
 
-Then.addBodyPropertyToDataset = function(bodyProperty, propertyName) {
-  let val = this.api.response.findInBody(bodyProperty)
+Then.addBodyPropertyToDataset = function (bodyProperty, propertyName) {
+  const val = this.api.response.findInBody(bodyProperty)
   this.data.set(propertyName, val)
 }
 

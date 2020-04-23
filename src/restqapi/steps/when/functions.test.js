@@ -1,19 +1,18 @@
 describe('#StepDefinition - given - functions', () => {
-
   const When = require('./functions')
 
   test('Configuration', () => {
-    let fns  = Object.keys(When)
+    const fns = Object.keys(When)
     expect(fns.length).toBe(1)
-    let expectedFunctions = [
-      'callApi',
+    const expectedFunctions = [
+      'callApi'
     ]
     expect(fns).toEqual(expectedFunctions)
   })
 
   describe('Default Functions', () => {
     test('callApi', () => {
-      let $this = {
+      const $this = {
         api: {
           run: jest.fn().mockResolvedValue(true)
         }
@@ -24,4 +23,3 @@ describe('#StepDefinition - given - functions', () => {
     })
   })
 })
-

@@ -4,14 +4,14 @@ beforeEach(() => {
 
 describe('# api - Module', () => {
   test('init', () => {
-    let Api = require('./index')
-    let options = {
+    const Api = require('./index')
+    const options = {
       config: {
         url: 'http://test.com'
       }
     }
-    let instance = new Api(options)
-    
+    const instance = new Api(options)
+
     expect(Object.keys(instance).length).toBe(5)
     expect(Object.keys(instance)).toEqual(['config', 'request', 'response', 'run', 'toJSON'])
     expect(instance.config).toEqual({ url: 'http://test.com' })
@@ -21,9 +21,7 @@ describe('# api - Module', () => {
   })
 
   test('run - successfull call', async () => {
-
-    let Request = require('./request')
-    jest.mock('./request',() => {
+    jest.mock('./request', () => {
       return jest.fn().mockImplementation(() => {
         return {
           getOptions: jest.fn(() => {
@@ -33,8 +31,8 @@ describe('# api - Module', () => {
       })
     })
 
-    let got = require('got')
-    jest.mock('got',() => {
+    const got = require('got')
+    jest.mock('got', () => {
       return jest.fn().mockResolvedValue({
         restqa: {
           statusCode: 201
@@ -42,23 +40,22 @@ describe('# api - Module', () => {
       })
     })
 
-    let Response = require('./response')
+    const Response = require('./response')
     jest.mock('./response', () => {
-        return jest.fn().mockReturnValue({
-          status: 201
-        })
+      return jest.fn().mockReturnValue({
+        status: 201
+      })
     })
 
-    let Api = require('./index')
-    let options = {
+    const Api = require('./index')
+    const options = {
       config: {
         url: 'http://test.com'
       }
     }
 
-    let instance = new Api(options)
+    const instance = new Api(options)
     await instance.run()
-
 
     expect(got.mock.calls.length).toBe(1)
     expect(got.mock.calls[0][0]).toEqual({ foo: 'bar' })
@@ -66,13 +63,10 @@ describe('# api - Module', () => {
     expect(Response.mock.calls.length).toBe(1)
     expect(Response.mock.calls[0][0]).toEqual({ statusCode: 201 })
     expect(instance.response).toEqual({ status: 201 })
-
   })
 
   test('run - successfull call But api response is not a 2XX', async () => {
-
-    let Request = require('./request')
-    jest.mock('./request',() => {
+    jest.mock('./request', () => {
       return jest.fn().mockImplementation(() => {
         return {
           getOptions: jest.fn(() => {
@@ -82,8 +76,8 @@ describe('# api - Module', () => {
       })
     })
 
-    let got = require('got')
-    jest.mock('got',() => {
+    const got = require('got')
+    jest.mock('got', () => {
       return jest.fn().mockRejectedValue({
         response: {
           restqa: {
@@ -93,21 +87,21 @@ describe('# api - Module', () => {
       })
     })
 
-    let Response = require('./response')
+    const Response = require('./response')
     jest.mock('./response', () => {
       return jest.fn().mockReturnValue({
         status: 401
       })
     })
 
-    let Api = require('./index')
-    let options = {
+    const Api = require('./index')
+    const options = {
       config: {
         url: 'http://test.com'
       }
     }
 
-    let instance = new Api(options)
+    const instance = new Api(options)
     await instance.run()
 
     expect(got.mock.calls.length).toBe(1)
@@ -119,9 +113,7 @@ describe('# api - Module', () => {
   })
 
   test('run - unsuccessfull call (random error)', async () => {
-
-    let Request = require('./request')
-    jest.mock('./request',() => {
+    jest.mock('./request', () => {
       return jest.fn().mockImplementation(() => {
         return {
           getOptions: jest.fn(() => {
@@ -131,20 +123,19 @@ describe('# api - Module', () => {
       })
     })
 
-    let got = require('got')
-    jest.mock('got',() => {
+    const got = require('got')
+    jest.mock('got', () => {
       return jest.fn().mockRejectedValue(new Error('Random error'))
     })
 
-    let Api = require('./index')
-    let options = {
+    const Api = require('./index')
+    const options = {
       config: {
         url: 'http://test.com'
       }
     }
 
-    
-    let instance = new Api(options)
+    const instance = new Api(options)
     await expect(instance.run()).rejects.toThrow('Random error')
 
     expect(got.mock.calls.length).toBe(1)
@@ -154,9 +145,7 @@ describe('# api - Module', () => {
   })
 
   test('toJson', async () => {
-
-    let Request = require('./request')
-    jest.mock('./request',() => {
+    jest.mock('./request', () => {
       return jest.fn().mockImplementation(() => {
         return {
           getOptions: jest.fn(() => {
@@ -166,8 +155,8 @@ describe('# api - Module', () => {
       })
     })
 
-    let got = require('got')
-    jest.mock('got',() => {
+    const got = require('got')
+    jest.mock('got', () => {
       return jest.fn().mockRejectedValue({
         response: {
           restqa: {
@@ -177,28 +166,27 @@ describe('# api - Module', () => {
       })
     })
 
-    let Response = require('./response')
     jest.mock('./response', () => {
       return jest.fn().mockReturnValue({
         status: 401,
         getResult: () => {
-          return  {
+          return {
             'my-result': '123'
           }
         }
       })
     })
 
-    let Api = require('./index')
-    let options = {
+    const Api = require('./index')
+    const options = {
       config: {
         url: 'http://test.com'
       }
     }
 
-    let instance = new Api(options)
+    const instance = new Api(options)
     await instance.run()
-    let result = instance.toJSON()
+    const result = instance.toJSON()
 
     expect(got.mock.calls.length).toBe(1)
     expect(got.mock.calls[0][0]).toEqual({ foo: 'bar' })
@@ -214,9 +202,7 @@ describe('# api - Module', () => {
   })
 
   test('toJson when throw Error', async () => {
-
-    let Request = require('./request')
-    jest.mock('./request',() => {
+    jest.mock('./request', () => {
       return jest.fn().mockImplementation(() => {
         return {
           getOptions: jest.fn(() => {
@@ -226,21 +212,21 @@ describe('# api - Module', () => {
       })
     })
 
-    let got = require('got')
-    jest.mock('got',() => {
+    const got = require('got')
+    jest.mock('got', () => {
       return jest.fn().mockRejectedValue(new Error('the error'))
     })
 
-    let Api = require('./index')
-    let options = {
+    const Api = require('./index')
+    const options = {
       config: {
         url: 'http://test.com'
       }
     }
 
-    let instance = new Api(options)
+    const instance = new Api(options)
     await expect(instance.run()).rejects.toThrow('the error')
-    let result = instance.toJSON()
+    const result = instance.toJSON()
 
     expect(got.mock.calls.length).toBe(1)
     expect(got.mock.calls[0][0]).toEqual({ foo: 'bar' })
@@ -254,5 +240,3 @@ describe('# api - Module', () => {
     })
   })
 })
-
-

@@ -10,7 +10,6 @@ Given.gateway = function () {
   this.api = this.createApi()
 }
 
-
 Given.path = function (path) {
   path = this.data.get(path)
   this.api.request.setPath(encodeURI(path))
@@ -18,7 +17,7 @@ Given.path = function (path) {
 
 Given.method = function (method) {
   method = method.toLowerCase()
-  let allowed = ['post', 'put', 'patch', 'get', 'delete', 'head', 'connect', 'options', 'trace']
+  const allowed = ['post', 'put', 'patch', 'get', 'delete', 'head', 'connect', 'options', 'trace']
   if (!allowed.includes(method)) {
     throw new Error('"' + method.toUpperCase() + '" is not a valid http method. Accepted : https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods')
   }
@@ -29,7 +28,6 @@ Given.methodPath = function (method, path) {
   Given.method.call(this, method)
   Given.path.call(this, path)
 }
-
 
 /*
  * =========================================

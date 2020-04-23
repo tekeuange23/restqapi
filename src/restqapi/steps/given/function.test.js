@@ -1,11 +1,10 @@
 describe('#StepDefinition - given - functions', () => {
-
   const Given = require('./functions')
 
   test('Configuration', () => {
-    let fns  = Object.keys(Given)
+    const fns = Object.keys(Given)
     expect(fns.length).toBe(14)
-    let expectedFunctions = [
+    const expectedFunctions = [
       'gateway',
       'path',
       'method',
@@ -26,18 +25,18 @@ describe('#StepDefinition - given - functions', () => {
 
   describe('API Default Functions', () => {
     test('gateway', () => {
-      let $this = {
-        createApi : jest.fn().mockReturnValue({foo: 'bar'})
+      const $this = {
+        createApi: jest.fn().mockReturnValue({ foo: 'bar' })
       }
       Given.gateway.call($this)
       expect($this.createApi.mock.calls.length).toBe(1)
       expect($this.createApi.mock.calls[0][0]).toBeUndefined()
-      expect($this.api).toEqual({foo: 'bar'})
+      expect($this.api).toEqual({ foo: 'bar' })
     })
 
     test('path', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             setPath: jest.fn()
           }
@@ -54,8 +53,8 @@ describe('#StepDefinition - given - functions', () => {
     })
 
     test('method', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             setMethod: jest.fn()
           }
@@ -67,8 +66,8 @@ describe('#StepDefinition - given - functions', () => {
     })
 
     test('method is not a valid http method', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             setMethod: jest.fn()
           }
@@ -76,13 +75,13 @@ describe('#StepDefinition - given - functions', () => {
       }
       expect(() => {
         Given.method.call($this, 'POOST')
-      }).toThrow(new Error('"POOST" is not a valid http method. Accepted : https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods'));
+      }).toThrow(new Error('"POOST" is not a valid http method. Accepted : https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods'))
       expect($this.api.request.setMethod.mock.calls.length).toBe(0)
     })
 
     test('methodPath', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             setMethod: jest.fn(),
             setPath: jest.fn()
@@ -103,10 +102,9 @@ describe('#StepDefinition - given - functions', () => {
   })
 
   describe('Request header Functions', () => {
-
     test('header', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             setHeader: jest.fn()
           }
@@ -124,8 +122,8 @@ describe('#StepDefinition - given - functions', () => {
     })
 
     test('headers', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             setHeader: jest.fn()
           }
@@ -137,11 +135,11 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
 
-      let table = {
+      const table = {
         raw: () => {
-          return  [
+          return [
             ['x-foo', 'foo-value'],
-            ['x-bar', 'bar-value'],
+            ['x-bar', 'bar-value']
           ]
         }
       }
@@ -158,10 +156,9 @@ describe('#StepDefinition - given - functions', () => {
   })
 
   describe('Request query string Functions', () => {
-
     test('queryString', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             setQueryString: jest.fn()
           }
@@ -179,8 +176,8 @@ describe('#StepDefinition - given - functions', () => {
     })
 
     test('qs', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             setQueryString: jest.fn()
           }
@@ -192,11 +189,11 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
 
-      let table = {
+      const table = {
         raw: () => {
-          return  [
+          return [
             ['param1', 'foo'],
-            ['param2', 'bar'],
+            ['param2', 'bar']
           ]
         }
       }
@@ -213,10 +210,9 @@ describe('#StepDefinition - given - functions', () => {
   })
 
   describe('Request body Functions', () => {
-
     test('payload', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             addPayload: jest.fn()
           }
@@ -234,8 +230,8 @@ describe('#StepDefinition - given - functions', () => {
     })
 
     test('payloadNull', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             addPayload: jest.fn()
           }
@@ -248,8 +244,8 @@ describe('#StepDefinition - given - functions', () => {
     })
 
     test('payloadTrue', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             addPayload: jest.fn()
           }
@@ -262,8 +258,8 @@ describe('#StepDefinition - given - functions', () => {
     })
 
     test('payloadFalse', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             addPayload: jest.fn()
           }
@@ -276,8 +272,8 @@ describe('#StepDefinition - given - functions', () => {
     })
 
     test('payloadEmptyArray', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             addPayload: jest.fn()
           }
@@ -290,8 +286,8 @@ describe('#StepDefinition - given - functions', () => {
     })
 
     test('payloads', () => {
-      let $this = {
-        api : {
+      const $this = {
+        api: {
           request: {
             addPayload: jest.fn()
           }
@@ -303,11 +299,11 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
 
-      let table = {
+      const table = {
         raw: () => {
-          return  [
+          return [
             ['param.foo1', 'foo'],
-            ['param.foo2', 'bar'],
+            ['param.foo2', 'bar']
           ]
         }
       }
@@ -323,4 +319,3 @@ describe('#StepDefinition - given - functions', () => {
     })
   })
 })
-

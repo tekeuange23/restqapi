@@ -4,7 +4,7 @@ const flatten = require('g11n-pipeline-flatten')
 const Response = function (result) {
   const { request, statusCode, headers, body, timing } = result
 
-  const isJson = (headers['content-type'] || '' ).match(/application\/json/i)
+  const isJson = (headers['content-type'] || '').match(/application\/json/i)
 
   let dotBody = {}
   let jsonPathBody = {}

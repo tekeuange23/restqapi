@@ -2,13 +2,12 @@
 const RestQData = require('@restqa/restqdata')
 
 function Data (options) {
-
   options = Object.assign({
     startSymbol: '{{',
     endSymbol: '}}'
   }, options)
 
-  const matchRegexp = new RegExp(`${options.startSymbol.replace(/(?=\W)/g, '\\')}(.*)${options.endSymbol.replace(/(?=\W)/g, '\\')}`,'g')
+  const matchRegexp = new RegExp(`${options.startSymbol.replace(/(?=\W)/g, '\\')}(.*)${options.endSymbol.replace(/(?=\W)/g, '\\')}`, 'g')
   const dataRegex = /(.*).(\d).(.*)/
 
   const data = {}
@@ -27,18 +26,17 @@ function Data (options) {
   }
 
   async function retrieve (value) {
-    
-    const [ resource, row ] = value.trim().split('.')
+    const [resource, row] = value.trim().split('.')
     const data = RestQData(options)
     const response = await data.get(resource, row)
-    
+
     Object.keys(response)
       .forEach(key => {
         set(`${value}.${key}`, response[key])
       })
   }
 
-  function getDataVariable(variable) {
+  function getDataVariable (variable) {
     return variable
       .replace(options.startSymbol, '')
       .replace(options.endSymbol, '')
@@ -49,7 +47,7 @@ function Data (options) {
     if (typeof value !== 'string') return value
     const properties = value.match(matchRegexp)
     if (!properties) return value
-    
+
     return properties.reduce((value, item) => {
       return value.replace(item, data[getDataVariable(item)])
     }, value)

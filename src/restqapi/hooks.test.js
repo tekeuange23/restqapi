@@ -4,9 +4,9 @@ beforeEach(() => {
 
 describe('# hooks', () => {
   test('init', () => {
-    let Hooks = require('./hooks')
+    const Hooks = require('./hooks')
 
-    let $this = {
+    const $this = {
       attach: jest.fn(),
       setConfig: jest.fn(),
       data: {
@@ -21,16 +21,16 @@ describe('# hooks', () => {
       }]
     }
 
-    let config = {
+    const config = {
       foo: 'bar'
     }
-    let fns = {
+    const fns = {
       Before: jest.fn((...params) => {
-        return params.pop().call($this, { name : 'sc1' })
+        return params.pop().call($this, { name: 'sc1' })
       }),
       BeforeAll: jest.fn(),
       After: jest.fn((...params) => {
-        return params.pop().call($this, { name : 'sc1' })
+        return params.pop().call($this, { name: 'sc1' })
       }),
       AfterAll: jest.fn()
     }
@@ -40,11 +40,11 @@ describe('# hooks', () => {
     expect(fns.Before.mock.calls.length).toBe(4)
     expect(typeof fns.Before.mock.calls[0][0]).toBe('function')
     expect($this.setConfig.mock.calls.length).toBe(1)
-    expect($this.setConfig.mock.calls[0][0]).toEqual({foo: 'bar' })
+    expect($this.setConfig.mock.calls[0][0]).toEqual({ foo: 'bar' })
 
     expect(typeof fns.Before.mock.calls[1][0]).toBe('function')
     expect($this.data.parse.mock.calls.length).toBe(1)
-    expect($this.data.parse.mock.calls[0][0]).toEqual({name: 'sc1'})
+    expect($this.data.parse.mock.calls[0][0]).toEqual({ name: 'sc1' })
 
     expect(fns.Before.mock.calls[2][0]).toBe('@skip')
     expect(typeof fns.Before.mock.calls[2][1]).toBe('function')
@@ -58,9 +58,9 @@ describe('# hooks', () => {
 
     expect(fns.After.mock.calls.length).toBe(1)
     expect($this.attach.mock.calls.length).toBe(1)
-    let expectedAttachement = JSON.stringify({
+    const expectedAttachement = JSON.stringify({
       apis: [
-        { foo: 'bar'}
+        { foo: 'bar' }
       ]
     })
     expect($this.attach.mock.calls[0][0]).toEqual(expectedAttachement)
@@ -71,5 +71,3 @@ describe('# hooks', () => {
     expect($this.skipped).toEqual(true)
   })
 })
-
-

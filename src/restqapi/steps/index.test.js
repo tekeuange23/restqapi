@@ -4,21 +4,20 @@ beforeEach(() => {
 
 describe('#StepDefinition - index', () => {
   test('Configuration', () => {
-
-    let fnGiven = require('./given')
+    const fnGiven = require('./given')
     jest.mock('./given')
-    fnGiven.push ([1])
+    fnGiven.push([1])
 
-    let fnWhen = require('./when')
+    const fnWhen = require('./when')
     jest.mock('./when')
-    fnWhen.push ([2])
+    fnWhen.push([2])
 
-    let fnThen = require('./then')
+    const fnThen = require('./then')
     jest.mock('./then')
-    fnThen.push ([3])
+    fnThen.push([3])
 
     const stepDefinition = require('./index')
-    let obj = {
+    const obj = {
       Given: jest.fn(),
       When: jest.fn(),
       Then: jest.fn()
@@ -34,4 +33,3 @@ describe('#StepDefinition - index', () => {
     expect(obj.Then.mock.calls[0][0]).toEqual(3)
   })
 })
-

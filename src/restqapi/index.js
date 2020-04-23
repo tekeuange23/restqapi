@@ -2,8 +2,7 @@ const World = require('./world')
 const Hooks = require('./hooks')
 const Steps = require('./steps')
 
-const RestQapi = function(config) {
-
+const RestQapi = function (config) {
   let _world = World
 
   config.data = config.data || {}
@@ -17,7 +16,7 @@ const RestQapi = function(config) {
   }
 
   return {
-    setParameterType(defineParameterType) {
+    setParameterType (defineParameterType) {
       const regexp = new RegExp(`${config.data.startSymbol.replace(/(?=\W)/g, '\\')}(.*)${config.data.endSymbol.replace(/(?=\W)/g, '\\')}`)
       defineParameterType({
         regexp,
@@ -28,16 +27,16 @@ const RestQapi = function(config) {
         name: 'data'
       })
     },
-    setSteps(obj) {
+    setSteps (obj) {
       Steps(obj)
     },
-    setHooks(obj) {
+    setHooks (obj) {
       Hooks(config, obj)
     },
-    setWorld(world) {
+    setWorld (world) {
       _world = world
     },
-    getWorld() {
+    getWorld () {
       return _world
     }
   }

@@ -4,10 +4,9 @@ beforeEach(() => {
 
 describe('# world', () => {
   test('constructors', () => {
+    const World = require('./world')
 
-    let World = require('./world')
-
-    let world = new World({attach: 'attach', parameters: 'parameters'})
+    const world = new World({ attach: 'attach', parameters: 'parameters' })
 
     expect(world.skipped).toBe(false)
     expect(world.attach).toEqual('attach')
@@ -18,8 +17,7 @@ describe('# world', () => {
   })
 
   test('setConfig without secret', () => {
-
-    let Lib = require('./lib')
+    const Lib = require('./lib')
     jest.mock('./lib')
     Lib.Data = jest.fn(() => {
       return {
@@ -27,19 +25,18 @@ describe('# world', () => {
       }
     })
 
-    let World = require('./world')
+    const World = require('./world')
 
-    let world = new World({})
-    world.setConfig({foo: 'bar'})
+    const world = new World({})
+    world.setConfig({ foo: 'bar' })
 
-    expect(world._config).toEqual({foo: 'bar'})
+    expect(world._config).toEqual({ foo: 'bar' })
     expect(world._data).not.toBeNull()
     expect(world._data.set.mock.calls.length).toBe(0)
   })
 
   test('setConfig with secret', () => {
-
-    let Lib = require('./lib')
+    const Lib = require('./lib')
     jest.mock('./lib')
     Lib.Data = jest.fn(() => {
       return {
@@ -47,13 +44,13 @@ describe('# world', () => {
       }
     })
 
-    let World = require('./world')
+    const World = require('./world')
 
-    let world = new World({})
-    let config = {
+    const world = new World({})
+    const config = {
       foo: 'bar',
       secrets: {
-        'so': 'blur'
+        so: 'blur'
       }
     }
     world.setConfig(config)
@@ -66,19 +63,18 @@ describe('# world', () => {
   })
 
   test('createApi', () => {
-
-    let Lib = require('./lib')
+    const Lib = require('./lib')
 
     jest.mock('./lib')
     Lib.Api = jest.fn()
 
-    let World = require('./world')
+    const World = require('./world')
 
-    let world = new World({})
+    const world = new World({})
     expect(world._apis.length).toBe(0)
 
-    let config = {
-      foo : 'bar'
+    const config = {
+      foo: 'bar'
     }
 
     world.setConfig(config)
@@ -87,6 +83,5 @@ describe('# world', () => {
     expect(world._apis.length).toBe(1)
     expect(world.apis.length).toBe(1)
     expect(Lib.Api.mock.calls[0][0]).toEqual({ config })
-    
   })
 })

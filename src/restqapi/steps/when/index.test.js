@@ -3,7 +3,6 @@ beforeEach(() => {
 })
 
 describe('#StepDefinition - when', () => {
-
   test('Configuration', () => {
     const when = require('./index')
     expect(Array.isArray(when)).toBeTruthy()
@@ -21,4 +20,3 @@ describe('#StepDefinition - when', () => {
     })
   })
 })
-

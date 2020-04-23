@@ -4,9 +4,9 @@ beforeEach(() => {
 
 describe('# API  Response', () => {
   test('methods', () => {
-    let Response = require('./response')
+    const Response = require('./response')
 
-    let result = {
+    const result = {
       request: {
         method: 'POST'
 
@@ -16,14 +16,14 @@ describe('# API  Response', () => {
         'content-type': 'application/json'
       },
       body: {
-        'foo': 'bar'
+        foo: 'bar'
       },
       timing: 2000
     }
 
-    let response = Response(result)
+    const response = Response(result)
 
-    let expectedMethods = [
+    const expectedMethods = [
       'request',
       'timing',
       'statusCode',
@@ -35,19 +35,19 @@ describe('# API  Response', () => {
     ]
 
     expect(Object.keys(response)).toEqual(expectedMethods)
-    expect(response.request).toEqual({ method: 'POST'})
+    expect(response.request).toEqual({ method: 'POST' })
     expect(response.timing).toEqual(2000)
     expect(response.statusCode).toEqual(201)
-    expect(response.headers).toEqual({'content-type': 'application/json'})
-    expect(response.body).toEqual({'foo': 'bar'})
+    expect(response.headers).toEqual({ 'content-type': 'application/json' })
+    expect(response.body).toEqual({ foo: 'bar' })
     expect(response.findInBody).toBeInstanceOf(Function)
     expect(response.findInHeader).toBeInstanceOf(Function)
   })
 
   test('findInBody', () => {
-    let Response = require('./response')
+    const Response = require('./response')
 
-    let result = {
+    const result = {
       request: {
         method: 'POST'
 
@@ -57,14 +57,14 @@ describe('# API  Response', () => {
         'content-type': 'application/json'
       },
       body: {
-        'foo': {
-          'foo': 'bar'
+        foo: {
+          foo: 'bar'
         }
       },
       timing: 2000
     }
 
-    let response = Response(result)
+    const response = Response(result)
 
     expect(response.findInBody('foo.foo')).toEqual('bar')
     expect(response.findInBody('$.foo.foo')).toEqual('bar')
@@ -73,9 +73,9 @@ describe('# API  Response', () => {
   })
 
   test('findInBody - non json', () => {
-    let Response = require('./response')
+    const Response = require('./response')
 
-    let result = {
+    const result = {
       request: {
         method: 'POST'
 
@@ -86,16 +86,16 @@ describe('# API  Response', () => {
       timing: 2000
     }
 
-    let response = Response(result)
+    const response = Response(result)
 
     expect(response.findInBody('$.o')).toBeUndefined()
     expect(response.findInBody('o')).toBeUndefined()
   })
 
   test('findInBody - json but no body', () => {
-    let Response = require('./response')
+    const Response = require('./response')
 
-    let result = {
+    const result = {
       request: {
         method: 'POST'
 
@@ -107,16 +107,16 @@ describe('# API  Response', () => {
       timing: 2000
     }
 
-    let response = Response(result)
+    const response = Response(result)
 
     expect(response.findInBody('$.o')).toBeUndefined()
     expect(response.findInBody('o')).toBeUndefined()
   })
 
   test('findInHeader', () => {
-    let Response = require('./response')
+    const Response = require('./response')
 
-    let result = {
+    const result = {
       request: {
         method: 'POST'
 
@@ -127,14 +127,14 @@ describe('# API  Response', () => {
         'x-req-id': 'zz-xx-yy'
       },
       body: {
-        'foo': {
-          'foo': 'bar'
+        foo: {
+          foo: 'bar'
         }
       },
       timing: 2000
     }
 
-    let response = Response(result)
+    const response = Response(result)
 
     expect(response.findInHeader('X-req-id')).toEqual('zz-xx-yy')
     expect(response.findInHeader('x-req-id')).toEqual('zz-xx-yy')
@@ -142,9 +142,9 @@ describe('# API  Response', () => {
   })
 
   test('getResult', () => {
-    let Response = require('./response')
+    const Response = require('./response')
 
-    let result = {
+    const result = {
       request: {
         method: 'POST'
 
@@ -155,14 +155,14 @@ describe('# API  Response', () => {
         'x-req-id': 'zz-xx-yy'
       },
       body: {
-        'foo': {
-          'foo': 'bar'
+        foo: {
+          foo: 'bar'
         }
       },
       timing: 2000
     }
 
-    let response = Response(result)
+    const response = Response(result)
 
     expect(response.getResult()).toEqual(result)
   })

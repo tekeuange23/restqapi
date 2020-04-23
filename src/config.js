@@ -8,7 +8,7 @@ module.exports = {
     channel: 'google-sheet',
     config: {
       id: process.env.GOOGLE_SHEET_ID,
-      apikey: process.env.GOOGLE_SHEET_APIKEY,
+      apikey: process.env.GOOGLE_SHEET_APIKEY
     },
     startSymbol: '{[',
     endSymbol: ']}'

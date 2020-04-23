@@ -1,4 +1,4 @@
-const then  = require('./functions')
+const then = require('./functions')
 
 module.exports = [
   /**
@@ -18,7 +18,7 @@ module.exports = [
   ['the response headers should contains:', then.headers, 'Check multiple response headers (table format)', 'api, response, table, headers, header'],
   ['{string} should be on the response header', then.headerValueExist, 'Check if a property is in the response header', 'api, response, table, headers, header'],
   ['{string} should not be on the response header', then.headerValueNotExist, 'Check if a property is in the response header', 'api, response, table, headers, header'],
-  ['the header {string} should be {string}', then.headerValueEqual, 'Check if a property in the response header has the exact string value',  'api, response, table, headers, header'],
+  ['the header {string} should be {string}', then.headerValueEqual, 'Check if a property in the response header has the exact string value', 'api, response, table, headers, header'],
 
   // Response body
   ['the response should be empty array', then.shouldBeEmptyArrayResponse, 'Check a value in the body response that it is empty array', 'api, response, body, array'],
@@ -37,6 +37,5 @@ module.exports = [
 
   // Response Dataset
   ['add the value {string} from the response body to the dataset as {string}', then.addBodyPropertyToDataset, 'Take on of the value from the response body and add it to the dataset', 'api, response, body, jsonpath, dot-object, dataset'],
-  ['add the value {string} from the response header to the dataset as {string}', then.addHeaderPropertyToDataset, 'Take on of the value from the response header and add it to the dataset', 'api, response, header, jsonpath, dot-object, dataset'],
+  ['add the value {string} from the response header to the dataset as {string}', then.addHeaderPropertyToDataset, 'Take on of the value from the response header and add it to the dataset', 'api, response, header, jsonpath, dot-object, dataset']
 ]
-

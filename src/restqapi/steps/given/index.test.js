@@ -3,7 +3,6 @@ beforeEach(() => {
 })
 
 describe('#StepDefinition - given', () => {
-
   test('Configuration', () => {
     const given = require('./index')
     expect(Array.isArray(given)).toBeTruthy()

@@ -7,9 +7,11 @@ describe('# world', () => {
 
     let World = require('./world')
 
-    let world = new World()
+    let world = new World({attach: 'attach', parameters: 'parameters'})
 
     expect(world.skipped).toBe(false)
+    expect(world.attach).toEqual('attach')
+    expect(world.parameters).toEqual('parameters')
     expect(world._config).toEqual({})
     expect(world._apis).toEqual([])
     expect(world._data).toBeNull()
@@ -27,7 +29,7 @@ describe('# world', () => {
 
     let World = require('./world')
 
-    let world = new World()
+    let world = new World({})
     world.setConfig({foo: 'bar'})
 
     expect(world._config).toEqual({foo: 'bar'})
@@ -47,7 +49,7 @@ describe('# world', () => {
 
     let World = require('./world')
 
-    let world = new World()
+    let world = new World({})
     let config = {
       foo: 'bar',
       secrets: {
@@ -72,7 +74,7 @@ describe('# world', () => {
 
     let World = require('./world')
 
-    let world = new World()
+    let world = new World({})
     expect(world._apis.length).toBe(0)
 
     let config = {
@@ -83,6 +85,7 @@ describe('# world', () => {
     world.createApi()
 
     expect(world._apis.length).toBe(1)
+    expect(world.apis.length).toBe(1)
     expect(Lib.Api.mock.calls[0][0]).toEqual({ config })
     
   })

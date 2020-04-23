@@ -2,12 +2,13 @@ const dot = require('dot-object')
 const flatten = require('g11n-pipeline-flatten')
 
 const Response = function (result) {
-  const { curl, request, statusCode, headers, body, timing } = result
+  const { request, statusCode, headers, body, timing } = result
 
   const isJson = (headers['content-type'] || '' ).match(/application\/json/i)
 
   let dotBody = {}
   let jsonPathBody = {}
+
   if (isJson) {
     dotBody = dot.dot(body || {})
     jsonPathBody = flatten.flatten(body || {}, { flattenAll: true })
@@ -31,7 +32,7 @@ const Response = function (result) {
     body,
     findInBody,
     findInHeader,
-    curl
+    getResult: () => result
   }
 }
 

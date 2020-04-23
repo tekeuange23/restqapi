@@ -46,6 +46,7 @@ function Data (options) {
   }
 
   function get (value) {
+    if (typeof value !== 'string') return value
     const properties = value.match(matchRegexp)
     if (!properties) return value
     

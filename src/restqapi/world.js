@@ -2,7 +2,10 @@ const { Api, Data } = require('./lib')
 
 class World {
 
-   constructor(...params) {
+   constructor({attach, parameters}) {
+     this.attach = attach
+     this.parameters = parameters
+
      this.skipped = false
      this._config = {}
      this._apis = []
@@ -33,6 +36,10 @@ class World {
 
    get data() {
      return this._data
+   }
+
+   get apis() {
+     return this._apis
    }
 
 }

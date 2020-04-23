@@ -1,7 +1,7 @@
 {
   "name": "@restqa/restqapi",
   "version": "0.0.2",
-  "private": true,
+  "private": false,
   "scripts": {
     "start:dev": "restqapi -c ./sample-project/.restqa.yml ./sample-project",
     "start:library": "export $(cat .env | xargs) && cucumber-js --require ./src/setup.js ./sample-project",

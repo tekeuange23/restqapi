@@ -16,7 +16,7 @@ Then I should receive a response with the status 200
       | Connection | close |
       | X-Powered-By | Express |
   And the response body at "$.id" should match "[a-z0-9]{8}-([a-z0-9]{4})-([a-z0-9]{4})-([a-z0-9]{4})-([a-z0-9]{12})"
-  And add the value "$.id" from the response body to the databook as "id"
+  And add the value "$.id" from the response body to the dataset as "id"
   And the response body at "firstname" should equal "johnny"
   And the response body at "$.lastname" should equal "english"
 Given I have the api gateway

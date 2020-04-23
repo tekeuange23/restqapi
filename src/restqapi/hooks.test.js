@@ -7,10 +7,18 @@ describe('# hooks', () => {
     let Hooks = require('./hooks')
 
     let $this = {
+      attach: jest.fn(),
       setConfig: jest.fn(),
       data: {
         parse: jest.fn()
-      }
+      },
+      apis: [{
+        toJSON: () => {
+          return {
+            foo: 'bar'
+          }
+        }
+      }]
     }
 
     let config = {
@@ -21,7 +29,9 @@ describe('# hooks', () => {
         return params.pop().call($this, { name : 'sc1' })
       }),
       BeforeAll: jest.fn(),
-      After: jest.fn(),
+      After: jest.fn((...params) => {
+        return params.pop().call($this, { name : 'sc1' })
+      }),
       AfterAll: jest.fn()
     }
 
@@ -45,7 +55,17 @@ describe('# hooks', () => {
     expect(fns.Before.mock.results[3].value).toBe('skipped')
 
     expect(fns.BeforeAll.mock.calls.length).toBe(0)
-    expect(fns.After.mock.calls.length).toBe(0)
+
+    expect(fns.After.mock.calls.length).toBe(1)
+    expect($this.attach.mock.calls.length).toBe(1)
+    let expectedAttachement = JSON.stringify({
+      apis: [
+        { foo: 'bar'}
+      ]
+    })
+    expect($this.attach.mock.calls[0][0]).toEqual(expectedAttachement)
+    expect($this.attach.mock.calls[0][1]).toEqual('application/json')
+
     expect(fns.AfterAll.mock.calls.length).toBe(0)
 
     expect($this.skipped).toEqual(true)

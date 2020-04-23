@@ -28,20 +28,10 @@ module.exports = function(config, {Before, BeforeAll, After, AfterAll}) {
     return 'skipped'
   })
   
-  /*
   After(function () {
     const attachements = {
-      // logId : this.logs.getId(),
-      skipped: this.skipped
+      apis: this.apis.map(_ => _.toJSON())
     }
     this.attach(JSON.stringify(attachements), 'application/json')
-    delete this.apis
-    delete this.api
   })
-  
-  AfterAll(function () {
-    delete this.apis
-    delete this.api
-  })
-  */
 }

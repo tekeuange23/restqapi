@@ -6,3 +6,4 @@ test.json
 .restqa.log
 my-report.json
 src.bk
+*.swn

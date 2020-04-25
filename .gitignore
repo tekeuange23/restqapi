@@ -1,4 +1,9 @@
+coverage
 .env
 node_modules
 test.json
 .restqapi.log
+.restqa.log
+my-report.json
+src.bk
+*.swn

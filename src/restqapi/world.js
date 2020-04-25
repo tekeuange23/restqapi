@@ -8,13 +8,15 @@ class World {
     this.skipped = false
     this._config = {}
     this._apis = []
-    this._data = null
+    this._data = this._data || null
   }
 
   setConfig (config) {
     this._config = config
-    this._data = new Data(config.data)
-    if (config.secrets) {
+    if (!this._data && config.data) {
+      this._data = new Data(config.data)
+    }
+    if (config.secrets && this._data) {
       Object.keys(config.secrets).forEach(key => this._data.set(key, config.secrets[key]))
     }
   }

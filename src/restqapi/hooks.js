@@ -11,12 +11,11 @@ module.exports = function (config, { Before, BeforeAll, After, AfterAll }) {
   }
   */
 
-  Before(function () {
-    this.setConfig(config)
-  })
-
   Before(async function (scenario) {
-    await this.data.parse(scenario)
+    this.setConfig(config)
+    if (this.data && config.data) {
+      await this.data.parse(scenario)
+    }
   })
 
   Before('@skip', function () {

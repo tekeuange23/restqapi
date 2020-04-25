@@ -28,9 +28,9 @@ describe('# world', () => {
     const World = require('./world')
 
     const world = new World({})
-    world.setConfig({ foo: 'bar' })
+    world.setConfig({ foo: 'bar', data: {} })
 
-    expect(world._config).toEqual({ foo: 'bar' })
+    expect(world._config).toEqual({ foo: 'bar', data: {} })
     expect(world._data).not.toBeNull()
     expect(world._data.set.mock.calls.length).toBe(0)
   })
@@ -49,6 +49,7 @@ describe('# world', () => {
     const world = new World({})
     const config = {
       foo: 'bar',
+      data: {},
       secrets: {
         so: 'blur'
       }

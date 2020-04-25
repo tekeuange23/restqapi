@@ -7,7 +7,7 @@ const {
 
 const RestQapi = require('./restqapi')
 
-let config = module.exports = {
+const config = {
   name: 'local',
   url: 'http://host.docker.internal:8080',
   secrets: {

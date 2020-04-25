@@ -89,7 +89,7 @@ describe('# hooks', () => {
     }
 
     const config = {
-      foo: 'bar',
+      foo: 'bar'
     }
     const fns = {
       Before: jest.fn((...params) => {
@@ -97,7 +97,7 @@ describe('# hooks', () => {
       }),
       After: jest.fn((...params) => {
         return params.pop().call($this, { name: 'sc1' })
-      }),
+      })
     }
 
     Hooks(config, fns)

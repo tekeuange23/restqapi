@@ -31,6 +31,8 @@ module.exports = [
   ['the response body at {string} should equal false', then.shouldBeFalse, 'Check if a value is false in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, false'],
   ['the response body at {string} should equal null', then.shouldBeNull, 'Check if a value is null in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, null'],
   ['the response body at {string} should equal empty', then.shouldBeEmpty, 'Check if a value is empty in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, empty'],
+  ['the response body at {string} should be an array ', then.shouldBeAnArray, 'Check if a value is an array in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, array'],
+  ['the response body at {string} should be an array of {int} item(s)', then.shouldBeAnArrayOfXItems, 'Check if a value is an array of a few items in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, array'],
   ['the response body at {string} should equal close to now', then.shouldBeNow, 'Check if a date is close to now (ex: to check if a createdAt date is valid)', 'api, response, body, jsonpath, dot-object, now'],
   ['the response body at {string} should not be null', then.shouldNotBeNull, 'Check if a value is not null in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, null'],
   ['the response body at {string} should match {string}', then.shouldMatch, 'Check if a value match a specific regex', 'api, response, body, jsonpath, dot-object, regexp, regex'],

@@ -57,6 +57,13 @@ Then.shouldBeEmptyArrayResponse = function () {
   assert.strictEqual(received, 0, err)
 }
 
+Then.shouldNotBeEmptyArrayResponse = function () {
+  const received = this.api.response.body.length
+  const err = `${this.api.response.request.prefix} The response body should return an array containing items, but received an array with ${received} items`
+  assert.notStrictEqual(received, 0, err)
+}
+
+
 Then.shouldBeEmptyResponse = function () {
   const err = `${this.api.response.request.prefix} The response body should be empty`
   assert.strictEqual(this.api.response.body, undefined, err)
@@ -124,6 +131,7 @@ Then.shouldBeArraySize = function (value) {
   const err = `${this.api.response.request.prefix} The response body property should contain an array of ${value} items but received an array of ${received} items`
   assert.strictEqual(received, value, err)
 }
+
 
 Then.shouldMatch = function (property, value) {
   const received = String(this.api.response.findInBody(property))

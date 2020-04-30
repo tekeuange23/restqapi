@@ -6,7 +6,7 @@ describe('#StepDefinition - then - functions', () => {
   test('Configuration', () => {
     const Then = require('./functions')
     const fns = Object.keys(Then)
-    expect(fns.length).toBe(20)
+    expect(fns.length).toBe(21)
     const expectedFunctions = [
       'httpCode',
       'httpTiming',
@@ -15,6 +15,7 @@ describe('#StepDefinition - then - functions', () => {
       'headerValueEqual',
       'headers',
       'shouldBeEmptyArrayResponse',
+      'shouldNotBeEmptyArrayResponse',
       'shouldBeEmptyResponse',
       'shouldBeNumber',
       'shouldBeTrue',
@@ -227,6 +228,31 @@ describe('#StepDefinition - then - functions', () => {
       expect(assert.strictEqual.mock.calls[0][0]).toBe(3)
       expect(assert.strictEqual.mock.calls[0][1]).toBe(0)
       expect(assert.strictEqual.mock.calls[0][2]).toBe('[POST /users] The response body should return an empty array, but received an array with 3 items')
+    })
+
+    test('shouldNotBeEmptyArrayResponse', () => {
+      const assert = require('assert')
+      jest.mock('assert')
+      assert.notStrictEqual = jest.fn()
+
+      const $this = {
+        api: {
+          response: {
+            body: [],
+            request: {
+              prefix: '[POST /users]'
+            }
+          }
+        }
+      }
+
+      const Then = require('./functions')
+      Then.shouldNotBeEmptyArrayResponse.call($this)
+
+      expect(assert.notStrictEqual.mock.calls.length).toBe(1)
+      expect(assert.notStrictEqual.mock.calls[0][0]).toBe(0)
+      expect(assert.notStrictEqual.mock.calls[0][1]).toBe(0)
+      expect(assert.notStrictEqual.mock.calls[0][2]).toBe('[POST /users] The response body should return an array containing items, but received an array with 0 items')
     })
 
     test('shouldBeEmptyResponse', () => {

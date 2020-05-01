@@ -6,7 +6,7 @@ describe('#StepDefinition - then - functions', () => {
   test('Configuration', () => {
     const Then = require('./functions')
     const fns = Object.keys(Then)
-    expect(fns.length).toBe(20)
+    expect(fns.length).toBe(23)
     const expectedFunctions = [
       'httpCode',
       'httpTiming',
@@ -15,6 +15,7 @@ describe('#StepDefinition - then - functions', () => {
       'headerValueEqual',
       'headers',
       'shouldBeEmptyArrayResponse',
+      'shouldNotBeEmptyArrayResponse',
       'shouldBeEmptyResponse',
       'shouldBeNumber',
       'shouldBeTrue',
@@ -24,6 +25,8 @@ describe('#StepDefinition - then - functions', () => {
       'shouldBeEmpty',
       'shouldNotBeNull',
       'shouldBeArraySize',
+      'shouldBeAnArray',
+      'shouldBeAnArrayOfXItems',
       'shouldMatch',
       'shouldBeNow',
       'addHeaderPropertyToDataset',
@@ -227,6 +230,31 @@ describe('#StepDefinition - then - functions', () => {
       expect(assert.strictEqual.mock.calls[0][0]).toBe(3)
       expect(assert.strictEqual.mock.calls[0][1]).toBe(0)
       expect(assert.strictEqual.mock.calls[0][2]).toBe('[POST /users] The response body should return an empty array, but received an array with 3 items')
+    })
+
+    test('shouldNotBeEmptyArrayResponse', () => {
+      const assert = require('assert')
+      jest.mock('assert')
+      assert.notStrictEqual = jest.fn()
+
+      const $this = {
+        api: {
+          response: {
+            body: [],
+            request: {
+              prefix: '[POST /users]'
+            }
+          }
+        }
+      }
+
+      const Then = require('./functions')
+      Then.shouldNotBeEmptyArrayResponse.call($this)
+
+      expect(assert.notStrictEqual.mock.calls.length).toBe(1)
+      expect(assert.notStrictEqual.mock.calls[0][0]).toBe(0)
+      expect(assert.notStrictEqual.mock.calls[0][1]).toBe(0)
+      expect(assert.notStrictEqual.mock.calls[0][2]).toBe('[POST /users] The response body should return an array containing items, but received an array with 0 items')
     })
 
     test('shouldBeEmptyResponse', () => {
@@ -576,7 +604,7 @@ describe('#StepDefinition - then - functions', () => {
       expect(assert.strictEqual.mock.calls[0][2]).toBe('[POST /users] The response body property should contain an array of 2 items but received an array of 3 items')
     })
 
-    test('shouldMatch', () => {
+    test('shouldBeAnArray', () => {
       const assert = require('assert')
       jest.mock('assert')
       assert.ok = jest.fn()
@@ -585,6 +613,9 @@ describe('#StepDefinition - then - functions', () => {
         api: {
           response: {
             findInBody: jest.fn((_) => 'my value'),
+            body: {
+              foo: 'test'
+            },
             request: {
               prefix: '[POST /users]'
             }
@@ -593,11 +624,130 @@ describe('#StepDefinition - then - functions', () => {
       }
 
       const Then = require('./functions')
-      Then.shouldMatch.call($this, 'foo.bar', '/^test$/')
+      Then.shouldBeAnArray.call($this, '$.foo')
 
+      expect($this.api.response.findInBody.mock.calls.length).toBe(1)
+      expect($this.api.response.findInBody.mock.calls[0][0]).toBe('$.foo')
       expect(assert.ok.mock.calls.length).toBe(1)
-      expect(assert.ok.mock.calls[0][0]).toEqual(false)
-      expect(assert.ok.mock.calls[0][1]).toBe('[POST /users] The response body property foo.bar should match the regexp /^test$/ but received : my value')
+      expect(assert.ok.mock.calls[0][0]).toBe(false)
+      expect(assert.ok.mock.calls[0][1]).toBe('[POST /users] The response body property should contain an array but received a string (my value)')
+    })
+
+    test('shouldBeAnArrayOfXItems', () => {
+      const assert = require('assert')
+      jest.mock('assert')
+      assert.strictEqual = jest.fn()
+
+      const $this = {
+        api: {
+          response: {
+            findInBody: jest.fn((_) => [1, 2, 3]),
+            body: {
+              foo: [1, 2, 3]
+            },
+            request: {
+              prefix: '[POST /users]'
+            }
+          }
+        }
+      }
+
+      const Then = require('./functions')
+      Then.shouldBeAnArrayOfXItems.call($this, '$.foo', 2)
+
+      expect($this.api.response.findInBody.mock.calls.length).toBe(1)
+      expect($this.api.response.findInBody.mock.calls[0][0]).toBe('$.foo')
+      expect(assert.strictEqual.mock.calls.length).toBe(1)
+      expect(assert.strictEqual.mock.calls[0][0]).toBe(3)
+      expect(assert.strictEqual.mock.calls[0][1]).toBe(2)
+      expect(assert.strictEqual.mock.calls[0][2]).toBe('[POST /users] The response body property $.foo should contain an array of 2 but received 3 item(s)')
+    })
+
+    test('shouldBeArraySize', () => {
+      const assert = require('assert')
+      jest.mock('assert')
+      assert.strictEqual = jest.fn()
+
+      const $this = {
+        api: {
+          response: {
+            body: [1, 2, 3],
+            request: {
+              prefix: '[POST /users]'
+            }
+          }
+        }
+      }
+
+      const Then = require('./functions')
+      Then.shouldBeArraySize.call($this, 2)
+
+      expect(assert.strictEqual.mock.calls.length).toBe(1)
+      expect(assert.strictEqual.mock.calls[0][0]).toBe(3)
+      expect(assert.strictEqual.mock.calls[0][1]).toBe(2)
+      expect(assert.strictEqual.mock.calls[0][2]).toBe('[POST /users] The response body property should contain an array of 2 items but received an array of 3 items')
+    })
+
+    describe('shouldMatch', () => {
+      test('shouldMatch with a regex format like \\d(.*)', () => {
+        const assert = require('assert')
+        jest.mock('assert')
+        assert.ok = jest.fn()
+
+        const $this = {
+          api: {
+            response: {
+              findInBody: jest.fn((_) => 'my value'),
+              request: {
+                prefix: '[POST /users]'
+              }
+            }
+          }
+        }
+
+        const Then = require('./functions')
+        Then.shouldMatch.call($this, 'foo.bar', '^test$')
+
+        expect(assert.ok.mock.calls.length).toBe(1)
+        expect(assert.ok.mock.calls[0][0]).toEqual(false)
+        expect(assert.ok.mock.calls[0][1]).toBe('[POST /users] The response body property foo.bar should match the regexp ^test$ but received : my value')
+
+        Then.shouldMatch.call($this, 'foo.bar', '^my value$')
+
+        expect(assert.ok.mock.calls.length).toBe(2)
+        expect(assert.ok.mock.calls[1][0]).toEqual(true)
+        expect(assert.ok.mock.calls[1][1]).toBe('[POST /users] The response body property foo.bar should match the regexp ^my value$ but received : my value')
+      })
+
+      test('shouldMatch with a regex format like /\\d(.*)/', () => {
+        const assert = require('assert')
+        jest.mock('assert')
+        assert.ok = jest.fn()
+
+        const $this = {
+          api: {
+            response: {
+              findInBody: jest.fn((_) => 'my value'),
+              request: {
+                prefix: '[POST /users]'
+              }
+            }
+          }
+        }
+
+        const Then = require('./functions')
+        Then.shouldMatch.call($this, 'foo.bar', '/^test$/')
+
+        expect(assert.ok.mock.calls.length).toBe(1)
+        expect(assert.ok.mock.calls[0][0]).toEqual(false)
+        expect(assert.ok.mock.calls[0][1]).toBe('[POST /users] The response body property foo.bar should match the regexp /^test$/ but received : my value')
+
+        Then.shouldMatch.call($this, 'foo.bar', '/^my value$/')
+
+        expect(assert.ok.mock.calls.length).toBe(2)
+        expect(assert.ok.mock.calls[1][0]).toEqual(true)
+        expect(assert.ok.mock.calls[1][1]).toBe('[POST /users] The response body property foo.bar should match the regexp /^my value$/ but received : my value')
+      })
     })
 
     test('shouldBeNow ', () => {

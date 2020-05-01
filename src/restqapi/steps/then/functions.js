@@ -57,6 +57,12 @@ Then.shouldBeEmptyArrayResponse = function () {
   assert.strictEqual(received, 0, err)
 }
 
+Then.shouldNotBeEmptyArrayResponse = function () {
+  const received = this.api.response.body.length
+  const err = `${this.api.response.request.prefix} The response body should return an array containing items, but received an array with ${received} items`
+  assert.notStrictEqual(received, 0, err)
+}
+
 Then.shouldBeEmptyResponse = function () {
   const err = `${this.api.response.request.prefix} The response body should be empty`
   assert.strictEqual(this.api.response.body, undefined, err)
@@ -125,9 +131,24 @@ Then.shouldBeArraySize = function (value) {
   assert.strictEqual(received, value, err)
 }
 
+Then.shouldBeAnArray = function (property) {
+  const received = this.api.response.findInBody(property)
+  const err = `${this.api.response.request.prefix} The response body property should contain an array but received a ${typeof received} (${received})`
+  assert.ok(Array.isArray(received), err)
+}
+
+Then.shouldBeAnArrayOfXItems = function (property, expected) {
+  const received = (this.api.response.findInBody(property)).length
+  const err = `${this.api.response.request.prefix} The response body property ${property} should contain an array of ${expected} but received ${received} item(s)`
+  assert.strictEqual(received, expected, err)
+}
+
 Then.shouldMatch = function (property, value) {
   const received = String(this.api.response.findInBody(property))
   const err = `${this.api.response.request.prefix} The response body property ${property} should match the regexp ${value} but received : ${received}`
+  if (/^\/(.*)\/$/.test(value)) {
+    value = value.replace(/(^\/)/, '').replace(/(\/$)/, '')
+  }
   const regex = new RegExp(value)
   assert.ok(regex.test(received), err)
 }

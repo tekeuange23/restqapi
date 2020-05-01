@@ -146,6 +146,9 @@ Then.shouldBeAnArrayOfXItems = function (property, expected) {
 Then.shouldMatch = function (property, value) {
   const received = String(this.api.response.findInBody(property))
   const err = `${this.api.response.request.prefix} The response body property ${property} should match the regexp ${value} but received : ${received}`
+  if (/^\/(.*)\/$/.test(value)) {
+    value = value.replace(/(^\/)/, '').replace(/(\/$)/, '')
+  }
   const regex = new RegExp(value)
   assert.ok(regex.test(received), err)
 }

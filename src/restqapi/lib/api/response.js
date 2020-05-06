@@ -14,7 +14,7 @@ const Response = function (result) {
 
   const findInBody = (property) => {
     if (property.charAt(0) === '$') { // if $ is the first char we will use jsonpath
-      return jp.query(body || {}, property,1)[0]
+      return jp.query(body || {}, property, 1)[0]
     } else { // Otherwise we use simple dotObject
       return dotBody[property]
     }

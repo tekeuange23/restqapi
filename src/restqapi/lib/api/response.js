@@ -1,5 +1,5 @@
 const dot = require('dot-object')
-const flatten = require('g11n-pipeline-flatten')
+const jp = require('jsonpath')
 
 const Response = function (result) {
   const { request, statusCode, headers, body, timing } = result
@@ -7,17 +7,17 @@ const Response = function (result) {
   const isJson = (headers['content-type'] || '').match(/application\/json/i)
 
   let dotBody = {}
-  let jsonPathBody = {}
 
   if (isJson) {
     dotBody = dot.dot(body || {})
-    jsonPathBody = flatten.flatten(body || {}, { flattenAll: true })
   }
 
   const findInBody = (property) => {
-    let obj = dotBody // default use the dot synthax
-    if (property[0] === '$') obj = jsonPathBody // if $ is the first char we will use jsonpath
-    return obj[property]
+    if (property.charAt(0) === '$') { // if $ is the first char we will use jsonpath
+      return jp.query(body || {}, property,1)[0]
+    } else { // Otherwise we use simple dotObject
+      return dotBody[property]
+    }
   }
 
   const findInHeader = (property) => {

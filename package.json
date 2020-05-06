@@ -16,8 +16,8 @@
     "@restqa/restqdata": "0.0.1",
     "cucumber": "^6.0.5",
     "dot-object": "^1.6.0",
-    "g11n-pipeline-flatten": "^2.0.1",
     "got": "^10.6.0",
+    "jsonpath": "^1.0.2",
     "moment": "^2.18.1",
     "uuid": "^3.4.0"
   },

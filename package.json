@@ -23,7 +23,6 @@
   },
   "main": "src/restqapi/index.js",
   "devDependencies": {
-    "install": "^0.13.0",
     "jest": "^25.2.7",
     "jsdoc-to-markdown": "^5.0.3",
     "nodemon": "^2.0.3",

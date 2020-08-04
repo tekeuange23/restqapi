@@ -4,7 +4,7 @@
   "private": false,
   "description": "REST API Functional Test engine based on Gerkin - RestQa",
   "scripts": {
-    "doc": "jsdoc2md  src/restqapi/*.js",
+    "doc": "jsdoc2md  --partial docs/support/scope.hbs --partial docs/support/header.hbs --files src/restqapi/steps/**/index.js > docs/steps-catalog.md",
     "start:example": "export $(cat .env | xargs) && cucumber-js --require ./src/setup-example.js ./sample-project",
     "lint": "standard",
     "lint:fix": "standard --fix",
@@ -26,7 +26,7 @@
     "jest": "^25.2.7",
     "jsdoc-to-markdown": "^5.0.3",
     "nodemon": "^2.0.3",
-    "npm": "^6.14.4",
+    "npm": "^6.14.7",
     "standard": "^14.3.3"
   },
   "standard": {

@@ -17,16 +17,14 @@ module.exports = [
    *
    */
 
-
-  
   /**
     * ### Given I have the api gateway
     * Define the api gateway host take a look at the config file.
-    * 
+    *
     *
     * @example
     * Given I have the api gateway
-    * 
+    *
     * @example If you want to use a specific host you can use
     * Given I have the api gateway hosted on "https://api.example.com"
     *
@@ -36,7 +34,7 @@ module.exports = [
   ['I have the api gateway', given.gateway, 'Create a new api request targeting the default api gateway', 'api'],
 
   // Path + method
-  
+
   /**
     * ### Given I have the path {string}
     * Define the request path
@@ -63,7 +61,6 @@ module.exports = [
     */
   ['I have the method {string}', given.method, 'add the method to the request (ex: POST)', 'request, method, api'],
 
-   
   /**
     * ### Given I send a {string} request to {string}
     * Construct a request to a resource using an HTTP method
@@ -77,8 +74,6 @@ module.exports = [
     * @function methodPath
     */
   ['I send a {string} request to {string}', given.methodPath, 'add the method and the path of the request', 'request, method, path, api'],
-
-
 
   //  ****************************************************************************************************
   //  Headers
@@ -164,8 +159,6 @@ module.exports = [
    */
   ['I add the query string parameters:', given.qs, 'Adding multiple query parameters to the request (table format)', 'request, query string, qs, table'],
 
-
-
   //  ****************************************************************************************************
   //  JSON REQUEST BODY
   //  ****************************************************************************************************
@@ -201,7 +194,6 @@ module.exports = [
   ['the payload contains {string} as {int}', given.payload, 'add a property with int value to the request body, the pattern used is dot-object  ( ex: "quotes.detail.amount" -> 200)', 'request, body, dot'],
   ['the payload contains {string} as {float}', given.payload, 'add a property with float value to the request body, the pattern used is dot-object  ( ex: "quotes.detail.amount" -> 200)', 'request, body, dot'],
 
-  
   /**
    * ### Given the payload contains {string} as null
    * Set a value as null in the json request body (support dot-object or jsonpath property)
@@ -249,7 +241,6 @@ module.exports = [
    * @function JsonPayloadEmptyArray
    */
   ['the payload contains {string} as empty array', given.payloadEmptyArray, 'add property with empty array to the request body', 'request, body, array'],
-
 
   /**
    * ### Given I add the request body:

@@ -63,7 +63,7 @@ module.exports = [
    * Then the response headers should contains:
    *   | Content-Type   | {{ contentType}} |
    *   | Content-Length | 1458             |
-   * 
+   *
    *
    * @function headers
    */
@@ -95,11 +95,10 @@ module.exports = [
    */
   ['{string} should not be on the response header', then.headerValueNotExist, 'Check if a property is in the response header', 'api, response, table, headers, header'],
 
-
   // Response body
   /**
    * ### Then the response should be empty array
-   * Ensure a response body contains an empty array 
+   * Ensure a response body contains an empty array
    *
    * @example
    * Then the response should be empty array
@@ -110,7 +109,7 @@ module.exports = [
 
   /**
    * ### Then the response should not be empty array
-   * Ensure a response body doesn't contain an empty array 
+   * Ensure a response body doesn't contain an empty array
    *
    * @example
    * Then the response should not be empty array
@@ -118,7 +117,6 @@ module.exports = [
    * @function notEmptyArray
    */
   ['the response should not be empty array', then.shouldNotBeEmptyArrayResponse, 'Check if the response list is not empty', 'api, response, body, jsonpath, dot-object, array'],
-
 
   /**
    * ### Then the response should be empty
@@ -203,7 +201,7 @@ module.exports = [
    * @example <caption>Using json path</caption>
    * Then the response body at "$.active" should equal empty
    *
-   * @function bodyPropertyEqualEmpty	
+   * @function bodyPropertyEqualEmpty
    */
   ['the response body at {string} should equal empty', then.shouldBeEmpty, 'Check if a value is empty in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, empty'],
 
@@ -223,7 +221,7 @@ module.exports = [
 
   /**
    * ### Then the response body at {string} should be an array of {int} item(s)
-   * Ensure a JSON response body equals an array containing a given items 
+   * Ensure a JSON response body equals an array containing a given items
    *
    * @example <caption>Using dot object</caption>
    * Then the response body at "user.list" should be an array of 10 item(s)
@@ -248,7 +246,6 @@ module.exports = [
    * @function bodyPropertyIsATimeCloseToNow
    */
   ['the response body at {string} should equal close to now', then.shouldBeNow, 'Check if a date is close to now (ex: to check if a createdAt date is valid)', 'api, response, body, jsonpath, dot-object, now'],
-
 
   /**
    * ### Then the response body at {string} should not be null
@@ -293,7 +290,7 @@ module.exports = [
 
   /**
    * ### Then add the value {string} from the response header to the dataset as {string}
-   * Pick of the reponse header value and add it into the dataset storage 
+   * Pick of the reponse header value and add it into the dataset storage
    * This will allow you to reuse value in another step
    *
    * @example
@@ -304,11 +301,11 @@ module.exports = [
    *
    * @function saveHeaderPropertyIntoTheDataset
    */
-  ['add the value {string} from the response header to the dataset as {string}', then.addHeaderPropertyToDataset, 'Take on of the value from the response header and add it to the dataset', 'api, response, header, jsonpath, dot-object, dataset']
+  ['add the value {string} from the response header to the dataset as {string}', then.addHeaderPropertyToDataset, 'Take on of the value from the response header and add it to the dataset', 'api, response, header, jsonpath, dot-object, dataset'],
 
   /**
    * ### Then add the value {string} from the response body to the dataset as {string}
-   * Pick of the reponse body value and add it into the dataset storage 
+   * Pick of the reponse body value and add it into the dataset storage
    * This will allow you to reuse value in another step
    *
    * @example <caption>Using dot object</caption>
@@ -323,5 +320,5 @@ module.exports = [
    *
    * @function saveBodyPropertyIntoTheDataset
    */
-  ['add the value {string} from the response body to the dataset as {string}', then.addBodyPropertyToDataset, 'Take on of the value from the response body and add it to the dataset', 'api, response, body, jsonpath, dot-object, dataset'],
+  ['add the value {string} from the response body to the dataset as {string}', then.addBodyPropertyToDataset, 'Take on of the value from the response body and add it to the dataset', 'api, response, body, jsonpath, dot-object, dataset']
 ]

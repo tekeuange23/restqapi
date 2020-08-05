@@ -174,4 +174,6 @@ This repository comes with few examples, in order to run them, invoke the follow
 npm run start:example
 ```
 
+## License
 
+[Apache 2.0 License](./LICENSE)

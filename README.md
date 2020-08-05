@@ -4,7 +4,7 @@
 
 ## What is RestqAPI ?
 
-RestQapi is a part of the (https://restqa.io)[RestQA] ecosystem.
+RestQapi is a part of the [RestQA](https://restqa.io) ecosystem.
 In order to test RESTful API through automation, RestQapi is proving an awesome bootstrap for you to kick in within a few minute.
 Based on [cucumber-js](https://github.com/cucumber/cucumber-js), the library expand the number of defined step on one of your current automation project based on cucumber-js.
 
@@ -158,6 +158,8 @@ const options = {
   }
 }
 ```
+
+Then inside your scenario : 
 
 ```
 Given the header contains "x-api-key" as {{ api-key }}

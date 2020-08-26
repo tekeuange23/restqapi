@@ -4,16 +4,16 @@ beforeEach(() => {
 
 describe('#StepDefinition - index', () => {
   test('Configuration', () => {
-    const fnGiven = require('./given')
-    jest.mock('./given')
+    const fnGiven = require('./1-given')
+    jest.mock('./1-given')
     fnGiven.push([1])
 
-    const fnWhen = require('./when')
-    jest.mock('./when')
+    const fnWhen = require('./2-when')
+    jest.mock('./2-when')
     fnWhen.push([2])
 
-    const fnThen = require('./then')
-    jest.mock('./then')
+    const fnThen = require('./3-then')
+    jest.mock('./3-then')
     fnThen.push([3])
 
     const stepDefinition = require('./index')

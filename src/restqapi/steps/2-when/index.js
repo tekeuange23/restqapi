@@ -1,5 +1,11 @@
 const when = require('./functions')
 
+/**
+ * All the steps related to the Api call
+ *
+ * @module When
+*/
+
 module.exports = [
   /**
    *  Format:
@@ -9,5 +15,16 @@ module.exports = [
    *  ['I do {int} + {int}', add, 'Calculate an addition', 'add, calculator, additional']
    *
    */
+
+  /**
+    * ### When I run the API
+    * Trigger the api call
+    *
+    *
+    * @example
+    * When I run the API
+    *
+    * @function callApi
+    */
   ['I run the API', when.callApi, 'Trigger the api request', 'api, call']
 ]

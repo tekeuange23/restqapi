@@ -526,7 +526,7 @@ describe('#StepDefinition - then - functions', () => {
       expect(assert.strictEqual.mock.calls.length).toBe(1)
       expect(assert.strictEqual.mock.calls[0][0]).toBe('my value')
       expect(assert.strictEqual.mock.calls[0][1]).toBe('my-value')
-      expect(assert.strictEqual.mock.calls[0][2]).toBe('[POST /users] The response body property foo.bar should be my-value but received my value')
+      expect(assert.strictEqual.mock.calls[0][2]).toBe('[POST /users] The response body property foo.bar should be my-value <string> but received my value <string>')
     })
 
     test('shouldBeEmpty', () => {

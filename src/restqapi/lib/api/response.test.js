@@ -168,7 +168,6 @@ describe('# API  Response', () => {
     expect(response.getResult()).toEqual(result)
   })
 
-
   test('getOptions', () => {
     const Response = require('./response')
 

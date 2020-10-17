@@ -33,10 +33,10 @@ describe('# hooks', () => {
       data: {}
     }
 
-    let feature = {
+    const feature = {
       name: 'sc1',
       pickle: {
-        name:  'The scenario name'
+        name: 'The scenario name'
       }
     }
 
@@ -72,7 +72,7 @@ describe('# hooks', () => {
 
     expect(fns.After.mock.calls.length).toBe(1)
     expect($this.log.mock.calls.length).toBe(4)
-    expect($this.log.mock.calls[0][0]).toBe(`\n======================== [ DEBUG : The scenario name ] ========================`)
+    expect($this.log.mock.calls[0][0]).toBe('\n======================== [ DEBUG : The scenario name ] ========================')
     expect($this.log.mock.calls[1][0]).toBe('Simple Value')
     expect($this.log.mock.calls[2][0]).toBe(JSON.stringify({ foo: 'bar' }, null, 2))
     expect($this.log.mock.calls[3][0]).toBe('======================== [ / DEBUG ] ========================')

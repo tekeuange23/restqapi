@@ -836,7 +836,7 @@ describe('#StepDefinition - then - functions', () => {
             getOptions: () => {
               return 'request'
             }
-          },
+          }
         }
       }
 
@@ -858,7 +858,7 @@ describe('#StepDefinition - then - functions', () => {
             getOptions: () => {
               return 'response'
             }
-          },
+          }
         }
       }
 
@@ -883,7 +883,7 @@ describe('#StepDefinition - then - functions', () => {
             getOptions: () => {
               return 'response'
             }
-          },
+          }
         }
       }
 

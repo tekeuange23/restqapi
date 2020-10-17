@@ -320,5 +320,35 @@ module.exports = [
    *
    * @function saveBodyPropertyIntoTheDataset
    */
-  ['add the value {string} from the response body to the dataset as {string}', then.addBodyPropertyToDataset, 'Take on of the value from the response body and add it to the dataset', 'api, response, body, jsonpath, dot-object, dataset']
+  ['add the value {string} from the response body to the dataset as {string}', then.addBodyPropertyToDataset, 'Take on of the value from the response body and add it to the dataset', 'api, response, body, jsonpath, dot-object, dataset'],
+
+  /**
+   * ### Then I print the request
+   * Print the Request information (url, headers, body, method) into the console
+   * This will allow you to debug your scenario.
+   *
+   * @function printRequest
+   */
+  ['I print the request', then.printRequest, 'Print the request information into the console', 'api, request, console, debug'],
+
+  /**
+   * ### Then I print the response
+   * Print the Response information (headers, response time,  body) into the console
+   * This will allow you to debug your scenario.
+   *
+   * @function printResponse
+   */
+  ['I print the response', then.printResponse, 'Print the response information into the console', 'api, response, console, debug'],
+
+  /**
+   * ### Then I print the value {string}
+   * Print the a specific information value into the console
+   * This will allow you to debug your scenario.
+   *
+   * @example
+   * Then I print the value "{{ userId }}"
+   *
+   * @function printValue
+   */
+  ['I print the value {string}', then.printValue, 'Print a specific value into the console', 'api, console, debug']
 ]

@@ -7,6 +7,13 @@ describe('# hooks', () => {
     const Hooks = require('./hooks')
 
     const $this = {
+      debug: [
+        'Simple Value',
+        {
+          foo: 'bar'
+        }
+      ],
+      log: jest.fn(),
       attach: jest.fn(),
       setConfig: jest.fn(),
       data: {
@@ -25,13 +32,21 @@ describe('# hooks', () => {
       foo: 'bar',
       data: {}
     }
+
+    const feature = {
+      name: 'sc1',
+      pickle: {
+        name: 'The scenario name'
+      }
+    }
+
     const fns = {
       Before: jest.fn((...params) => {
-        return params.pop().call($this, { name: 'sc1' })
+        return params.pop().call($this, feature)
       }),
       BeforeAll: jest.fn(),
       After: jest.fn((...params) => {
-        return params.pop().call($this, { name: 'sc1' })
+        return params.pop().call($this, feature)
       }),
       AfterAll: jest.fn()
     }
@@ -43,7 +58,7 @@ describe('# hooks', () => {
     expect($this.setConfig.mock.calls.length).toBe(1)
     expect($this.setConfig.mock.calls[0][0]).toEqual({ data: {}, foo: 'bar' })
     expect($this.data.parse.mock.calls.length).toBe(1)
-    expect($this.data.parse.mock.calls[0][0]).toEqual({ name: 'sc1' })
+    expect($this.data.parse.mock.calls[0][0]).toEqual(feature)
 
     expect(fns.Before.mock.calls[1][0]).toBe('@skip')
     expect(typeof fns.Before.mock.calls[1][1]).toBe('function')
@@ -56,6 +71,11 @@ describe('# hooks', () => {
     expect(fns.BeforeAll.mock.calls.length).toBe(0)
 
     expect(fns.After.mock.calls.length).toBe(1)
+    expect($this.log.mock.calls.length).toBe(4)
+    expect($this.log.mock.calls[0][0]).toBe('\n======================== [ DEBUG : The scenario name ] ========================')
+    expect($this.log.mock.calls[1][0]).toBe('Simple Value')
+    expect($this.log.mock.calls[2][0]).toBe(JSON.stringify({ foo: 'bar' }, null, 2))
+    expect($this.log.mock.calls[3][0]).toBe('======================== [ / DEBUG ] ========================')
     expect($this.attach.mock.calls.length).toBe(1)
     const expectedAttachement = JSON.stringify({
       apis: [
@@ -107,5 +127,6 @@ describe('# hooks', () => {
     expect($this.setConfig.mock.calls.length).toBe(1)
     expect($this.setConfig.mock.calls[0][0]).toEqual({ foo: 'bar' })
     expect($this.data.parse.mock.calls.length).toBe(0)
+    expect($this.debug).toEqual([])
   })
 })

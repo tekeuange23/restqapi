@@ -107,7 +107,7 @@ Then.shouldBeString = function (property, value) {
       break
     default: {
       const received = this.api.response.findInBody(property)
-      const err = `${this.api.response.request.prefix} The response body property ${property} should be ${value} but received ${received}`
+      const err = `${this.api.response.request.prefix} The response body property ${property} should be ${value} <${typeof value}> but received ${received} <${typeof received}>`
       assert.strictEqual(received, value, err)
     }
   }

@@ -31,7 +31,8 @@ describe('# API  Response', () => {
       'body',
       'findInBody',
       'findInHeader',
-      'getResult'
+      'getResult',
+      'getOptions'
     ]
 
     expect(Object.keys(response)).toEqual(expectedMethods)
@@ -165,5 +166,44 @@ describe('# API  Response', () => {
     const response = Response(result)
 
     expect(response.getResult()).toEqual(result)
+  })
+
+
+  test('getOptions', () => {
+    const Response = require('./response')
+
+    const result = {
+      request: {
+        method: 'POST'
+
+      },
+      statusCode: 201,
+      headers: {
+        'content-type': 'application/json',
+        'x-req-id': 'zz-xx-yy'
+      },
+      body: {
+        foo: {
+          foo: 'bar'
+        }
+      },
+      timing: 2000
+    }
+
+    const response = Response(result)
+
+    expect(response.getOptions()).toEqual({
+      statusCode: 201,
+      headers: {
+        'content-type': 'application/json',
+        'x-req-id': 'zz-xx-yy'
+      },
+      body: {
+        foo: {
+          foo: 'bar'
+        }
+      },
+      timing: 2000
+    })
   })
 })

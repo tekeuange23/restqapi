@@ -6,7 +6,7 @@ describe('#StepDefinition - then - functions', () => {
   test('Configuration', () => {
     const Then = require('./functions')
     const fns = Object.keys(Then)
-    expect(fns.length).toBe(23)
+    expect(fns.length).toBe(26)
     const expectedFunctions = [
       'httpCode',
       'httpTiming',
@@ -30,7 +30,10 @@ describe('#StepDefinition - then - functions', () => {
       'shouldMatch',
       'shouldBeNow',
       'addHeaderPropertyToDataset',
-      'addBodyPropertyToDataset'
+      'addBodyPropertyToDataset',
+      'printRequest',
+      'printResponse',
+      'printValue'
     ]
     expect(fns).toEqual(expectedFunctions)
   })
@@ -822,6 +825,78 @@ describe('#StepDefinition - then - functions', () => {
       expect($this.data.set.mock.calls.length).toBe(1)
       expect($this.data.set.mock.calls[0][0]).toBe('my-value')
       expect($this.data.set.mock.calls[0][1]).toBe('my value')
+    })
+  })
+  describe('API Debug', () => {
+    test('printRequest', () => {
+      const $this = {
+        debug: [],
+        api: {
+          request: {
+            getOptions: () => {
+              return 'request'
+            }
+          },
+        }
+      }
+
+      expect($this.debug.length).toBe(0)
+
+      const Then = require('./functions')
+      Then.printRequest.call($this)
+
+      expect($this.debug.length).toBe(2)
+      expect($this.debug[0]).toBe('----> Request')
+      expect($this.debug[1]).toBe('request')
+    })
+
+    test('printResponse', () => {
+      const $this = {
+        debug: [],
+        api: {
+          response: {
+            getOptions: () => {
+              return 'response'
+            }
+          },
+        }
+      }
+
+      expect($this.debug.length).toBe(0)
+
+      const Then = require('./functions')
+      Then.printResponse.call($this)
+
+      expect($this.debug.length).toBe(2)
+      expect($this.debug[0]).toBe('----> Response')
+      expect($this.debug[1]).toBe('response')
+    })
+
+    test('printValue', () => {
+      const $this = {
+        data: {
+          get: jest.fn().mockReturnValue('my return value from the dataset')
+        },
+        debug: [],
+        api: {
+          response: {
+            getOptions: () => {
+              return 'response'
+            }
+          },
+        }
+      }
+
+      expect($this.debug.length).toBe(0)
+
+      const Then = require('./functions')
+      Then.printValue.call($this, 'my value')
+
+      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls[0][0]).toBe('my value')
+      expect($this.debug.length).toBe(2)
+      expect($this.debug[0]).toBe('----> Value')
+      expect($this.debug[1]).toBe('my return value from the dataset')
     })
   })
 })

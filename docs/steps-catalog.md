@@ -512,11 +512,19 @@ Given i have the api gateway
 Print the Request information (url, headers, body, method) into the console
 This will allow you to debug your scenario.
 
+**Example**  
+```js
+Then I print the request
+```
 <a name="module_Then..printResponse"></a>
 ### Then I print the response
 Print the Response information (headers, response time,  body) into the console
 This will allow you to debug your scenario.
 
+**Example**  
+```js
+Then I print the response
+```
 <a name="module_Then..printValue"></a>
 ### Then I print the value {string}
 Print the a specific information value into the console

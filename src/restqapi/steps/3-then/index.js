@@ -327,6 +327,9 @@ module.exports = [
    * Print the Request information (url, headers, body, method) into the console
    * This will allow you to debug your scenario.
    *
+   * @example
+   * Then I print the request
+   *
    * @function printRequest
    */
   ['I print the request', then.printRequest, 'Print the request information into the console', 'api, request, console, debug'],
@@ -335,6 +338,9 @@ module.exports = [
    * ### Then I print the response
    * Print the Response information (headers, response time,  body) into the console
    * This will allow you to debug your scenario.
+   *
+   * @example
+   * Then I print the response
    *
    * @function printResponse
    */

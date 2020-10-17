@@ -260,6 +260,9 @@ All the steps related to the API response
     * [~bodyListContainNumberOfItem()](#module_Then..bodyListContainNumberOfItem)
     * [~saveHeaderPropertyIntoTheDataset()](#module_Then..saveHeaderPropertyIntoTheDataset)
     * [~saveBodyPropertyIntoTheDataset()](#module_Then..saveBodyPropertyIntoTheDataset)
+    * [~printRequest()](#module_Then..printRequest)
+    * [~printResponse()](#module_Then..printResponse)
+    * [~printValue()](#module_Then..printValue)
 
 <a name="module_Then..httpCode"></a>
 ### Then I should receive a response with the status {int}
@@ -478,7 +481,7 @@ Then the response list contains "12" items
 ```
 <a name="module_Then..saveHeaderPropertyIntoTheDataset"></a>
 ### Then add the value {string} from the response header to the dataset as {string}
-Pick of the reponse header value and add it into the dataset storage 
+Pick of the reponse header value and add it into the dataset storage
 This will allow you to reuse value in another step
 
 **Example**  
@@ -489,7 +492,7 @@ Given i have the api gateway
 ```
 <a name="module_Then..saveBodyPropertyIntoTheDataset"></a>
 ### Then add the value {string} from the response body to the dataset as {string}
-Pick of the reponse body value and add it into the dataset storage 
+Pick of the reponse body value and add it into the dataset storage
 This will allow you to reuse value in another step
 
 **Example** *(Using dot object)*  
@@ -503,4 +506,23 @@ Given i have the api gateway
 Then add the value "$.user.id"  from the response body to the dataset as "userId"
 Given i have the api gateway
   And I have the path "/users/{{userId}}"
+```
+<a name="module_Then..printRequest"></a>
+### Then I print the request
+Print the Request information (url, headers, body, method) into the console
+This will allow you to debug your scenario.
+
+<a name="module_Then..printResponse"></a>
+### Then I print the response
+Print the Response information (headers, response time,  body) into the console
+This will allow you to debug your scenario.
+
+<a name="module_Then..printValue"></a>
+### Then I print the value {string}
+Print the a specific information value into the console
+This will allow you to debug your scenario.
+
+**Example**  
+```js
+Then I print the value "{{ userId }}"
 ```

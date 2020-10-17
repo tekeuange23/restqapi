@@ -34,6 +34,7 @@ const Request = function (baseUrl, id) {
   const getOptions = () => {
     this.options.headers = this.options.headers || {}
     this.options.headers['x-correlation-id'] = getId()
+    this.options.headers['user-agent'] = 'restqa (https://github.com/restqa/restqa)'
     return this.options
   }
 

@@ -63,26 +63,55 @@ describe('# world', () => {
     expect(world.data.set.mock.calls[0][1]).toBe('blur')
   })
 
-  test('createApi', () => {
-    const Lib = require('./lib')
+  describe('createApi', () => {
+    test('createApi without given url', () => {
+      const Lib = require('./lib')
 
-    jest.mock('./lib')
-    Lib.Api = jest.fn()
+      jest.mock('./lib')
+      Lib.Api = jest.fn()
 
-    const World = require('./world')
+      const World = require('./world')
 
-    const world = new World({})
-    expect(world._apis.length).toBe(0)
+      const world = new World({})
+      expect(world._apis.length).toBe(0)
 
-    const config = {
-      foo: 'bar'
-    }
+      const config = {
+        foo: 'bar'
+      }
 
-    world.setConfig(config)
-    world.createApi()
+      world.setConfig(config)
+      world.createApi()
 
-    expect(world._apis.length).toBe(1)
-    expect(world.apis.length).toBe(1)
-    expect(Lib.Api.mock.calls[0][0]).toEqual({ config })
+      expect(world._apis.length).toBe(1)
+      expect(world.apis.length).toBe(1)
+      expect(Lib.Api.mock.calls[0][0]).toEqual({ config })
+    })
+
+    test('createApi with given url', () => {
+      const Lib = require('./lib')
+
+      jest.mock('./lib')
+      Lib.Api = jest.fn()
+
+      const World = require('./world')
+
+      const world = new World({})
+      expect(world._apis.length).toBe(0)
+
+      const config = {
+        foo: 'bar'
+      }
+
+      world.setConfig(config)
+      world.createApi('https://example.test')
+
+      expect(world._apis.length).toBe(1)
+      expect(world.apis.length).toBe(1)
+      const expectedConfig = {
+        foo: 'bar',
+        url: 'https://example.test'
+      }
+      expect(Lib.Api.mock.calls[0][0]).toEqual({ config: expectedConfig })
+    })
   })
 })

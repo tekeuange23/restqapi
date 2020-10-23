@@ -6,8 +6,8 @@ const Given = {}
  * =========================================
  */
 
-Given.gateway = function () {
-  this.api = this.createApi()
+Given.gateway = function (url) {
+  this.api = this.createApi(url)
 }
 
 Given.path = function (path) {

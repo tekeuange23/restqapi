@@ -34,6 +34,16 @@ describe('#StepDefinition - given - functions', () => {
       expect($this.api).toEqual({ foo: 'bar' })
     })
 
+    test('gatewayi with a given url', () => {
+      const $this = {
+        createApi: jest.fn().mockReturnValue({ foo: 'bar' })
+      }
+      Given.gateway.call($this, 'http://example.test')
+      expect($this.createApi.mock.calls.length).toBe(1)
+      expect($this.createApi.mock.calls[0][0]).toBe('http://example.test')
+      expect($this.api).toEqual({ foo: 'bar' })
+    })
+
     test('path', () => {
       const $this = {
         api: {

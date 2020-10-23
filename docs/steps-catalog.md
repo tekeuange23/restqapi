@@ -18,6 +18,7 @@ All the steps related to the API Request
 
 * [Given](#module_Given)
     * [~gateway()](#module_Given..gateway)
+    * [~gateway()](#module_Given..gateway)
     * [~path()](#module_Given..path)
     * [~method()](#module_Given..method)
     * [~methodPath()](#module_Given..methodPath)
@@ -34,15 +35,18 @@ All the steps related to the API Request
 
 <a name="module_Given..gateway"></a>
 ### Given I have the api gateway
-Define the api gateway host take a look at the config file.
+Define the api gateway host (take a look at the config file).
 
 **Example**  
 ```js
 Given I have the api gateway
 ```
-**Example**  
+<a name="module_Given..gateway"></a>
+### Given I have the api gateway hosted on {string}
+Define the api gateway hosted on the given on the specific api gateway
+
+**Example** *(If you want to use a specific host you can use)*  
 ```js
-If you want to use a specific host you can use
 Given I have the api gateway hosted on "https://api.example.com"
 ```
 <a name="module_Given..path"></a>

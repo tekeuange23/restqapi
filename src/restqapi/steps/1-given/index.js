@@ -19,19 +19,29 @@ module.exports = [
 
   /**
     * ### Given I have the api gateway
-    * Define the api gateway host take a look at the config file.
+    * Define the api gateway host (take a look at the config file).
     *
     *
     * @example
     * Given I have the api gateway
     *
-    * @example If you want to use a specific host you can use
+    *
+    * @function gateway
+    */
+  ['I have the api gateway', given.gateway, 'Create a new api request targeting the default api gateway', 'api, url'],
+
+  /**
+    * ### Given I have the api gateway hosted on {string}
+    * Define the api gateway hosted on the given on the specific api gateway
+    *
+    *
+    * @example <caption>If you want to use a specific host you can use</caption>
     * Given I have the api gateway hosted on "https://api.example.com"
     *
     *
     * @function gateway
     */
-  ['I have the api gateway', given.gateway, 'Create a new api request targeting the default api gateway', 'api'],
+  ['I have the api gateway hosted on {string}', given.gateway, 'Create a new api request targeting on a given api gateway', 'api, url'],
 
   // Path + method
 

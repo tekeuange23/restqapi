@@ -24,6 +24,7 @@ All the steps related to the API Request
     * [~methodPath()](#module_Given..methodPath)
     * [~header()](#module_Given..header)
     * [~headers()](#module_Given..headers)
+    * [~AuthorizatioinHeaderBearerToken()](#module_Given..AuthorizatioinHeaderBearerToken)
     * [~queryString()](#module_Given..queryString)
     * [~queriesString()](#module_Given..queriesString)
     * [~JsonPayload()](#module_Given..JsonPayload)
@@ -110,6 +111,18 @@ Given I add the headers:
 Given I add the headers:
   | Content-Type     | {{contentType}} |
   | Accept-Language  | {{ language }}  |
+```
+<a name="module_Given..AuthorizatioinHeaderBearerToken"></a>
+### Given I have the bearer token {string}
+Set the bearer token into the authorization headers
+
+**Example**  
+```js
+Given I have the bearer token {string}
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Given i have the bearer token {{ token }}
 ```
 <a name="module_Given..queryString"></a>
 ### Given the query parameter contains {string} as {string}

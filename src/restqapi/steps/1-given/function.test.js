@@ -3,7 +3,7 @@ describe('#StepDefinition - given - functions', () => {
 
   test('Configuration', () => {
     const fns = Object.keys(Given)
-    expect(fns.length).toBe(14)
+    expect(fns.length).toBe(15)
     const expectedFunctions = [
       'gateway',
       'path',
@@ -11,6 +11,7 @@ describe('#StepDefinition - given - functions', () => {
       'methodPath',
       'header',
       'headers',
+      'bearer',
       'queryString',
       'qs',
       'payload',
@@ -162,6 +163,25 @@ describe('#StepDefinition - given - functions', () => {
       expect($this.data.get.mock.calls.length).toBe(2)
       expect($this.data.get.mock.calls[0][0]).toBe('foo-value')
       expect($this.data.get.mock.calls[1][0]).toBe('bar-value')
+    })
+
+    test('bearer', () => {
+      const $this = {
+        api: {
+          request: {
+            setHeader: jest.fn()
+          }
+        },
+        data: {
+          get: jest.fn().mockReturnValue('Bearer bar1')
+        }
+      }
+      Given.bearer.call($this, 'bar')
+      expect($this.api.request.setHeader.mock.calls.length).toBe(1)
+      expect($this.api.request.setHeader.mock.calls[0][0]).toBe('authorization')
+      expect($this.api.request.setHeader.mock.calls[0][1]).toBe('Bearer bar1')
+      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls[0][0]).toBe('Bearer bar')
     })
   })
 

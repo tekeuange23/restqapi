@@ -125,6 +125,21 @@ module.exports = [
    */
   ['I add the headers:', given.headers, 'Adding multiple headers to the request (table format)', 'request, headers, table'],
 
+  /**
+   * ### Given I have the bearer token {string}
+   * Set the bearer token into the authorization headers
+   *
+   * @example
+   * Given I have the bearer token {string}
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Given i have the bearer token {{ token }}
+   *
+   * @function AuthorizatioinHeaderBearerToken
+   */
+  ['I have the bearer token {data}', given.bearer, 'Set a placeholded bearer token into the authorization header (ex: "token" -> {{ token }})', 'request, headers, authorization, bearer'],
+  ['I have the bearer token {string}', given.bearer, 'Set the bearer token into the authorization header', 'request, headers, authorization, bearer'],
+
   //  ****************************************************************************************************
   //  Query String
   //  ****************************************************************************************************

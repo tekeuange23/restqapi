@@ -47,6 +47,13 @@ Given.bearer = function (value) {
   Given.header.call(this, 'authorization', `Bearer ${value}`)
 }
 
+Given.basicAuth = function (username, pass) {
+  username = this.data.get(username)
+  pass = this.data.get(pass)
+  const encoded = Buffer.from(username + ':' + pass, 'utf8').toString('base64')
+  Given.header.call(this, 'authorization', `Basic ${encoded}`)
+}
+
 /*
  * =========================================
  * Request Query string Functions

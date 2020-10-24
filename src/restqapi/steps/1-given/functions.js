@@ -43,6 +43,10 @@ Given.headers = function (table) {
   table.raw().forEach(args => Given.header.apply(this, args))
 }
 
+Given.bearer = function (value) {
+  Given.header.call(this, 'authorization', `Bearer ${value}`)
+}
+
 /*
  * =========================================
  * Request Query string Functions

@@ -3,7 +3,7 @@ describe('#StepDefinition - given - functions', () => {
 
   test('Configuration', () => {
     const fns = Object.keys(Given)
-    expect(fns.length).toBe(15)
+    expect(fns.length).toBe(16)
     const expectedFunctions = [
       'gateway',
       'path',

@@ -312,5 +312,73 @@ module.exports = [
    *
    * @function JsonPayloadTable
    */
-  ['I add the request body:', given.payloads, 'Adding multiple query parameters to the request (table format)', 'request, body, dot, table']
+  ['I add the request body:', given.payloads, 'Adding multiple query parameters to the request (table format)', 'request, body, dot, table'],
+
+  //  ****************************************************************************************************
+  //  FORM REQUEST BODY
+  //  ****************************************************************************************************
+
+  /**
+   * ### I add the form value {string} as {string | int | float | placeholder | data}
+   * Set one or more request form body
+   *
+   * @example <caption>string</caption>
+   * Given I add the form value "firstname" as "john"
+   * Given I add the form value "lastname" as "doe"
+   * Given I add the form value "people.lastname" as "doe"
+   *
+   * @example <caption>int</caption>
+   * Given I add the form value "limit" as 10
+   * Given I add the form value "offset" as 30
+   * Given I add the form value "page.offset" as 30
+   *
+   * @example <caption>float</caption>
+   * Given I add the form value "size" as 1.1
+   * Given I add the form value "weight" as 1.0
+   * Given I add the form value "body.weight" as 1.0
+   *
+   * @example <caption>Placeholder form from datasets</caption>
+   * Given I add the form value "sort" as {{ price }}
+   * Given I add the form value "name" as {{ name }}
+   * Given I add the form value "list.name" as {{ name }}
+   *
+   * @function FormBody
+   */
+  ['I add the form value {string} as {string}', given.form, 'Adding value into form request body', 'request, body, form'],
+  ['I add the form value {string} as {int}', given.form, 'Adding value into form request body', 'request, body, form, number'],
+  ['I add the form value {string} as {float}', given.form, 'Adding value into form request body', 'request, body, form, float'],
+  ['I add the form value {string} as {data}', given.form, 'Adding placeholded value into form request body', 'request, body, form'],
+
+  /**
+   * ### I add the form value {string} as a file stored at {string | placeholder | data}
+   * Set one or more request form body
+   *
+   * @example <caption>string</caption>
+   * Given I add the form value "file" as a file stored at "avatar.png"
+   *
+   * @example <caption>Placeholder form from datasets</caption>
+   * Given I add the form value "file" as a file stored at {{ filename }}
+   *
+   * @function FormBody
+   */
+  ['I add the form value {string} as a file stored at {string}', given.formUpload, 'Adding a file into for request body', 'request, body, form, upload, file'],
+  ['I add the form value {string} as a file stored at {data}', given.formUpload, 'Adding a placehoded filename into for request body', 'request, body, form, upload, file'],
+
+  /**
+   * ### Given I add the form values:
+   * Set one or more request form body information in a single step.
+   *
+   * @example
+   * Given I add the form values:
+   *   | firstname | john |
+   *   | lastname  | doe  |
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Given I add the form values:
+   *   | firstname    | {{ firstName }} |
+   *   | lastname     | {{ lastName }}  |
+   *
+   * @function FormBodyTable
+   */
+  ['I add the form values:', given.forms, 'Adding multiple values to the form request body (table format)', 'request, body, form, table']
 ]

@@ -1,4 +1,3 @@
-// const got = require('got')
 const RestQData = require('@restqa/restqdata')
 
 function Data (options) {
@@ -10,6 +9,7 @@ function Data (options) {
   const matchRegexp = new RegExp(`${options.startSymbol.replace(/(?=\W)/g, '\\')}(.*)${options.endSymbol.replace(/(?=\W)/g, '\\')}`, 'g')
   const dataRegex = /(.*).(\d).(.*)/
 
+  const rData = RestQData(options)
   const data = {}
 
   function parse (scenario) {
@@ -27,8 +27,7 @@ function Data (options) {
 
   async function retrieve (value) {
     const [resource, row] = value.trim().split('.')
-    const data = RestQData(options)
-    const response = await data.get(resource, row)
+    const response = await rData.get(resource, row)
 
     Object.keys(response)
       .forEach(key => {
@@ -57,10 +56,15 @@ function Data (options) {
     data[property] = value
   }
 
+  function getFile (filename) {
+    return rData.storage.get(filename)
+  }
+
   return {
     parse,
     get,
-    set
+    set,
+    getFile
   }
 }
 

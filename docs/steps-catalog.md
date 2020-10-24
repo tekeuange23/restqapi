@@ -34,6 +34,9 @@ All the steps related to the API Request
     * [~JsonPayloadFalse()](#module_Given..JsonPayloadFalse)
     * [~JsonPayloadEmptyArray()](#module_Given..JsonPayloadEmptyArray)
     * [~JsonPayloadTable()](#module_Given..JsonPayloadTable)
+    * [~FormBody()](#module_Given..FormBody)
+    * [~FormBody()](#module_Given..FormBody)
+    * [~FormBodyTable()](#module_Given..FormBodyTable)
 
 <a name="module_Given..gateway"></a>
 ### Given I have the api gateway
@@ -256,6 +259,62 @@ Given I add the request body:
 **Example** *(Placeholder from datasets)*  
 ```js
 Given I add the request body:
+  | firstname    | {{ firstName }} |
+  | lastname     | {{ lastName }}  |
+```
+<a name="module_Given..FormBody"></a>
+### I add the form value {string} as {string | int | float | placeholder | data}
+Set one or more request form body
+
+**Example** *(string)*  
+```js
+Given I add the form value "firstname" as "john"
+Given I add the form value "lastname" as "doe"
+Given I add the form value "people.lastname" as "doe"
+```
+**Example** *(int)*  
+```js
+Given I add the form value "limit" as 10
+Given I add the form value "offset" as 30
+Given I add the form value "page.offset" as 30
+```
+**Example** *(float)*  
+```js
+Given I add the form value "size" as 1.1
+Given I add the form value "weight" as 1.0
+Given I add the form value "body.weight" as 1.0
+```
+**Example** *(Placeholder form from datasets)*  
+```js
+Given I add the form value "sort" as {{ price }}
+Given I add the form value "name" as {{ name }}
+Given I add the form value "list.name" as {{ name }}
+```
+<a name="module_Given..FormBody"></a>
+### I add the form value {string} as a file stored at {string | placeholder | data}
+Set one or more request form body
+
+**Example** *(string)*  
+```js
+Given I add the form value "file" as a file stored at "avatar.png"
+```
+**Example** *(Placeholder form from datasets)*  
+```js
+Given I add the form value "file" as a file stored at {{ filename }}
+```
+<a name="module_Given..FormBodyTable"></a>
+### Given I add the form values:
+Set one or more request form body information in a single step.
+
+**Example**  
+```js
+Given I add the form values:
+  | firstname | john |
+  | lastname  | doe  |
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Given I add the form values:
   | firstname    | {{ firstName }} |
   | lastname     | {{ lastName }}  |
 ```

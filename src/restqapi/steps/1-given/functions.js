@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 const Given = {}
 
 /*
@@ -96,6 +98,22 @@ Given.payloadEmptyArray = function (property) {
 
 Given.payloads = function (table) {
   table.raw().forEach(args => Given.payload.apply(this, args))
+}
+
+Given.form = function (field, value) {
+  value = this.data.get(value)
+  this.api.request.addFormField(field, value)
+}
+
+Given.forms = function (table) {
+  table.raw().forEach(args => Given.form.apply(this, args))
+}
+
+Given.formUpload = function (field, filename) {
+  filename = this.data.get(filename)
+  filename = this.data.getFile(filename)
+  const file = fs.createReadStream(filename)
+  this.api.request.addFormField(field, file)
 }
 
 module.exports = Given

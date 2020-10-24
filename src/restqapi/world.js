@@ -25,11 +25,16 @@ class World {
     return this._config
   }
 
-  createApi () {
+  createApi (url) {
     const options = {
       config: this._config
       // logs
     }
+
+    if (url) {
+      options.config.url = url
+    }
+
     const api = new Api(options)
     this._apis.push(api)
     return api

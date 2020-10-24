@@ -25,6 +25,7 @@ All the steps related to the API Request
     * [~header()](#module_Given..header)
     * [~headers()](#module_Given..headers)
     * [~AuthorizatioinHeaderBearerToken()](#module_Given..AuthorizatioinHeaderBearerToken)
+    * [~AuthorizatioinHeaderBasicAuth()](#module_Given..AuthorizatioinHeaderBasicAuth)
     * [~queryString()](#module_Given..queryString)
     * [~queriesString()](#module_Given..queriesString)
     * [~JsonPayload()](#module_Given..JsonPayload)
@@ -124,6 +125,25 @@ Given I have the bearer token {string}
 ```js
 Given i have the bearer token {{ token }}
 ```
+
+
+<a name="module_Given..AuthorizatioinHeaderBasicAuth"></a>
+### Given I use basic access authentication using the username {string} and the password {string}
+Set the basic authentication into the authorization headers
+
+**Example**  
+```js
+Given I use basic access authentication using the username {string} and the password {string}
+Given I have the basic auth user {string} pass {string}
+Given I use basic auth with {string} / {string}
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Given I use basic access authentication using the username {{ username }} and the password {{ password }}
+Given I have the basic auth user {{ username }} pass {{ password }}
+Given I use basic auth with {{ username }} / {{ password }}
+```
+
 <a name="module_Given..queryString"></a>
 ### Given the query parameter contains {string} as {string}
 Set one or more request query parameters (example: /pets?price=10&name=john)

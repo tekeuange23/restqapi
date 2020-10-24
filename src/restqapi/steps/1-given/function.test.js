@@ -3,7 +3,7 @@ describe('#StepDefinition - given - functions', () => {
 
   test('Configuration', () => {
     const fns = Object.keys(Given)
-    expect(fns.length).toBe(15)
+    expect(fns.length).toBe(16)
     const expectedFunctions = [
       'gateway',
       'path',
@@ -12,6 +12,7 @@ describe('#StepDefinition - given - functions', () => {
       'header',
       'headers',
       'bearer',
+      'basicAuth',
       'queryString',
       'qs',
       'payload',
@@ -182,6 +183,30 @@ describe('#StepDefinition - given - functions', () => {
       expect($this.api.request.setHeader.mock.calls[0][1]).toBe('Bearer bar1')
       expect($this.data.get.mock.calls.length).toBe(1)
       expect($this.data.get.mock.calls[0][0]).toBe('Bearer bar')
+    })
+
+    test('basicAuth', () => {
+      const $this = {
+        api: {
+          request: {
+            setHeader: jest.fn()
+          }
+        },
+        data: {
+          get: jest
+            .fn()
+            .mockReturnValueOnce('admin')
+            .mockReturnValueOnce('P@ssw0rd')
+            .mockImplementation(param => param)
+        }
+      }
+      Given.basicAuth.call($this, 'admin', 'password')
+      expect($this.api.request.setHeader.mock.calls.length).toBe(1)
+      expect($this.api.request.setHeader.mock.calls[0][0]).toBe('authorization')
+      expect($this.api.request.setHeader.mock.calls[0][1]).toBe('Basic YWRtaW46UEBzc3cwcmQ=')
+      expect($this.data.get.mock.calls.length).toBe(3)
+      expect($this.data.get.mock.calls[0][0]).toBe('admin')
+      expect($this.data.get.mock.calls[1][0]).toBe('password')
     })
   })
 

@@ -140,6 +140,35 @@ module.exports = [
   ['I have the bearer token {data}', given.bearer, 'Set a placeholded bearer token into the authorization header (ex: "token" -> {{ token }})', 'request, headers, authorization, bearer'],
   ['I have the bearer token {string}', given.bearer, 'Set the bearer token into the authorization header', 'request, headers, authorization, bearer'],
 
+  /**
+   * ### Given I use basic access authentication using the username {string} and the password {string}
+   * Set the basic authentication into the authorization headers
+   *
+   * @example
+   * Given I use basic access authentication using the username {string} and the password {string}
+   * Given I have the basic auth user {string} pass {string}
+   * Given I use basic auth with {string} / {string}
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Given I use basic access authentication using the username {{ username }} and the password {{ password }}
+   * Given I have the basic auth user {{ username }} pass {{ password }}
+   * Given I use basic auth with {{ username }} / {{ password }}
+   *
+   * @function AuthorizatioinHeaderBasicAuth
+   */
+  ['I use basic access authentication using the username {string} and the password {string}', given.basicAuth, 'Set the basic auth into the authorization request header', 'request, headers, authorization, basic auth'],
+  ['I use basic access authentication using the username {data} and the password {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic access authentication using the username {string} and the password {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic access authentication using the username {data} and the password {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I have the basic auth user {string} pass {string}', given.basicAuth, 'Set the basic auth into the authorization request header', 'request, headers, authorization, basic auth'],
+  ['I have the basic auth user {string} pass {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I have the basic auth user {data} pass {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I have the basic auth user {data} pass {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic auth with {string} / {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic auth with {data} / {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic auth with {string} / {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic auth with {data} / {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+
   //  ****************************************************************************************************
   //  Query String
   //  ****************************************************************************************************

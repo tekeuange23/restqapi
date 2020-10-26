@@ -13,7 +13,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@restqa/restqdata": "0.0.1",
+    "@restqa/restqdata": "^0.1.0",
     "cucumber": "^6.0.5",
     "dot-object": "^1.6.0",
     "got": "^10.6.0",

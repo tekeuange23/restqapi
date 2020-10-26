@@ -7,9 +7,10 @@ describe('#StepDefinition - given - functions', () => {
 
   test('Configuration', () => {
     const fns = Object.keys(Given)
-    expect(fns.length).toBe(19)
+    expect(fns.length).toBe(20)
     const expectedFunctions = [
       'gateway',
+      'gatewayHost',
       'path',
       'method',
       'methodPath',
@@ -43,11 +44,11 @@ describe('#StepDefinition - given - functions', () => {
       expect($this.api).toEqual({ foo: 'bar' })
     })
 
-    test('gatewayi with a given url', () => {
+    test('gatewayHost with a given url', () => {
       const $this = {
         createApi: jest.fn().mockReturnValue({ foo: 'bar' })
       }
-      Given.gateway.call($this, 'http://example.test')
+      Given.gatewayHost.call($this, 'http://example.test')
       expect($this.createApi.mock.calls.length).toBe(1)
       expect($this.createApi.mock.calls[0][0]).toBe('http://example.test')
       expect($this.api).toEqual({ foo: 'bar' })

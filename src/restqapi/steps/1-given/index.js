@@ -41,7 +41,7 @@ module.exports = [
     *
     * @function gateway
     */
-  ['I have the api gateway hosted on {string}', given.gateway, 'Create a new api request targeting on a given api gateway', 'api, url'],
+  ['I have the api gateway hosted on {string}', given.gatewayHost, 'Create a new api request targeting on a given api gateway', 'api, url'],
 
   // Path + method
 

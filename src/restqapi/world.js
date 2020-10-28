@@ -1,52 +1,23 @@
-const { Api, Data } = require('./lib')
+const { World } = require('@restqa/restqa-plugin-boostrap')
+const { Api } = require('./lib')
 
-class World {
-  constructor ({ attach, parameters }) {
-    this.attach = attach
-    this.parameters = parameters
+class RestQapiWorld extends World {
+  setup () {
+    this.apis = this.apis || []
+    this.createApi = (url) => {
+      const options = {
+        config: this._config
+      }
 
-    this.skipped = false
-    this._config = {}
-    this._apis = []
-    this._data = this._data || null
-  }
+      if (url) {
+        options.config.url = url
+      }
 
-  setConfig (config) {
-    this._config = config
-    if (!this._data && config.data) {
-      this._data = new Data(config.data)
+      const api = new Api(options)
+      this.apis.push(api)
+      return api
     }
-    if (config.secrets && this._data) {
-      Object.keys(config.secrets).forEach(key => this._data.set(key, config.secrets[key]))
-    }
-  }
-
-  getConfig () {
-    return this._config
-  }
-
-  createApi (url) {
-    const options = {
-      config: this._config
-      // logs
-    }
-
-    if (url) {
-      options.config.url = url
-    }
-
-    const api = new Api(options)
-    this._apis.push(api)
-    return api
-  }
-
-  get data () {
-    return this._data
-  }
-
-  get apis () {
-    return this._apis
   }
 }
 
-module.exports = World
+module.exports = RestQapiWorld

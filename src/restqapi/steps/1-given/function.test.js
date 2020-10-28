@@ -1,16 +1,23 @@
+beforeEach(() => {
+  jest.resetModules()
+})
+
 describe('#StepDefinition - given - functions', () => {
   const Given = require('./functions')
 
   test('Configuration', () => {
     const fns = Object.keys(Given)
-    expect(fns.length).toBe(14)
+    expect(fns.length).toBe(20)
     const expectedFunctions = [
       'gateway',
+      'gatewayHost',
       'path',
       'method',
       'methodPath',
       'header',
       'headers',
+      'bearer',
+      'basicAuth',
       'queryString',
       'qs',
       'payload',
@@ -18,7 +25,10 @@ describe('#StepDefinition - given - functions', () => {
       'payloadTrue',
       'payloadFalse',
       'payloadEmptyArray',
-      'payloads'
+      'payloads',
+      'form',
+      'forms',
+      'formUpload'
     ]
     expect(fns).toEqual(expectedFunctions)
   })
@@ -31,6 +41,16 @@ describe('#StepDefinition - given - functions', () => {
       Given.gateway.call($this)
       expect($this.createApi.mock.calls.length).toBe(1)
       expect($this.createApi.mock.calls[0][0]).toBeUndefined()
+      expect($this.api).toEqual({ foo: 'bar' })
+    })
+
+    test('gatewayHost with a given url', () => {
+      const $this = {
+        createApi: jest.fn().mockReturnValue({ foo: 'bar' })
+      }
+      Given.gatewayHost.call($this, 'http://example.test')
+      expect($this.createApi.mock.calls.length).toBe(1)
+      expect($this.createApi.mock.calls[0][0]).toBe('http://example.test')
       expect($this.api).toEqual({ foo: 'bar' })
     })
 
@@ -152,6 +172,49 @@ describe('#StepDefinition - given - functions', () => {
       expect($this.data.get.mock.calls.length).toBe(2)
       expect($this.data.get.mock.calls[0][0]).toBe('foo-value')
       expect($this.data.get.mock.calls[1][0]).toBe('bar-value')
+    })
+
+    test('bearer', () => {
+      const $this = {
+        api: {
+          request: {
+            setHeader: jest.fn()
+          }
+        },
+        data: {
+          get: jest.fn().mockReturnValue('Bearer bar1')
+        }
+      }
+      Given.bearer.call($this, 'bar')
+      expect($this.api.request.setHeader.mock.calls.length).toBe(1)
+      expect($this.api.request.setHeader.mock.calls[0][0]).toBe('authorization')
+      expect($this.api.request.setHeader.mock.calls[0][1]).toBe('Bearer bar1')
+      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls[0][0]).toBe('Bearer bar')
+    })
+
+    test('basicAuth', () => {
+      const $this = {
+        api: {
+          request: {
+            setHeader: jest.fn()
+          }
+        },
+        data: {
+          get: jest
+            .fn()
+            .mockReturnValueOnce('admin')
+            .mockReturnValueOnce('P@ssw0rd')
+            .mockImplementation(param => param)
+        }
+      }
+      Given.basicAuth.call($this, 'admin', 'password')
+      expect($this.api.request.setHeader.mock.calls.length).toBe(1)
+      expect($this.api.request.setHeader.mock.calls[0][0]).toBe('authorization')
+      expect($this.api.request.setHeader.mock.calls[0][1]).toBe('Basic YWRtaW46UEBzc3cwcmQ=')
+      expect($this.data.get.mock.calls.length).toBe(3)
+      expect($this.data.get.mock.calls[0][0]).toBe('admin')
+      expect($this.data.get.mock.calls[1][0]).toBe('password')
     })
   })
 
@@ -313,6 +376,90 @@ describe('#StepDefinition - given - functions', () => {
       expect($this.api.request.addPayload.mock.calls[0][1]).toBe('foo123')
       expect($this.api.request.addPayload.mock.calls[1][0]).toBe('param.foo2')
       expect($this.api.request.addPayload.mock.calls[1][1]).toBe('bar123')
+      expect($this.data.get.mock.calls.length).toBe(2)
+      expect($this.data.get.mock.calls[0][0]).toBe('foo')
+      expect($this.data.get.mock.calls[1][0]).toBe('bar')
+    })
+  })
+
+  describe('Request body Form Functions', () => {
+    test('form', () => {
+      const $this = {
+        api: {
+          request: {
+            addFormField: jest.fn()
+          }
+        },
+        data: {
+          get: jest.fn().mockReturnValue('bar1')
+        }
+      }
+      Given.form.call($this, 'param1', 'bar')
+      expect($this.api.request.addFormField.mock.calls.length).toBe(1)
+      expect($this.api.request.addFormField.mock.calls[0][0]).toBe('param1')
+      expect($this.api.request.addFormField.mock.calls[0][1]).toBe('bar1')
+      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls[0][0]).toBe('bar')
+    })
+
+    test('formUpload', () => {
+      const fs = require('fs')
+      jest.mock('fs')
+      fs.createReadStream = jest.fn().mockReturnValue('testFile.rs')
+
+      const Given = require('./functions')
+
+      const $this = {
+        api: {
+          request: {
+            addFormField: jest.fn()
+          }
+        },
+        data: {
+          get: jest.fn().mockImplementation(param => param),
+          getFile: jest.fn().mockReturnValue('/usr/src/app/bar.png')
+        }
+      }
+      Given.formUpload.call($this, 'file', 'bar.png')
+      expect($this.api.request.addFormField.mock.calls.length).toBe(1)
+      expect($this.api.request.addFormField.mock.calls[0][0]).toBe('file')
+      expect($this.api.request.addFormField.mock.calls[0][1]).toBe('testFile.rs')
+      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls[0][0]).toBe('bar.png')
+      expect($this.data.getFile.mock.calls.length).toBe(1)
+      expect($this.data.getFile.mock.calls[0][0]).toBe('bar.png')
+      expect(fs.createReadStream.mock.calls.length).toBe(1)
+      expect(fs.createReadStream.mock.calls[0][0]).toBe('/usr/src/app/bar.png')
+    })
+
+    test('forms', () => {
+      const $this = {
+        api: {
+          request: {
+            addFormField: jest.fn()
+          }
+        },
+        data: {
+          get: jest.fn(_ => {
+            return _ + '123'
+          })
+        }
+      }
+
+      const table = {
+        raw: () => {
+          return [
+            ['param.foo1', 'foo'],
+            ['param.foo2', 'bar']
+          ]
+        }
+      }
+      Given.forms.call($this, table)
+      expect($this.api.request.addFormField.mock.calls.length).toBe(2)
+      expect($this.api.request.addFormField.mock.calls[0][0]).toBe('param.foo1')
+      expect($this.api.request.addFormField.mock.calls[0][1]).toBe('foo123')
+      expect($this.api.request.addFormField.mock.calls[1][0]).toBe('param.foo2')
+      expect($this.api.request.addFormField.mock.calls[1][1]).toBe('bar123')
       expect($this.data.get.mock.calls.length).toBe(2)
       expect($this.data.get.mock.calls[0][0]).toBe('foo')
       expect($this.data.get.mock.calls[1][0]).toBe('bar')

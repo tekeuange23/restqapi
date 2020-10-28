@@ -1,4 +1,3 @@
 module.exports = {
-  Api: require('./api'),
-  Data: require('./data')
+  Api: require('./api')
 }

@@ -19,19 +19,29 @@ module.exports = [
 
   /**
     * ### Given I have the api gateway
-    * Define the api gateway host take a look at the config file.
+    * Define the api gateway host (take a look at the config file).
     *
     *
     * @example
     * Given I have the api gateway
     *
-    * @example If you want to use a specific host you can use
+    *
+    * @function gateway
+    */
+  ['I have the api gateway', given.gateway, 'Create a new api request targeting the default api gateway', 'api, url'],
+
+  /**
+    * ### Given I have the api gateway hosted on {string}
+    * Define the api gateway hosted on the given on the specific api gateway
+    *
+    *
+    * @example <caption>If you want to use a specific host you can use</caption>
     * Given I have the api gateway hosted on "https://api.example.com"
     *
     *
     * @function gateway
     */
-  ['I have the api gateway', given.gateway, 'Create a new api request targeting the default api gateway', 'api'],
+  ['I have the api gateway hosted on {string}', given.gatewayHost, 'Create a new api request targeting on a given api gateway', 'api, url'],
 
   // Path + method
 
@@ -114,6 +124,50 @@ module.exports = [
    * @function headers
    */
   ['I add the headers:', given.headers, 'Adding multiple headers to the request (table format)', 'request, headers, table'],
+
+  /**
+   * ### Given I have the bearer token {string}
+   * Set the bearer token into the authorization headers
+   *
+   * @example
+   * Given I have the bearer token {string}
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Given i have the bearer token {{ token }}
+   *
+   * @function AuthorizatioinHeaderBearerToken
+   */
+  ['I have the bearer token {data}', given.bearer, 'Set a placeholded bearer token into the authorization header (ex: "token" -> {{ token }})', 'request, headers, authorization, bearer'],
+  ['I have the bearer token {string}', given.bearer, 'Set the bearer token into the authorization header', 'request, headers, authorization, bearer'],
+
+  /**
+   * ### Given I use basic access authentication using the username {string} and the password {string}
+   * Set the basic authentication into the authorization headers
+   *
+   * @example
+   * Given I use basic access authentication using the username {string} and the password {string}
+   * Given I have the basic auth user {string} pass {string}
+   * Given I use basic auth with {string} / {string}
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Given I use basic access authentication using the username {{ username }} and the password {{ password }}
+   * Given I have the basic auth user {{ username }} pass {{ password }}
+   * Given I use basic auth with {{ username }} / {{ password }}
+   *
+   * @function AuthorizatioinHeaderBasicAuth
+   */
+  ['I use basic access authentication using the username {string} and the password {string}', given.basicAuth, 'Set the basic auth into the authorization request header', 'request, headers, authorization, basic auth'],
+  ['I use basic access authentication using the username {data} and the password {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic access authentication using the username {string} and the password {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic access authentication using the username {data} and the password {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I have the basic auth user {string} pass {string}', given.basicAuth, 'Set the basic auth into the authorization request header', 'request, headers, authorization, basic auth'],
+  ['I have the basic auth user {string} pass {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I have the basic auth user {data} pass {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I have the basic auth user {data} pass {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic auth with {string} / {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic auth with {data} / {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic auth with {string} / {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic auth with {data} / {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
 
   //  ****************************************************************************************************
   //  Query String
@@ -258,5 +312,73 @@ module.exports = [
    *
    * @function JsonPayloadTable
    */
-  ['I add the request body:', given.payloads, 'Adding multiple query parameters to the request (table format)', 'request, body, dot, table']
+  ['I add the request body:', given.payloads, 'Adding multiple query parameters to the request (table format)', 'request, body, dot, table'],
+
+  //  ****************************************************************************************************
+  //  FORM REQUEST BODY
+  //  ****************************************************************************************************
+
+  /**
+   * ### I add the form value {string} as {string | int | float | placeholder | data}
+   * Set one or more request form body
+   *
+   * @example <caption>string</caption>
+   * Given I add the form value "firstname" as "john"
+   * Given I add the form value "lastname" as "doe"
+   * Given I add the form value "people.lastname" as "doe"
+   *
+   * @example <caption>int</caption>
+   * Given I add the form value "limit" as 10
+   * Given I add the form value "offset" as 30
+   * Given I add the form value "page.offset" as 30
+   *
+   * @example <caption>float</caption>
+   * Given I add the form value "size" as 1.1
+   * Given I add the form value "weight" as 1.0
+   * Given I add the form value "body.weight" as 1.0
+   *
+   * @example <caption>Placeholder form from datasets</caption>
+   * Given I add the form value "sort" as {{ price }}
+   * Given I add the form value "name" as {{ name }}
+   * Given I add the form value "list.name" as {{ name }}
+   *
+   * @function FormBody
+   */
+  ['I add the form value {string} as {string}', given.form, 'Adding value into form request body', 'request, body, form'],
+  ['I add the form value {string} as {int}', given.form, 'Adding value into form request body', 'request, body, form, number'],
+  ['I add the form value {string} as {float}', given.form, 'Adding value into form request body', 'request, body, form, float'],
+  ['I add the form value {string} as {data}', given.form, 'Adding placeholded value into form request body', 'request, body, form'],
+
+  /**
+   * ### I add the form value {string} as a file stored at {string | placeholder | data}
+   * Set one or more request form body
+   *
+   * @example <caption>string</caption>
+   * Given I add the form value "file" as a file stored at "avatar.png"
+   *
+   * @example <caption>Placeholder form from datasets</caption>
+   * Given I add the form value "file" as a file stored at {{ filename }}
+   *
+   * @function FormBody
+   */
+  ['I add the form value {string} as a file stored at {string}', given.formUpload, 'Adding a file into for request body', 'request, body, form, upload, file'],
+  ['I add the form value {string} as a file stored at {data}', given.formUpload, 'Adding a placehoded filename into for request body', 'request, body, form, upload, file'],
+
+  /**
+   * ### Given I add the form values:
+   * Set one or more request form body information in a single step.
+   *
+   * @example
+   * Given I add the form values:
+   *   | firstname | john |
+   *   | lastname  | doe  |
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Given I add the form values:
+   *   | firstname    | {{ firstName }} |
+   *   | lastname     | {{ lastName }}  |
+   *
+   * @function FormBodyTable
+   */
+  ['I add the form values:', given.forms, 'Adding multiple values to the form request body (table format)', 'request, body, form, table']
 ]

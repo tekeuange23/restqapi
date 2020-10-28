@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 const Given = {}
 
 /*
@@ -8,6 +10,10 @@ const Given = {}
 
 Given.gateway = function () {
   this.api = this.createApi()
+}
+
+Given.gatewayHost = function (url) {
+  this.api = this.createApi(url)
 }
 
 Given.path = function (path) {
@@ -41,6 +47,17 @@ Given.header = function (property, value) {
 
 Given.headers = function (table) {
   table.raw().forEach(args => Given.header.apply(this, args))
+}
+
+Given.bearer = function (value) {
+  Given.header.call(this, 'authorization', `Bearer ${value}`)
+}
+
+Given.basicAuth = function (username, pass) {
+  username = this.data.get(username)
+  pass = this.data.get(pass)
+  const encoded = Buffer.from(username + ':' + pass, 'utf8').toString('base64')
+  Given.header.call(this, 'authorization', `Basic ${encoded}`)
 }
 
 /*
@@ -85,6 +102,22 @@ Given.payloadEmptyArray = function (property) {
 
 Given.payloads = function (table) {
   table.raw().forEach(args => Given.payload.apply(this, args))
+}
+
+Given.form = function (field, value) {
+  value = this.data.get(value)
+  this.api.request.addFormField(field, value)
+}
+
+Given.forms = function (table) {
+  table.raw().forEach(args => Given.form.apply(this, args))
+}
+
+Given.formUpload = function (field, filename) {
+  filename = this.data.get(filename)
+  filename = this.data.getFile(filename)
+  const file = fs.createReadStream(filename)
+  this.api.request.addFormField(field, file)
 }
 
 module.exports = Given

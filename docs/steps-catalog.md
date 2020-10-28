@@ -18,11 +18,14 @@ All the steps related to the API Request
 
 * [Given](#module_Given)
     * [~gateway()](#module_Given..gateway)
+    * [~gateway()](#module_Given..gateway)
     * [~path()](#module_Given..path)
     * [~method()](#module_Given..method)
     * [~methodPath()](#module_Given..methodPath)
     * [~header()](#module_Given..header)
     * [~headers()](#module_Given..headers)
+    * [~AuthorizatioinHeaderBearerToken()](#module_Given..AuthorizatioinHeaderBearerToken)
+    * [~AuthorizatioinHeaderBasicAuth()](#module_Given..AuthorizatioinHeaderBasicAuth)
     * [~queryString()](#module_Given..queryString)
     * [~queriesString()](#module_Given..queriesString)
     * [~JsonPayload()](#module_Given..JsonPayload)
@@ -31,18 +34,24 @@ All the steps related to the API Request
     * [~JsonPayloadFalse()](#module_Given..JsonPayloadFalse)
     * [~JsonPayloadEmptyArray()](#module_Given..JsonPayloadEmptyArray)
     * [~JsonPayloadTable()](#module_Given..JsonPayloadTable)
+    * [~FormBody()](#module_Given..FormBody)
+    * [~FormBody()](#module_Given..FormBody)
+    * [~FormBodyTable()](#module_Given..FormBodyTable)
 
 <a name="module_Given..gateway"></a>
 ### Given I have the api gateway
-Define the api gateway host take a look at the config file.
+Define the api gateway host (take a look at the config file).
 
 **Example**  
 ```js
 Given I have the api gateway
 ```
-**Example**  
+<a name="module_Given..gateway"></a>
+### Given I have the api gateway hosted on {string}
+Define the api gateway hosted on the given on the specific api gateway
+
+**Example** *(If you want to use a specific host you can use)*  
 ```js
-If you want to use a specific host you can use
 Given I have the api gateway hosted on "https://api.example.com"
 ```
 <a name="module_Given..path"></a>
@@ -107,6 +116,37 @@ Given I add the headers:
   | Content-Type     | {{contentType}} |
   | Accept-Language  | {{ language }}  |
 ```
+<a name="module_Given..AuthorizatioinHeaderBearerToken"></a>
+### Given I have the bearer token {string}
+Set the bearer token into the authorization headers
+
+**Example**  
+```js
+Given I have the bearer token {string}
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Given i have the bearer token {{ token }}
+```
+
+
+<a name="module_Given..AuthorizatioinHeaderBasicAuth"></a>
+### Given I use basic access authentication using the username {string} and the password {string}
+Set the basic authentication into the authorization headers
+
+**Example**  
+```js
+Given I use basic access authentication using the username {string} and the password {string}
+Given I have the basic auth user {string} pass {string}
+Given I use basic auth with {string} / {string}
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Given I use basic access authentication using the username {{ username }} and the password {{ password }}
+Given I have the basic auth user {{ username }} pass {{ password }}
+Given I use basic auth with {{ username }} / {{ password }}
+```
+
 <a name="module_Given..queryString"></a>
 ### Given the query parameter contains {string} as {string}
 Set one or more request query parameters (example: /pets?price=10&name=john)
@@ -222,6 +262,62 @@ Given I add the request body:
   | firstname    | {{ firstName }} |
   | lastname     | {{ lastName }}  |
 ```
+<a name="module_Given..FormBody"></a>
+### I add the form value {string} as {string | int | float | placeholder | data}
+Set one or more request form body
+
+**Example** *(string)*  
+```js
+Given I add the form value "firstname" as "john"
+Given I add the form value "lastname" as "doe"
+Given I add the form value "people.lastname" as "doe"
+```
+**Example** *(int)*  
+```js
+Given I add the form value "limit" as 10
+Given I add the form value "offset" as 30
+Given I add the form value "page.offset" as 30
+```
+**Example** *(float)*  
+```js
+Given I add the form value "size" as 1.1
+Given I add the form value "weight" as 1.0
+Given I add the form value "body.weight" as 1.0
+```
+**Example** *(Placeholder form from datasets)*  
+```js
+Given I add the form value "sort" as {{ price }}
+Given I add the form value "name" as {{ name }}
+Given I add the form value "list.name" as {{ name }}
+```
+<a name="module_Given..FormBody"></a>
+### I add the form value {string} as a file stored at {string | placeholder | data}
+Set one or more request form body
+
+**Example** *(string)*  
+```js
+Given I add the form value "file" as a file stored at "avatar.png"
+```
+**Example** *(Placeholder form from datasets)*  
+```js
+Given I add the form value "file" as a file stored at {{ filename }}
+```
+<a name="module_Given..FormBodyTable"></a>
+### Given I add the form values:
+Set one or more request form body information in a single step.
+
+**Example**  
+```js
+Given I add the form values:
+  | firstname | john |
+  | lastname  | doe  |
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Given I add the form values:
+  | firstname    | {{ firstName }} |
+  | lastname     | {{ lastName }}  |
+```
 <a name="module_When"></a>
 All the steps related to the Api call
 
@@ -260,6 +356,9 @@ All the steps related to the API response
     * [~bodyListContainNumberOfItem()](#module_Then..bodyListContainNumberOfItem)
     * [~saveHeaderPropertyIntoTheDataset()](#module_Then..saveHeaderPropertyIntoTheDataset)
     * [~saveBodyPropertyIntoTheDataset()](#module_Then..saveBodyPropertyIntoTheDataset)
+    * [~printRequest()](#module_Then..printRequest)
+    * [~printResponse()](#module_Then..printResponse)
+    * [~printValue()](#module_Then..printValue)
 
 <a name="module_Then..httpCode"></a>
 ### Then I should receive a response with the status {int}
@@ -478,7 +577,7 @@ Then the response list contains "12" items
 ```
 <a name="module_Then..saveHeaderPropertyIntoTheDataset"></a>
 ### Then add the value {string} from the response header to the dataset as {string}
-Pick of the reponse header value and add it into the dataset storage 
+Pick of the reponse header value and add it into the dataset storage
 This will allow you to reuse value in another step
 
 **Example**  
@@ -489,7 +588,7 @@ Given i have the api gateway
 ```
 <a name="module_Then..saveBodyPropertyIntoTheDataset"></a>
 ### Then add the value {string} from the response body to the dataset as {string}
-Pick of the reponse body value and add it into the dataset storage 
+Pick of the reponse body value and add it into the dataset storage
 This will allow you to reuse value in another step
 
 **Example** *(Using dot object)*  
@@ -503,4 +602,31 @@ Given i have the api gateway
 Then add the value "$.user.id"  from the response body to the dataset as "userId"
 Given i have the api gateway
   And I have the path "/users/{{userId}}"
+```
+<a name="module_Then..printRequest"></a>
+### Then I print the request
+Print the Request information (url, headers, body, method) into the console
+This will allow you to debug your scenario.
+
+**Example**  
+```js
+Then I print the request
+```
+<a name="module_Then..printResponse"></a>
+### Then I print the response
+Print the Response information (headers, response time,  body) into the console
+This will allow you to debug your scenario.
+
+**Example**  
+```js
+Then I print the response
+```
+<a name="module_Then..printValue"></a>
+### Then I print the value {string}
+Print the a specific information value into the console
+This will allow you to debug your scenario.
+
+**Example**  
+```js
+Then I print the value "{{ userId }}"
 ```

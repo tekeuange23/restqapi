@@ -1,5 +1,6 @@
 const dot = require('dot-object')
 const { URL } = require('url')
+const FormData = require('form-data')
 
 const Request = function (baseUrl, id) {
   const url = new URL(baseUrl)
@@ -9,7 +10,6 @@ const Request = function (baseUrl, id) {
     port: url.port,
     protocol: url.protocol,
     pathname: url.pathname,
-    responseType: 'json',
     // strictSSL: false,
     hooks: {
       afterResponse: [
@@ -34,6 +34,9 @@ const Request = function (baseUrl, id) {
   const getOptions = () => {
     this.options.headers = this.options.headers || {}
     this.options.headers['x-correlation-id'] = getId()
+    this.options.headers['user-agent'] = 'restqa (https://github.com/restqa/restqa)'
+    this.options.responseType = this.options.responseType || 'json'
+
     return this.options
   }
 
@@ -78,6 +81,11 @@ const Request = function (baseUrl, id) {
     this.options.baseUrl = baseUrl
   }
 
+  const addFormField = (field, value) => {
+    this.options.body = this.options.body || new FormData()
+    this.options.body.append(field, value)
+  }
+
   return {
     getId,
     getOptions,
@@ -87,7 +95,8 @@ const Request = function (baseUrl, id) {
     setMethod,
     addPayload,
     setBaseUrl,
-    setQueryString
+    setQueryString,
+    addFormField
   }
 }
 

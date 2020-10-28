@@ -107,7 +107,7 @@ Then.shouldBeString = function (property, value) {
       break
     default: {
       const received = this.api.response.findInBody(property)
-      const err = `${this.api.response.request.prefix} The response body property ${property} should be ${value} but received ${received}`
+      const err = `${this.api.response.request.prefix} The response body property ${property} should be ${value} <${typeof value}> but received ${received} <${typeof received}>`
       assert.strictEqual(received, value, err)
     }
   }
@@ -174,6 +174,22 @@ Then.addHeaderPropertyToDataset = function (headerProperty, dataKey) {
 Then.addBodyPropertyToDataset = function (bodyProperty, propertyName) {
   const val = this.api.response.findInBody(bodyProperty)
   this.data.set(propertyName, val)
+}
+
+Then.printRequest = function () {
+  this.debug.push('----> Request')
+  this.debug.push(this.api.request.getOptions())
+}
+
+Then.printResponse = function () {
+  this.debug.push('----> Response')
+  this.debug.push(this.api.response.getOptions())
+}
+
+Then.printValue = function (value) {
+  value = this.data.get(value)
+  this.debug.push('----> Value')
+  this.debug.push(value)
 }
 
 module.exports = Then

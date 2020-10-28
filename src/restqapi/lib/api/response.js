@@ -24,6 +24,15 @@ const Response = function (result) {
     return headers[property] || headers[property.toLowerCase()]
   }
 
+  const getOptions = () => {
+    return {
+      statusCode,
+      headers,
+      timing,
+      body
+    }
+  }
+
   return {
     request,
     timing,
@@ -32,7 +41,8 @@ const Response = function (result) {
     body,
     findInBody,
     findInHeader,
-    getResult: () => result
+    getResult: () => result,
+    getOptions
   }
 }
 

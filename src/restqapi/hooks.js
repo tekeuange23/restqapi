@@ -28,7 +28,16 @@ module.exports = function (config, { Before, BeforeAll, After, AfterAll }) {
     return 'skipped'
   })
 
-  After(function () {
+  After(function (scenario) {
+    this.log = this.log || console.log
+    if (this.debug.length) {
+      this.log(`\n======================== [ DEBUG : ${scenario.pickle.name} ] ========================`)
+      this.debug.forEach(item => {
+        if (typeof item === 'object') item = JSON.stringify(item, null, 2)
+        this.log(item)
+      })
+      this.log('======================== [ / DEBUG ] ========================')
+    }
     const attachements = {
       apis: this.apis.map(_ => _.toJSON())
     }

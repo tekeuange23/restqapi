@@ -2,7 +2,6 @@ const { World } = require('@restqa/restqa-plugin-boostrap')
 const { Api } = require('./lib')
 
 class RestQapiWorld extends World {
-
   setup () {
     this.apis = this.apis || []
     this.createApi = (url) => {
@@ -19,7 +18,6 @@ class RestQapiWorld extends World {
       return api
     }
   }
-
 }
 
 module.exports = RestQapiWorld

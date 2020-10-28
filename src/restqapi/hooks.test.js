@@ -96,6 +96,7 @@ describe('# hooks', () => {
     const $this = {
       attach: jest.fn(),
       setConfig: jest.fn(),
+      debug: [],
       data: {
         parse: jest.fn()
       },

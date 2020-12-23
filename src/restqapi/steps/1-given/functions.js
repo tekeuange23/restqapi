@@ -8,12 +8,27 @@ const Given = {}
  * =========================================
  */
 
+function getCookie () {
+  // Add a cookie if exist
+  let {
+    startSymbol,
+    endSymbol
+  } = this._config.data
+
+  startSymbol = startSymbol || '{{'
+  endSymbol = endSymbol || '}}'
+
+  return this.data.get(`${startSymbol}__cookie_jar__${endSymbol}`)
+}
+
 Given.gateway = function () {
   this.api = this.createApi()
+  this.api.request.setHeader('cookie', getCookie.call(this))
 }
 
 Given.gatewayHost = function (url) {
   this.api = this.createApi(url)
+  this.api.request.setHeader('cookie', getCookie.call(this))
 }
 
 Given.path = function (path) {

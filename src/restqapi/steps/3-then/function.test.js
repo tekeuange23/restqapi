@@ -6,7 +6,7 @@ describe('#StepDefinition - then - functions', () => {
   test('Configuration', () => {
     const Then = require('./functions')
     const fns = Object.keys(Then)
-    expect(fns.length).toBe(26)
+    expect(fns.length).toBe(27)
     const expectedFunctions = [
       'httpCode',
       'httpTiming',
@@ -31,6 +31,7 @@ describe('#StepDefinition - then - functions', () => {
       'shouldBeNow',
       'addHeaderPropertyToDataset',
       'addBodyPropertyToDataset',
+      'cookieJar',
       'printRequest',
       'printResponse',
       'printValue'
@@ -827,6 +828,32 @@ describe('#StepDefinition - then - functions', () => {
       expect($this.data.set.mock.calls[0][1]).toBe('my value')
     })
   })
+
+  describe('Cookies', () => {
+    test('printRequest', () => {
+      const $this = {
+        data: {
+          set: jest.fn()
+        },
+        api: {
+          response: {
+            findInHeader: jest.fn((_) => 'my cookie')
+          }
+        }
+      }
+
+      const Then = require('./functions')
+      Then.cookieJar.call($this)
+
+      expect($this.api.response.findInHeader.mock.calls.length).toBe(1)
+      expect($this.api.response.findInHeader.mock.calls[0][0]).toBe('set-cookie')
+
+      expect($this.data.set.mock.calls.length).toBe(1)
+      expect($this.data.set.mock.calls[0][0]).toBe('__cookie_jar__')
+      expect($this.data.set.mock.calls[0][1]).toBe('my cookie')
+    })
+  })
+
   describe('API Debug', () => {
     test('printRequest', () => {
       const $this = {

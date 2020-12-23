@@ -176,6 +176,11 @@ Then.addBodyPropertyToDataset = function (bodyProperty, propertyName) {
   this.data.set(propertyName, val)
 }
 
+Then.cookieJar = function () {
+  const val = this.api.response.findInHeader('set-cookie')
+  this.data.set('__cookie_jar__', val)
+}
+
 Then.printRequest = function () {
   this.debug.push('----> Request')
   this.debug.push(this.api.request.getOptions())

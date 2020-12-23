@@ -356,5 +356,7 @@ module.exports = [
    *
    * @function printValue
    */
-  ['I print the value {string}', then.printValue, 'Print a specific value into the console', 'api, console, debug']
+  ['I print the value {string}', then.printValue, 'Print a specific value into the console', 'api, console, debug'],
+
+  ['I add the cookie to the jar', then.cookieJar, 'Add the cookie from the response the a storage to get reused on the next call', 'api, cooke, jar']
 ]

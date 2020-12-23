@@ -35,23 +35,60 @@ describe('#StepDefinition - given - functions', () => {
 
   describe('API Default Functions', () => {
     test('gateway', () => {
+      const mockApi = {
+        foo: 'bar',
+        request: {
+          setHeader: jest.fn()
+        }
+      }
       const $this = {
-        createApi: jest.fn().mockReturnValue({ foo: 'bar' })
+        createApi: jest.fn().mockReturnValue(mockApi),
+        _config: {
+          data: {}
+        },
+        data: {
+          get: jest.fn().mockReturnValue('coooookie')
+        }
       }
       Given.gateway.call($this)
       expect($this.createApi.mock.calls.length).toBe(1)
       expect($this.createApi.mock.calls[0][0]).toBeUndefined()
-      expect($this.api).toEqual({ foo: 'bar' })
+      expect($this.api).toEqual(mockApi)
+      expect($this.api.request.setHeader.mock.calls.length).toEqual(1)
+      expect($this.api.request.setHeader.mock.calls[0][0]).toEqual('cookie')
+      expect($this.api.request.setHeader.mock.calls[0][1]).toEqual('coooookie')
+      expect($this.data.get.mock.calls.length).toEqual(1)
+      expect($this.data.get.mock.calls[0][0]).toEqual('{{__cookie_jar__}}')
     })
 
     test('gatewayHost with a given url', () => {
+      const mockApi = {
+        foo: 'bar',
+        request: {
+          setHeader: jest.fn()
+        }
+      }
       const $this = {
-        createApi: jest.fn().mockReturnValue({ foo: 'bar' })
+        createApi: jest.fn().mockReturnValue(mockApi),
+        _config: {
+          data: {
+            startSymbol: '[[',
+            endSymbol: ']]'
+          }
+        },
+        data: {
+          get: jest.fn().mockReturnValue('coooookie')
+        }
       }
       Given.gatewayHost.call($this, 'http://example.test')
       expect($this.createApi.mock.calls.length).toBe(1)
       expect($this.createApi.mock.calls[0][0]).toBe('http://example.test')
-      expect($this.api).toEqual({ foo: 'bar' })
+      expect($this.api).toEqual(mockApi)
+      expect($this.api.request.setHeader.mock.calls.length).toEqual(1)
+      expect($this.api.request.setHeader.mock.calls[0][0]).toEqual('cookie')
+      expect($this.api.request.setHeader.mock.calls[0][1]).toEqual('coooookie')
+      expect($this.data.get.mock.calls.length).toEqual(1)
+      expect($this.data.get.mock.calls[0][0]).toEqual('[[__cookie_jar__]]')
     })
 
     test('path', () => {

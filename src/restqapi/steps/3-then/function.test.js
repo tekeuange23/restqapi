@@ -1,12 +1,13 @@
 beforeEach(() => {
   jest.resetModules()
+  jest.clearAllMocks()
 })
 
 describe('#StepDefinition - then - functions', () => {
   test('Configuration', () => {
     const Then = require('./functions')
     const fns = Object.keys(Then)
-    expect(fns.length).toBe(27)
+    expect(fns.length).toBe(28)
     const expectedFunctions = [
       'httpCode',
       'httpTiming',
@@ -29,6 +30,7 @@ describe('#StepDefinition - then - functions', () => {
       'shouldBeAnArrayOfXItems',
       'shouldMatch',
       'shouldBeNow',
+      'shouldBeJsonBody',
       'addHeaderPropertyToDataset',
       'addBodyPropertyToDataset',
       'cookieJar',
@@ -780,6 +782,65 @@ describe('#StepDefinition - then - functions', () => {
       expect(assert.ok.mock.calls.length).toBe(1)
       expect(assert.ok.mock.calls[0][0]).toEqual(true)
       expect(assert.ok.mock.calls[0][1]).toBe('[POST /users] The response body property foo.bar should be close to now, but received : 2019-04-07T10:21:30Z')
+    })
+
+    describe('shouldBeJsonBody', () => {
+      test('Should be equal', () => {
+        jest.unmock('assert')
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: {
+              body: {
+                'foo': 'bar'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            }
+          }
+        }
+
+        const json = `
+          {
+            "foo": "bar"
+          }
+        `
+
+        const Then = require('./functions')
+        Then.shouldBeJsonBody.call($this, json)
+      })
+
+      test('Shouldn\'t be equal', () => {
+        const $this = {
+        data: {
+          get: _ => _
+        },
+          api: {
+            response: {
+              body: {
+                'f00': 'b@r'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            }
+          }
+        }
+
+        const json = `
+          {
+            "foo": "bar"
+          }
+        `
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeJsonBody.call($this, json)
+        }).toThrow(`[POST /users] The response body should be '${JSON.stringify({foo: 'bar'})}', but received : '${JSON.stringify({f00: 'b@r'})}`)
+      })
     })
 
     test('addHeaderPropertyToDataset', () => {

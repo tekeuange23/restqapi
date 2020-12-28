@@ -41,7 +41,7 @@ module.exports = [
     *
     * @function gateway
     */
-  ['I have the api gateway hosted on {string}', given.gatewayHost, 'Create a new api request targeting on a given api gateway', 'api, url'],
+  ['I have the api gateway hosted on {string}', given.gatewayHost, 'Create a new api request targeting on a given api gateway', 'api, url, host, generator'],
 
   // Path + method
 
@@ -57,7 +57,7 @@ module.exports = [
     *
     * @function path
     */
-  ['I have the path {string}', given.path, 'add the path of the request (ex: /quotes)', 'request, path, api'],
+  ['I have the path {string}', given.path, 'add the path of the request (ex: /quotes)', 'request, path, api, generator'],
 
   /**
     * ### Given I have the method {string}
@@ -69,7 +69,7 @@ module.exports = [
     *
     * @function method
     */
-  ['I have the method {string}', given.method, 'add the method to the request (ex: POST)', 'request, method, api'],
+  ['I have the method {string}', given.method, 'add the method to the request (ex: POST)', 'request, method, api, generator'],
 
   /**
     * ### Given I send a {string} request to {string}
@@ -105,7 +105,7 @@ module.exports = [
    * @function header
    */
   ['the header contains {string} as {data}', given.header, 'add a placeholded value to request headers  (ex "apikey" -> {{ apikey }})', 'request, headers'],
-  ['the header contains {string} as {string}', given.header, 'add a string value to request headers (ex "x-correlation-id" -> "xxxx-xxxxx-1111-2222")', 'request, headers'],
+  ['the header contains {string} as {string}', given.header, 'add a string value to request headers (ex "x-correlation-id" -> "xxxx-xxxxx-1111-2222")', 'request, headers, generator'],
 
   /**
    * ### Given I add the headers:
@@ -192,7 +192,7 @@ module.exports = [
    * @function queryString
    */
   ['the query parameter contains {string} as {data}', given.queryString, 'add a placeholded value to request query parameter (ex "gender" : {{ gender }} for "gender=1")', 'request, query string, qs'],
-  ['the query parameter contains {string} as {string}', given.queryString, 'add a string value to request query parameter  (ex "gender" : "MALE" for "gender=MALE")', 'request, query string, qs'],
+  ['the query parameter contains {string} as {string}', given.queryString, 'add a string value to request query parameter  (ex "gender" : "MALE" for "gender=MALE")', 'request, query string, qs, generator'],
   ['the query parameter contains {string} as {int}', given.queryString, 'add a string value to request query parameter (ex "gender" : "1" for "gender=1")', 'request, query string, qs'],
 
   /**
@@ -313,6 +313,31 @@ module.exports = [
    * @function JsonPayloadTable
    */
   ['I add the request body:', given.payloads, 'Adding multiple query parameters to the request (table format)', 'request, body, dot, table'],
+
+  /**
+   * ### Given the payload:
+   * Add a JSON request body included in the Gherkin doc strings
+   *
+   * @example
+   * Given the payload:
+   * """
+   *   {
+   *     "firstname": "john",
+   *     "lastname": "doe"
+   *   }
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Given the payload:
+   * """
+   * {
+   *     "firstname": "{{ firstName }}"
+   *     "lastname": "{{ lastName }}"
+   * }
+   * """
+   *
+   * @function jsonPayload
+   */
+  ['the payload:', given.jsonPayload, 'Add a JSON request body included in the Gherkin doc strings', 'request, body, dot, jsonbody, generator'],
 
   //  ****************************************************************************************************
   //  FORM REQUEST BODY

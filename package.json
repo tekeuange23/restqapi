@@ -1,6 +1,6 @@
 {
   "name": "@restqa/restqapi",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "private": false,
   "description": "REST API Functional Test engine based on Gerkin - RestQa",
   "scripts": {
@@ -25,20 +25,29 @@
   },
   "main": "src/restqapi/index.js",
   "devDependencies": {
+    "eslint": "^7.16.0",
     "jest": "^25.2.7",
+    "jest-runner-eslint": "^0.10.0",
     "jsdoc-to-markdown": "^5.0.3",
-    "nodemon": "^2.0.3",
-    "npm": "^6.14.7",
-    "standard": "^14.3.3"
+    "nodemon": "^2.0.3"
   },
-  "standard": {
-    "globals": [],
-    "env": [
-      "jest"
-    ],
-    "yoda": [
-      2,
-      "never"
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2017
+    }
+  },
+  "jest": {
+    "projects": [
+      {
+        "displayName": "test"
+      },
+      {
+        "runner": "jest-runner-eslint",
+        "displayName": "lint",
+        "testMatch": [
+          "<rootDir>/src/**/*.js"
+        ]
+      }
     ]
   },
   "repository": {

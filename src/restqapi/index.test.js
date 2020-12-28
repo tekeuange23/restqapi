@@ -1,13 +1,9 @@
-beforeEach(() => {
+afterEach(() => {
   jest.resetModules()
 })
 
 describe('# restqapi', () => {
   test('setSteps', () => {
-    const Steps = require('./steps')
-    jest.mock('./steps')
-    Steps.mockReturnValue(1)
-
     const Restqapi = require('./index')
 
     const instance = new Restqapi({
@@ -16,10 +12,17 @@ describe('# restqapi', () => {
         endSymbol: ']]'
       }
     })
-    instance.setSteps({ foo: 'bar' })
 
-    expect(Steps.mock.calls.length).toBe(1)
-    expect(Steps.mock.calls[0][0]).toEqual({ foo: 'bar' })
+    const Definitions = {
+      Given: jest.fn(),
+      When: jest.fn(),
+      Then: jest.fn()
+    }
+    instance.setSteps(Definitions)
+
+    expect(Definitions.Given).toHaveBeenCalled()
+    expect(Definitions.When).toHaveBeenCalled()
+    expect(Definitions.Then).toHaveBeenCalled()
   })
 
   test('setHooks', () => {
@@ -89,4 +92,165 @@ describe('# restqapi', () => {
     expect($this.data.get.mock.calls.length).toBe(1)
     expect($this.data.get.mock.calls[0][0]).toBe('{{ my-data }}')
   })
+})
+
+
+describe('# restqapi.Generator', () => {
+  test('throw an error if the parameter is empty', () =>{
+    const Restqapi = require('./index')
+    expect(Restqapi.Generator()).rejects.toThrow(new ReferenceError('Please provide an object containing your request'));
+  })
+
+  test('throw an error if the object doesn\'t contains the url', () =>{
+    const Restqapi = require('./index')
+    const query = {
+
+    }
+    expect(Restqapi.Generator(query)).rejects.toThrow(new ReferenceError('Please specify your url'));
+  })
+
+  test('throw an error if the method is not valid', () =>{
+    const Restqapi = require('./index')
+    const query = {
+      url: 'http://www.example.com',
+      method: 'PUUT'
+    }
+    expect(Restqapi.Generator(query)).rejects.toThrow(new TypeError('The method "PUUT" is not valid, please use : GET, POST, PUT, PATCH, DELETE, OPTIONS or HEAD'));
+
+  })
+
+  test('Use method get if it\'s not specified', async () => {
+    const got = require('got')
+    got.mockResolvedValue({
+      restqa: {
+        statusCode: 200,
+        req: {
+          path: '/'
+        },
+        timings: {
+          phases: {
+            total: 1000
+          }
+        },
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: {
+          foo: 'bar',
+          number: 12,
+          booTrue: true,
+          booFalse: false,
+          null: null
+        }
+      }
+    })
+    jest.mock('got')
+    const Restqapi = require('./index')
+    const query = {
+      url: 'http://www.example.com?q=restqa',
+      headers: {
+        'x-api-key': 'xxx-yyy-zzz'
+      },
+      body: {
+        hello: "world",
+        bonjour: "le monde",
+      }
+    }
+    const result = await Restqapi.Generator(query)
+    const expectedResult = `
+Given I have the api gateway hosted on "http://www.example.com"
+  And I have the path "/"
+  And I have the method "GET"
+  And the header contains "x-api-key" as "xxx-yyy-zzz"
+  And the query parameter contains "q" as "restqa"
+  And the payload:
+  """
+{
+  "hello": "world",
+  "bonjour": "le monde"
+}
+  """
+When I run the API
+Then I should receive a response with the status 200
+  And the response body should be equal to:
+  """
+{
+  "foo": "bar",
+  "number": 12,
+  "booTrue": true,
+  "booFalse": false,
+  "null": null
+}
+  """
+`
+    expect(result).toEqual(expectedResult.trim())
+
+    const expectedOptions = {
+      pathname: '/',
+      method: 'GET',
+      protocol: 'http:',
+      hostname: 'www.example.com',
+      searchParams: {
+        q: 'restqa'
+      },
+      json: {
+        hello: "world",
+        bonjour: "le monde"
+      }
+    }
+    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
+  })
+
+  test('No response body', async () => {
+    const got = require('got')
+    got.mockResolvedValue({
+      restqa: {
+        statusCode: 204,
+        req: {
+          path: '/'
+        },
+        timings: {
+          phases: {
+            total: 1000
+          }
+        },
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: null
+      }
+    })
+    jest.mock('got')
+    const Restqapi = require('./index')
+    const query = {
+      url: 'http://www.example.com/logout',
+      method: 'DELETE',
+      headers: {
+        'x-api-key': 'xxx-yyy-zzz',
+        'x-foo': 'bar'
+      }
+    }
+    const result = await Restqapi.Generator(query)
+    const expectedResult = `
+Given I have the api gateway hosted on "http://www.example.com"
+  And I have the path "/logout"
+  And I have the method "DELETE"
+  And the header contains "x-api-key" as "xxx-yyy-zzz"
+  And the header contains "x-foo" as "bar"
+When I run the API
+Then I should receive a response with the status 204
+`
+    expect(result).toEqual(expectedResult.trim())
+
+    const expectedOptions = {
+      pathname: '/logout',
+      method: 'DELETE',
+      protocol: 'http:',
+      hostname: 'www.example.com',
+    }
+    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
+  })
+
 })

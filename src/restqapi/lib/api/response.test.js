@@ -32,7 +32,9 @@ describe('# API  Response', () => {
       'findInBody',
       'findInHeader',
       'getResult',
-      'getOptions'
+      'getOptions',
+      'isJson',
+      'dotBody'
     ]
 
     expect(Object.keys(response)).toEqual(expectedMethods)
@@ -204,5 +206,57 @@ describe('# API  Response', () => {
       },
       timing: 2000
     })
+  })
+
+  test('isJson - true', () => {
+    const Response = require('./response')
+
+    const result = {
+      request: {
+        method: 'POST'
+
+      },
+      statusCode: 201,
+      headers: {
+        'content-type': 'application/json',
+        'x-req-id': 'zz-xx-yy'
+      },
+      body: {
+        foo: {
+          foo: 'bar'
+        }
+      },
+      timing: 2000
+    }
+
+    const response = Response(result)
+
+    expect(response.isJson).toBe(true)
+  })
+
+  test('isJson - false', () => {
+    const Response = require('./response')
+
+    const result = {
+      request: {
+        method: 'POST'
+
+      },
+      statusCode: 201,
+      headers: {
+        'content-type': 'application/text',
+        'x-req-id': 'zz-xx-yy'
+      },
+      body: {
+        foo: {
+          foo: 'bar'
+        }
+      },
+      timing: 2000
+    }
+
+    const response = Response(result)
+
+    expect(response.isJson).toBe(false)
   })
 })

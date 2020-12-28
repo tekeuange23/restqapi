@@ -77,6 +77,10 @@ const Request = function (baseUrl, id) {
     dot.str(property, value, this.options.json)
   }
 
+  const setPayload = (value) => {
+    this.options.json = value
+  }
+
   const setBaseUrl = baseUrl => {
     this.options.baseUrl = baseUrl
   }
@@ -94,6 +98,7 @@ const Request = function (baseUrl, id) {
     setBearer,
     setMethod,
     addPayload,
+    setPayload,
     setBaseUrl,
     setQueryString,
     addFormField

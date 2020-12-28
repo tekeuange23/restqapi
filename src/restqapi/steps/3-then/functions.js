@@ -160,6 +160,14 @@ Then.shouldBeNow = function (property) {
   assert.ok(diff < 60000, err)
 }
 
+Then.shouldBeJsonBody = function (value) {
+  value = this.data.get(value)
+  value = JSON.parse(value)
+  let { body } = this.api.response
+  const err = `${this.api.response.request.prefix} The response body should be '${JSON.stringify(value)}', but received : '${JSON.stringify(body)}`
+  assert.deepStrictEqual(body, value, err)
+}
+
 /*
  * =========================================
  * Response API DataSet Functions

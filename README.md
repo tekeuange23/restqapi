@@ -174,6 +174,76 @@ This repository comes with few examples, in order to run them, invoke the follow
 npm run start:example
 ```
 
+## Generator 
+
+Because sometime it can be annoying to create big test case, A good thing is that you RestQapi can generate Test scenario for you!
+In a few word, here is the simple process:
+  
+  * Share your request information
+  * RestQapi will run your request and get the response from your request
+  * From the request + the response a test scenario will be genereated
+
+### Example
+
+```
+const { Generator } = require('@restqa/restqapi')
+
+
+async function generate (url) {
+  let options = {
+    url
+  }
+ let result = await Generator(options)
+ console.log(result)
+}
+
+generate('https://jsonplaceholder.typicode.com/todos/1')
+```
+
+Output :
+
+```
+Given I have the api gateway hosted on "https://jsonplaceholder.typicode.com"
+  And I have the path "/todos/1"
+  And I have the method "GET"
+When I run the API
+Then I should receive a response with the status 200
+  And the response body should be equal to:
+  """
+{
+  "userId": 1,
+  "id": 1,
+  "title": "delectus aut autem",
+  "completed": false
+}
+  """
+```
+
+
+### Options 
+
+In order to generate a scenario you can share different options:
+
+```
+
+let options = {
+  url: 'http://www.example.com?q=restqa',
+  method: 'POST',
+  headers: {
+    'x-api-key': 'xxx-yyy-zzz'
+  },
+  body: {
+    hello: "world",
+    bonjour: "le monde",
+  }
+}
+
+```
+
+
+
+Enjoy!
+
 ## License
 
 [Apache 2.0 License](./LICENSE)

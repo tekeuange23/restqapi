@@ -17,6 +17,13 @@ module.exports = async function(options) {
 
   let api = new API({ config })
   api.request.setMethod(options.method)
+  options.URL.searchParams.forEach((value, key) => {
+    api.request.setQueryString(key, value)
+  })
+
+  if (options.body) {
+    api.request.setPayload(options.body)
+  }
   
   await api.run()
 
@@ -27,13 +34,13 @@ module.exports = async function(options) {
       method: '',
       headers: [],
       query: [],
-      body: []
+      body: null
     },
     action: '',
     response: {
       statusCode: 0,
       headers: [],
-      body: []
+      body: null
     }
   }
   const Given = (definition, fn, description, tags) => {
@@ -51,6 +58,35 @@ module.exports = async function(options) {
     if (tags.includes('method')) {
       mapping.request.method = definition.replace('{string}', `"${options.method}"`)
     }
+    
+    if (tags.includes('qs')) {
+      options.URL.searchParams.forEach((value, key) => {
+        definition = definition
+          .replace('{string}', `"${key}"`)
+          .replace('{string}', `"${value}"`)
+        mapping.request.query.push(definition)
+      })
+    }
+
+    if (tags.includes('headers') && options.headers) {
+      Object.keys(options.headers).forEach(key => {
+        let _definition = definition
+          .replace('{string}', `"${key}"`)
+          .replace('{string}', `"${options.headers[key]}"`)
+        mapping.request.headers.push(_definition)
+      })
+    }
+
+    if (tags.includes('jsonbody') && options.body) {
+      definition = `
+${definition}
+  """
+${JSON.stringify(options.body, null, 2)}
+  """
+`
+      mapping.request.body = definition.trim()
+    }
+
   }
 
   const When  = (definition, fn, description, tags) => {
@@ -62,92 +98,44 @@ module.exports = async function(options) {
   }
 
 
-  const bodiesDefinitions = []
   const Then = (definition, fn, description, tags) => {
     if (!tags.includes('generator')) return
     if (tags.includes('status')) {
       mapping.response.statusCode = definition.replace('{int}', api.response.statusCode)
-      return
     }
 
-    if (tags.includes('body')) {
-      bodiesDefinitions.push({ tags, definition })
+    if (tags.includes('jsonbody') && api.response.body) {
+      definition = `
+${definition}
+  """
+${JSON.stringify(api.response.body, null, 2)}
+  """
+`
+      mapping.response.body = definition.trim()
     }
   }
   
 
   Steps({Given, When, Then})
 
-  Object.keys(api.response.dotBody).forEach((key, i, properties) => {
-    let value = api.response.dotBody[key]
-    let definition = ''
-
-    if (/.\d./.test(key) && false === /.\d./.test(properties[i-1])) {
-      let match = key.match(/((.*).)?(\d.)(.*)/)
-
-      
-      if (match[1]) {
-        let items = api.response.findInBody('$.' + match[2])
-
-        definition = bodiesDefinitions.find(obj => obj.tags.includes('array')).definition.replace('{string}', `"${match[2]}"`)
-        mapping.response.body.push(definition)
-
-        definition = bodiesDefinitions.find(obj => obj.tags.includes('array-items')).definition
-          .replace('{string}', `"${match[2]}"`)
-          .replace('{int}', `${items.length}`)
-        mapping.response.body.push(definition)
-      }
-    }
-
-    if (/^\d./.test(key) && 0 === i) {
-      let match = key.match(/^(\d.)/)
-      let items = properties
-        .reduce((all, ikey) => {
-          let _match = ikey.match(/^(\d.)/)
-          if (_match ) all[_match[0]] = true
-          return all
-        }, {})
-
-      definition = bodiesDefinitions.find(obj => obj.tags.includes('array-body')).definition.replace('{int}', `${Object.keys(items).length}`)
-      mapping.response.body.push(definition)
-    }
-
-    if (typeof value === 'string') {
-      definition = bodiesDefinitions.find(obj => obj.tags.includes('string')).definition
-            .replace('{string}', `"${key}"`)
-            .replace('{string}', `"${value}"`)
-    }
-
-    if (typeof value === 'number') {
-      definition = bodiesDefinitions.find(obj => obj.tags.includes('number')).definition
-            .replace('{string}', `"${key}"`)
-            .replace('{int}', `${value}`)
-    }
-
-    if (typeof value === 'boolean' && true === value) {
-      definition = bodiesDefinitions.find(obj => obj.tags.includes('true')).definition.replace('{string}', `"${key}"`)
-    }
-
-    if (typeof value === 'boolean' && false === value) {
-      definition = bodiesDefinitions.find(obj => obj.tags.includes('false')).definition.replace('{string}', `"${key}"`)
-    }
-
-    if (value === null) {
-      definition = bodiesDefinitions.find(obj => obj.tags.includes('null')).definition.replace('{string}', `"${key}"`)
-    }
-
-    mapping.response.body.push(definition)
-  })
-
   const result = []
   result.push(`Given ${mapping.request.host}`)
   result.push(`  And ${mapping.request.path}`)
   result.push(`  And ${mapping.request.method}`)
+  mapping.request.headers.forEach(step => {
+    result.push(`  And ${step}`)
+  })
+  mapping.request.query.forEach(step => {
+    result.push(`  And ${step}`)
+  })
+  if (mapping.request.body) {
+    result.push(`  And ${mapping.request.body}`)
+  }
   result.push(`When ${mapping.action}`)
   result.push(`Then ${mapping.response.statusCode}`)
-  mapping.response.body.forEach(definition => {
-    result.push(`  And ${definition}`)
-  })
+  if (mapping.response.body) {
+    result.push(`  And ${mapping.response.body}`)
+  }
 
   return result.join('\n')
 }

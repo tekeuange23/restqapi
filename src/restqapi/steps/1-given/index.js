@@ -105,7 +105,7 @@ module.exports = [
    * @function header
    */
   ['the header contains {string} as {data}', given.header, 'add a placeholded value to request headers  (ex "apikey" -> {{ apikey }})', 'request, headers'],
-  ['the header contains {string} as {string}', given.header, 'add a string value to request headers (ex "x-correlation-id" -> "xxxx-xxxxx-1111-2222")', 'request, headers'],
+  ['the header contains {string} as {string}', given.header, 'add a string value to request headers (ex "x-correlation-id" -> "xxxx-xxxxx-1111-2222")', 'request, headers, generator'],
 
   /**
    * ### Given I add the headers:
@@ -192,7 +192,7 @@ module.exports = [
    * @function queryString
    */
   ['the query parameter contains {string} as {data}', given.queryString, 'add a placeholded value to request query parameter (ex "gender" : {{ gender }} for "gender=1")', 'request, query string, qs'],
-  ['the query parameter contains {string} as {string}', given.queryString, 'add a string value to request query parameter  (ex "gender" : "MALE" for "gender=MALE")', 'request, query string, qs'],
+  ['the query parameter contains {string} as {string}', given.queryString, 'add a string value to request query parameter  (ex "gender" : "MALE" for "gender=MALE")', 'request, query string, qs, generator'],
   ['the query parameter contains {string} as {int}', given.queryString, 'add a string value to request query parameter (ex "gender" : "1" for "gender=1")', 'request, query string, qs'],
 
   /**

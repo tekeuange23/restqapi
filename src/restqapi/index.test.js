@@ -95,10 +95,10 @@ describe('# restqapi', () => {
 })
 
 
-describe('# restqapi.generate', () => {
+describe('# restqapi.Generator', () => {
   test('throw an error if the parameter is empty', () =>{
     const Restqapi = require('./index')
-    expect(Restqapi.generate()).rejects.toThrow(new ReferenceError('Please provide an object containing your request'));
+    expect(Restqapi.Generator()).rejects.toThrow(new ReferenceError('Please provide an object containing your request'));
   })
 
   test('throw an error if the object doesn\'t contains the url', () =>{
@@ -106,7 +106,7 @@ describe('# restqapi.generate', () => {
     const query = {
 
     }
-    expect(Restqapi.generate(query)).rejects.toThrow(new ReferenceError('Please specify your url'));
+    expect(Restqapi.Generator(query)).rejects.toThrow(new ReferenceError('Please specify your url'));
   })
 
   test('throw an error if the method is not valid', () =>{
@@ -115,7 +115,7 @@ describe('# restqapi.generate', () => {
       url: 'http://www.example.com',
       method: 'PUUT'
     }
-    expect(Restqapi.generate(query)).rejects.toThrow(new TypeError('The method "PUUT" is not valid, please use : GET, POST, PUT, PATCH, DELETE, OPTIONS or HEAD'));
+    expect(Restqapi.Generator(query)).rejects.toThrow(new TypeError('The method "PUUT" is not valid, please use : GET, POST, PUT, PATCH, DELETE, OPTIONS or HEAD'));
 
   })
 
@@ -147,20 +147,41 @@ describe('# restqapi.generate', () => {
     jest.mock('got')
     const Restqapi = require('./index')
     const query = {
-      url: 'http://www.example.com'
+      url: 'http://www.example.com?q=restqa',
+      headers: {
+        'x-api-key': 'xxx-yyy-zzz'
+      },
+      body: {
+        hello: "world",
+        bonjour: "le monde",
+      }
     }
-    const result = await Restqapi.generate(query)
+    const result = await Restqapi.Generator(query)
     const expectedResult = `
 Given I have the api gateway hosted on "http://www.example.com"
   And I have the path "/"
   And I have the method "GET"
+  And the header contains "x-api-key" as "xxx-yyy-zzz"
+  And the query parameter contains "q" as "restqa"
+  And the payload:
+  """
+{
+  "hello": "world",
+  "bonjour": "le monde"
+}
+  """
 When I run the API
 Then I should receive a response with the status 200
-  And the response body at "foo" should equal "bar"
-  And the response body at "number" should equal 12
-  And the response body at "booTrue" should equal true
-  And the response body at "booFalse" should equal false
-  And the response body at "null" should equal null
+  And the response body should be equal to:
+  """
+{
+  "foo": "bar",
+  "number": 12,
+  "booTrue": true,
+  "booFalse": false,
+  "null": null
+}
+  """
 `
     expect(result).toEqual(expectedResult.trim())
 
@@ -168,17 +189,24 @@ Then I should receive a response with the status 200
       pathname: '/',
       method: 'GET',
       protocol: 'http:',
-      hostname: 'www.example.com'
+      hostname: 'www.example.com',
+      searchParams: {
+        q: 'restqa'
+      },
+      json: {
+        hello: "world",
+        bonjour: "le monde"
+      }
     }
     expect(got.mock.calls.length).toBe(1)
     expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
   })
 
-  test('Get scenario with multiple level on the response body', async () => {
+  test('No response body', async () => {
     const got = require('got')
     got.mockResolvedValue({
       restqa: {
-        statusCode: 200,
+        statusCode: 204,
         req: {
           path: '/'
         },
@@ -190,112 +218,39 @@ Then I should receive a response with the status 200
         headers: {
           'content-type': 'application/json'
         },
-        body: {
-          foo: 'bar',
-          number: 12,
-          booTrue: true,
-          booFalse: false,
-          null: null,
-          items: [{
-            hello: 'world',
-            bonjour: 'le monde'
-          }],
-          '0': 'zero',
-        }
+        body: null
       }
     })
     jest.mock('got')
     const Restqapi = require('./index')
     const query = {
-      url: 'http://www.example.com'
-    }
-    const result = await Restqapi.generate(query)
-    const expectedResult = `
-Given I have the api gateway hosted on "http://www.example.com"
-  And I have the path "/"
-  And I have the method "GET"
-When I run the API
-Then I should receive a response with the status 200
-  And the response body at "0" should equal "zero"
-  And the response body at "foo" should equal "bar"
-  And the response body at "number" should equal 12
-  And the response body at "booTrue" should equal true
-  And the response body at "booFalse" should equal false
-  And the response body at "null" should equal null
-  And the response body at "items" should be an array
-  And the response body at "items" should be an array of 1 item(s)
-  And the response body at "items.0.hello" should equal "world"
-  And the response body at "items.0.bonjour" should equal "le monde"
-`
-    expect(result).toEqual(expectedResult.trim())
-
-    const expectedOptions = {
-      pathname: '/',
-      method: 'GET',
-      protocol: 'http:',
-      hostname: 'www.example.com'
-    }
-    expect(got.mock.calls.length).toBe(1)
-    expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
-  })
-
-  test.skip('Get scenario with an array as a response body', async () => {
-    const got = require('got')
-    got.mockResolvedValue({
-      restqa: {
-        statusCode: 200,
-        req: {
-          path: '/'
-        },
-        timings: {
-          phases: {
-            total: 1000
-          }
-        },
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: [{
-          hello: 'world'
-        }, {
-          bonjour: 'le monde',
-          items: [{
-            foo: 'bar'
-          }]
-        }]
+      url: 'http://www.example.com/logout',
+      method: 'DELETE',
+      headers: {
+        'x-api-key': 'xxx-yyy-zzz',
+        'x-foo': 'bar'
       }
-    })
-    jest.mock('got')
-    const Restqapi = require('./index')
-    const query = {
-      url: 'http://www.example.com'
     }
-    const result = await Restqapi.generate(query)
-    console.log(result)
+    const result = await Restqapi.Generator(query)
     const expectedResult = `
 Given I have the api gateway hosted on "http://www.example.com"
-  And I have the path "/"
-  And I have the method "GET"
+  And I have the path "/logout"
+  And I have the method "DELETE"
+  And the header contains "x-api-key" as "xxx-yyy-zzz"
+  And the header contains "x-foo" as "bar"
 When I run the API
-Then I should receive a response with the status 200
-  And the response list should contain 2 item(s)
-  And the response body at "0.hello" should equal "world"
-  And the response body at "1.bonjour" should equal "le monde"
-  And the response body at "1.items" should be an array
-  And the response body at "1.items" should be an array of 1 item(s)
-  And the response body at "1.items" should be an array
-  And the response body at "1.items" should be an array of 1 item(s)
-  And the response body at "1.items.0.foo" should equal "bar"
+Then I should receive a response with the status 204
 `
     expect(result).toEqual(expectedResult.trim())
 
     const expectedOptions = {
-      pathname: '/',
-      method: 'GET',
+      pathname: '/logout',
+      method: 'DELETE',
       protocol: 'http:',
-      hostname: 'www.example.com'
+      hostname: 'www.example.com',
     }
     expect(got.mock.calls.length).toBe(1)
     expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
   })
+
 })

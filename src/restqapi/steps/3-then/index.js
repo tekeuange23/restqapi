@@ -146,8 +146,8 @@ module.exports = [
    * @function bodyPropertyEqual
    */
   ['the response body at {string} should equal {data}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, data'],
-  ['the response body at {string} should equal {string}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, string, generator'],
-  ['the response body at {string} should equal {int}', then.shouldBeNumber, 'Check a value in the body response as a int (dot-object pattern)', 'api, response, body, jsonpath, dot-object, number, generator'],
+  ['the response body at {string} should equal {string}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, string'],
+  ['the response body at {string} should equal {int}', then.shouldBeNumber, 'Check a value in the body response as a int (dot-object pattern)', 'api, response, body, jsonpath, dot-object, number'],
 
   /**
    * ### Then the response body at {string} should equal true
@@ -161,7 +161,7 @@ module.exports = [
    *
    * @function bodyPropertyEqualTrue
    */
-  ['the response body at {string} should equal true', then.shouldBeTrue, 'Check if a value is true in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, true, boolean, generator'],
+  ['the response body at {string} should equal true', then.shouldBeTrue, 'Check if a value is true in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, true, boolean'],
 
   /**
    * ### Then the response body at {string} should equal false
@@ -175,7 +175,7 @@ module.exports = [
    *
    * @function bodyPropertyEqualFalse
    */
-  ['the response body at {string} should equal false', then.shouldBeFalse, 'Check if a value is false in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, false, boolean, generator'],
+  ['the response body at {string} should equal false', then.shouldBeFalse, 'Check if a value is false in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, false, boolean'],
 
   /**
    * ### Then the response body at {string} should equal null
@@ -189,7 +189,7 @@ module.exports = [
    *
    * @function bodyPropertyEqualNull
    */
-  ['the response body at {string} should equal null', then.shouldBeNull, 'Check if a value is null in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, null, generator'],
+  ['the response body at {string} should equal null', then.shouldBeNull, 'Check if a value is null in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, null'],
 
   /**
    * ### Then the response body at {string} should equal empty
@@ -217,7 +217,7 @@ module.exports = [
    *
    * @function bodyPropertyIsArray
    */
-  ['the response body at {string} should be an array', then.shouldBeAnArray, 'Check if a value is an array in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, array, generator'],
+  ['the response body at {string} should be an array', then.shouldBeAnArray, 'Check if a value is an array in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, array'],
 
   /**
    * ### Then the response body at {string} should be an array of {int} item(s)
@@ -231,7 +231,7 @@ module.exports = [
    *
    * @function bodyPropertyIsArrayOfLenght
    */
-  ['the response body at {string} should be an array of {int} item(s)', then.shouldBeAnArrayOfXItems, 'Check if a value is an array of a few items in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, array, array-items, generator'],
+  ['the response body at {string} should be an array of {int} item(s)', then.shouldBeAnArrayOfXItems, 'Check if a value is an array of a few items in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, array, array-items'],
 
   /**
    * ### Then the response body at {string} should be close to now
@@ -284,7 +284,7 @@ module.exports = [
    *
    * @function bodyListContainNumberOfItem
    */
-  ['the response list should contain {int} item(s)', then.shouldBeArraySize, 'Check if the response list is of a certain size', 'api, response, body, jsonpath, dot-object, array-body, generator'],
+  ['the response list should contain {int} item(s)', then.shouldBeArraySize, 'Check if the response list is of a certain size', 'api, response, body, jsonpath, dot-object, array-body'],
 
   /**
    * ### Then the response body should be equal to:
@@ -300,7 +300,7 @@ module.exports = [
    *
    * @function bodyJson
    */
-  ['the response body should be equal to:', then.shouldBeJsonBody, 'Check if the response body is equal to the passed json body', 'api, response, body, jsonpath, dot-object, array-body, generator'],
+  ['the response body should be equal to:', then.shouldBeJsonBody, 'Check if the response body is equal to the passed json body', 'api, response, body, jsonpath, dot-object, jsonbody, generator'],
 
 
 
@@ -351,7 +351,7 @@ module.exports = [
    *
    * @function cookiejar
    */
-  ['I add the cookie to the jar', then.cookieJar, 'Add the cookie from the response the a storage to get reused on the next call', 'api, cooke, jar']
+  ['I add the cookie to the jar', then.cookieJar, 'Add the cookie from the response the a storage to get reused on the next call', 'api, cooke, jar'],
 
   /**
    * ### Then I print the request
@@ -387,6 +387,5 @@ module.exports = [
    *
    * @function printValue
    */
-  ['I print the value {string}', then.printValue, 'Print a specific value into the console', 'api, console, debug'],
-
+  ['I print the value {string}', then.printValue, 'Print a specific value into the console', 'api, console, debug']
 ]

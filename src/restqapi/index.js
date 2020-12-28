@@ -42,6 +42,6 @@ const RestQapi = function (config) {
   }
 }
 
-RestQapi.generate = require('./lib/generator')
+RestQapi.Generator = require('./lib/generator')
 
 module.exports = RestQapi

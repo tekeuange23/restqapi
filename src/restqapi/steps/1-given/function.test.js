@@ -7,7 +7,7 @@ describe('#StepDefinition - given - functions', () => {
 
   test('Configuration', () => {
     const fns = Object.keys(Given)
-    expect(fns.length).toBe(20)
+    expect(fns.length).toBe(21)
     const expectedFunctions = [
       'gateway',
       'gatewayHost',
@@ -26,6 +26,7 @@ describe('#StepDefinition - given - functions', () => {
       'payloadFalse',
       'payloadEmptyArray',
       'payloads',
+      'jsonPayload',
       'form',
       'forms',
       'formUpload'
@@ -416,6 +417,32 @@ describe('#StepDefinition - given - functions', () => {
       expect($this.data.get.mock.calls.length).toBe(2)
       expect($this.data.get.mock.calls[0][0]).toBe('foo')
       expect($this.data.get.mock.calls[1][0]).toBe('bar')
+    })
+
+    test('jsonPayload', () => {
+      const $this = {
+        api: {
+          request: {
+            setPayload: jest.fn()
+          }
+        },
+        data: {
+          get: jest.fn(_ => {
+            return _ 
+          })
+        }
+      }
+
+      const json = `
+        {
+          "foo": "bar"
+        }
+      `
+
+      Given.jsonPayload.call($this, json)
+      expect($this.api.request.setPayload.mock.calls.length).toBe(1)
+      expect($this.api.request.setPayload.mock.calls[0][0]).toEqual(JSON.parse(json))
+      expect($this.data.get.mock.calls.length).toBe(1)
     })
   })
 

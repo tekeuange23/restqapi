@@ -119,6 +119,12 @@ Given.payloads = function (table) {
   table.raw().forEach(args => Given.payload.apply(this, args))
 }
 
+Given.jsonPayload = function (value) {
+  value = this.data.get(value)
+  value = JSON.parse(value)
+  this.api.request.setPayload(value)
+}
+
 Given.form = function (field, value) {
   value = this.data.get(value)
   this.api.request.addFormField(field, value)

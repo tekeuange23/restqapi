@@ -239,7 +239,7 @@ Then I should receive a response with the status 200
     expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
   })
 
-  test('Get scenario with an array as a response body', async () => {
+  test.skip('Get scenario with an array as a response body', async () => {
     const got = require('got')
     got.mockResolvedValue({
       restqa: {

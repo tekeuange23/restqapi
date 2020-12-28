@@ -314,6 +314,31 @@ module.exports = [
    */
   ['I add the request body:', given.payloads, 'Adding multiple query parameters to the request (table format)', 'request, body, dot, table'],
 
+  /**
+   * ### Given the payload:
+   * Add a JSON request body included in the Gherkin doc strings
+   *
+   * @example
+   * Given the payload:
+   * """
+   *   {
+   *     "firstname": "john",
+   *     "lastname": "doe"
+   *   }
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Given the payload:
+   * """
+   * {
+   *     "firstname": "{{ firstName }}"
+   *     "lastname": "{{ lastName }}"
+   * }
+   * """
+   *
+   * @function jsonPayload
+   */
+  ['the payload:', given.jsonPayload, 'Add a JSON request body included in the Gherkin doc strings', 'request, body, dot, jsonbody, generator'],
+
   //  ****************************************************************************************************
   //  FORM REQUEST BODY
   //  ****************************************************************************************************

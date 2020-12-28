@@ -286,6 +286,24 @@ module.exports = [
    */
   ['the response list should contain {int} item(s)', then.shouldBeArraySize, 'Check if the response list is of a certain size', 'api, response, body, jsonpath, dot-object, array-body, generator'],
 
+  /**
+   * ### Then the response body should be equal to:
+   * Verify the response body against a JSON object
+   *
+   * @example 
+   * Then the response body should be equal to:
+   * """
+   *   {
+   *     "firstName": "John"
+   *   }
+   * """
+   *
+   * @function bodyJson
+   */
+  ['the response body should be equal to:', then.shouldBeJsonBody, 'Check if the response body is equal to the passed json body', 'api, response, body, jsonpath, dot-object, array-body, generator'],
+
+
+
   // Response Dataset
 
   /**
@@ -323,6 +341,19 @@ module.exports = [
   ['add the value {string} from the response body to the dataset as {string}', then.addBodyPropertyToDataset, 'Take on of the value from the response body and add it to the dataset', 'api, response, body, jsonpath, dot-object, dataset'],
 
   /**
+   * ### Then I add the cookie to the jar
+   * Add the cookie into the Jar ^^
+   * 
+   * By adding the cookie into the jar the following request will contains the cookie into the header
+   *
+   * @example
+   * Then I add the cookiie to the jar
+   *
+   * @function cookiejar
+   */
+  ['I add the cookie to the jar', then.cookieJar, 'Add the cookie from the response the a storage to get reused on the next call', 'api, cooke, jar']
+
+  /**
    * ### Then I print the request
    * Print the Request information (url, headers, body, method) into the console
    * This will allow you to debug your scenario.
@@ -358,5 +389,4 @@ module.exports = [
    */
   ['I print the value {string}', then.printValue, 'Print a specific value into the console', 'api, console, debug'],
 
-  ['I add the cookie to the jar', then.cookieJar, 'Add the cookie from the response the a storage to get reused on the next call', 'api, cooke, jar']
 ]

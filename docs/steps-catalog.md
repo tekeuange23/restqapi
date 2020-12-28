@@ -34,6 +34,7 @@ All the steps related to the API Request
     * [~JsonPayloadFalse()](#module_Given..JsonPayloadFalse)
     * [~JsonPayloadEmptyArray()](#module_Given..JsonPayloadEmptyArray)
     * [~JsonPayloadTable()](#module_Given..JsonPayloadTable)
+    * [~jsonPayload()](#module_Given..jsonPayload)
     * [~FormBody()](#module_Given..FormBody)
     * [~FormBody()](#module_Given..FormBody)
     * [~FormBodyTable()](#module_Given..FormBodyTable)
@@ -128,8 +129,6 @@ Given I have the bearer token {string}
 ```js
 Given i have the bearer token {{ token }}
 ```
-
-
 <a name="module_Given..AuthorizatioinHeaderBasicAuth"></a>
 ### Given I use basic access authentication using the username {string} and the password {string}
 Set the basic authentication into the authorization headers
@@ -146,7 +145,6 @@ Given I use basic access authentication using the username {{ username }} and th
 Given I have the basic auth user {{ username }} pass {{ password }}
 Given I use basic auth with {{ username }} / {{ password }}
 ```
-
 <a name="module_Given..queryString"></a>
 ### Given the query parameter contains {string} as {string}
 Set one or more request query parameters (example: /pets?price=10&name=john)
@@ -262,6 +260,29 @@ Given I add the request body:
   | firstname    | {{ firstName }} |
   | lastname     | {{ lastName }}  |
 ```
+<a name="module_Given..jsonPayload"></a>
+### Given the payload:
+Add a JSON request body included in the Gherkin doc strings
+
+**Example**  
+```js
+Given the payload:
+"""
+  {
+    "firstname": "john",
+    "lastname": "doe"
+  }
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Given the payload:
+"""
+{
+    "firstname": "{{ firstName }}"
+    "lastname": "{{ lastName }}"
+}
+"""
+```
 <a name="module_Given..FormBody"></a>
 ### I add the form value {string} as {string | int | float | placeholder | data}
 Set one or more request form body
@@ -354,8 +375,10 @@ All the steps related to the API response
     * [~bodyPropertyIsNotNull()](#module_Then..bodyPropertyIsNotNull)
     * [~bodyPropertyShouldMatchRegexp()](#module_Then..bodyPropertyShouldMatchRegexp)
     * [~bodyListContainNumberOfItem()](#module_Then..bodyListContainNumberOfItem)
+    * [~bodyJson()](#module_Then..bodyJson)
     * [~saveHeaderPropertyIntoTheDataset()](#module_Then..saveHeaderPropertyIntoTheDataset)
     * [~saveBodyPropertyIntoTheDataset()](#module_Then..saveBodyPropertyIntoTheDataset)
+    * [~cookiejar()](#module_Then..cookiejar)
     * [~printRequest()](#module_Then..printRequest)
     * [~printResponse()](#module_Then..printResponse)
     * [~printValue()](#module_Then..printValue)
@@ -575,6 +598,19 @@ Ensure a JSON response body has an array at the root level an contains a given n
 ```js
 Then the response list contains "12" items
 ```
+<a name="module_Then..bodyJson"></a>
+### Then the response body should be equal to:
+Verify the response body against a JSON object
+
+**Example**  
+```js
+Then the response body should be equal to:
+"""
+  {
+    "firstName": "John"
+  }
+"""
+```
 <a name="module_Then..saveHeaderPropertyIntoTheDataset"></a>
 ### Then add the value {string} from the response header to the dataset as {string}
 Pick of the reponse header value and add it into the dataset storage
@@ -602,6 +638,16 @@ Given i have the api gateway
 Then add the value "$.user.id"  from the response body to the dataset as "userId"
 Given i have the api gateway
   And I have the path "/users/{{userId}}"
+```
+<a name="module_Then..cookiejar"></a>
+### Then I add the cookie to the jar
+Add the cookie into the Jar ^^
+
+By adding the cookie into the jar the following request will contains the cookie into the header
+
+**Example**  
+```js
+Then I add the cookiie to the jar
 ```
 <a name="module_Then..printRequest"></a>
 ### Then I print the request

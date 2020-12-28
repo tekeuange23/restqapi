@@ -98,6 +98,7 @@ const Request = function (baseUrl, id) {
     setBearer,
     setMethod,
     addPayload,
+    setPayload,
     setBaseUrl,
     setQueryString,
     addFormField

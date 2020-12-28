@@ -1,4 +1,4 @@
-beforeEach(() => {
+afterEach(() => {
   jest.resetModules()
 })
 

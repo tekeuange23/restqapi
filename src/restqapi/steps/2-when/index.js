@@ -26,5 +26,5 @@ module.exports = [
     *
     * @function callApi
     */
-  ['I run the API', when.callApi, 'Trigger the api request', 'api, call']
+  ['I run the API', when.callApi, 'Trigger the api request', 'api, call, generator']
 ]

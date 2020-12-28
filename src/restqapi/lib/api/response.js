@@ -4,7 +4,7 @@ const jp = require('jsonpath')
 const Response = function (result) {
   const { request, statusCode, headers, body, timing } = result
 
-  const isJson = (headers['content-type'] || '').match(/application\/json/i)
+  const isJson = /application\/json/i.test(headers['content-type'] || '')
 
   let dotBody = {}
 
@@ -42,7 +42,9 @@ const Response = function (result) {
     findInBody,
     findInHeader,
     getResult: () => result,
-    getOptions
+    getOptions,
+    isJson,
+    dotBody
   }
 }
 

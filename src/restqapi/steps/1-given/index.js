@@ -41,7 +41,7 @@ module.exports = [
     *
     * @function gateway
     */
-  ['I have the api gateway hosted on {string}', given.gatewayHost, 'Create a new api request targeting on a given api gateway', 'api, url'],
+  ['I have the api gateway hosted on {string}', given.gatewayHost, 'Create a new api request targeting on a given api gateway', 'api, url, host, generator'],
 
   // Path + method
 
@@ -57,7 +57,7 @@ module.exports = [
     *
     * @function path
     */
-  ['I have the path {string}', given.path, 'add the path of the request (ex: /quotes)', 'request, path, api'],
+  ['I have the path {string}', given.path, 'add the path of the request (ex: /quotes)', 'request, path, api, generator'],
 
   /**
     * ### Given I have the method {string}
@@ -69,7 +69,7 @@ module.exports = [
     *
     * @function method
     */
-  ['I have the method {string}', given.method, 'add the method to the request (ex: POST)', 'request, method, api'],
+  ['I have the method {string}', given.method, 'add the method to the request (ex: POST)', 'request, method, api, generator'],
 
   /**
     * ### Given I send a {string} request to {string}

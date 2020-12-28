@@ -65,7 +65,7 @@ setWorldConstructor(rQapi.getWorld())
 
 In order to run the test you will need to pass an option object to the RestQapi instance
 
-```
+```js
 const config = {
   name: 'local',
   url: 'http://host.docker.internal:8080',
@@ -124,7 +124,7 @@ The sheet's name is *users* and contains the following information
 
 Then to use the **Lois Lane** information into the scenario you will just need have the following steps
 
-```
+```gherkin
 Given the query parameter contains "firstname" as {{ users.3.firstname }}
 Given the query parameter contains "lastname" as {{ users.3.lastname }}
 Given the query parameter contains "gender" as {{ users.3.gender }}
@@ -147,7 +147,7 @@ Secret are private data that might be required by your api to response properly.
 In order to have your secret extracted from you scenario you can add them in the options
 Then you can use it exactly like any other dataset:
 
-```
+```js
 // world.js
 
 const options = {
@@ -161,7 +161,7 @@ const options = {
 
 Then inside your scenario : 
 
-```
+```gherkin
 Given the header contains "x-api-key" as {{ api-key }}
 ```
 
@@ -185,7 +185,7 @@ In a few word, here is the simple process:
 
 ### Example
 
-```
+```js
 const { Generator } = require('@restqa/restqapi')
 
 
@@ -202,7 +202,7 @@ generate('https://jsonplaceholder.typicode.com/todos/1')
 
 Output :
 
-```
+```gherkin
 Given I have the api gateway hosted on "https://jsonplaceholder.typicode.com"
   And I have the path "/todos/1"
   And I have the method "GET"
@@ -224,7 +224,7 @@ Then I should receive a response with the status 200
 
 In order to generate a scenario you can share different options:
 
-```
+```js
 
 let options = {
   url: 'http://www.example.com?q=restqa',

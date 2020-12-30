@@ -369,7 +369,7 @@ module.exports = [
    *
    * @function FormBody
    */
-  ['I add the form value {string} as {string}', given.form, 'Adding value into form request body', 'request, body, form'],
+  ['I add the form value {string} as {string}', given.form, 'Adding value into form request body', 'request, body, form, generator'],
   ['I add the form value {string} as {int}', given.form, 'Adding value into form request body', 'request, body, form, number'],
   ['I add the form value {string} as {float}', given.form, 'Adding value into form request body', 'request, body, form, float'],
   ['I add the form value {string} as {data}', given.form, 'Adding placeholded value into form request body', 'request, body, form'],

@@ -14,7 +14,6 @@ module.exports = async function(options) {
     url: options.url
   }
 
-
   let api = new API({ config })
   api.request.setMethod(options.method)
   options.URL.searchParams.forEach((value, key) => {
@@ -37,6 +36,10 @@ module.exports = async function(options) {
     const encoded = Buffer.from(options.user.username + ':' + options.user.password, 'utf8').toString('base64')
     api.request.setHeader('authorization', `Basic ${encoded}`)
   }
+
+  Object.keys(options.form || {}).forEach((key) => {
+    api.request.addFormField(key, options.form[key])
+  })
   
   await api.run()
 
@@ -47,7 +50,8 @@ module.exports = async function(options) {
       method: '',
       headers: [],
       query: [],
-      body: null
+      body: null,
+      form: []
     },
     action: '',
     response: {
@@ -79,12 +83,21 @@ module.exports = async function(options) {
       mapping.request.headers.push(_def)
     }
     
+    if (tags.includes('form') && options.form) {
+      Object.keys(options.form).forEach((key) => {
+        let _def = definition
+          .replace('{string}', `"${key}"`)
+          .replace('{string}', `"${options.form[key]}"`)
+        mapping.request.form.push(_def)
+      })
+    }
+
     if (tags.includes('qs')) {
       options.URL.searchParams.forEach((value, key) => {
-        definition = definition
+        let _def = definition
           .replace('{string}', `"${key}"`)
           .replace('{string}', `"${value}"`)
-        mapping.request.query.push(definition)
+        mapping.request.query.push(_def)
       })
     }
 
@@ -146,6 +159,9 @@ ${JSON.stringify(api.response.body, null, 2)}
     result.push(`  And ${step}`)
   })
   mapping.request.query.forEach(step => {
+    result.push(`  And ${step}`)
+  })
+  mapping.request.form.forEach(step => {
     result.push(`  And ${step}`)
   })
   if (mapping.request.body) {

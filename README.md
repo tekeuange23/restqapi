@@ -232,6 +232,10 @@ let options = {
   headers: {
     'x-api-key': 'xxx-yyy-zzz'
   },
+  user: {
+    username: 'john',
+    password: 'doe'
+  },
   body: {
     hello: "world",
     bonjour: "le monde",

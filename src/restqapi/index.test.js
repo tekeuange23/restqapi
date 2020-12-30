@@ -252,5 +252,59 @@ Then I should receive a response with the status 204
     expect(got.mock.calls.length).toBe(1)
     expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
   })
+ 
+  test('Basic auth', async () => {
+    const got = require('got')
+    got.mockResolvedValue({
+      restqa: {
+        statusCode: 204,
+        req: {
+          path: '/'
+        },
+        timings: {
+          phases: {
+            total: 1000
+          }
+        },
+        headers: {
+          'content-type': 'application/json'
+        },
+        body: null
+      }
+    })
+    jest.mock('got')
+    const Restqapi = require('./index')
+    const query = {
+      url: 'http://www.example.com/logout',
+      method: 'DELETE',
+      headers: {
+        'x-api-key': 'xxx-yyy-zzz',
+      },
+      user: {
+        username: 'john',
+        password: 'doe'
+      }
+    }
+    const result = await Restqapi.Generator(query)
+    const expectedResult = `
+Given I have the api gateway hosted on "http://www.example.com"
+  And I have the path "/logout"
+  And I have the method "DELETE"
+  And the header contains "x-api-key" as "xxx-yyy-zzz"
+  And I have the basic auth user "john" pass "doe"
+When I run the API
+Then I should receive a response with the status 204
+`
+    expect(result).toEqual(expectedResult.trim())
+
+    const expectedOptions = {
+      pathname: '/logout',
+      method: 'DELETE',
+      protocol: 'http:',
+      hostname: 'www.example.com',
+    }
+    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
+  })
 
 })

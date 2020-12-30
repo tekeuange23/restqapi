@@ -24,6 +24,11 @@ module.exports = async function(options) {
   if (options.body) {
     api.request.setPayload(options.body)
   }
+
+  if (options.user) {
+    const encoded = Buffer.from(options.user.username + ':' + options.user.password, 'utf8').toString('base64')
+    api.request.setHeader('authorization', `Basic ${encoded}`)
+  }
   
   await api.run()
 
@@ -57,6 +62,13 @@ module.exports = async function(options) {
 
     if (tags.includes('method')) {
       mapping.request.method = definition.replace('{string}', `"${options.method}"`)
+    }
+
+    if (tags.includes('basic auth') && options.user) {
+      let _def = definition
+        .replace('{string}', `"${options.user.username}"`)
+        .replace('{string}', `"${options.user.password}"`)
+      mapping.request.headers.push(_def)
     }
     
     if (tags.includes('qs')) {

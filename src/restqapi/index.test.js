@@ -253,7 +253,7 @@ Then I should receive a response with the status 204
     expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
   })
  
-  test('Basic auth', async () => {
+  test('Basic auth and ignore ssl', async () => {
     const got = require('got')
     got.mockResolvedValue({
       restqa: {
@@ -283,7 +283,8 @@ Then I should receive a response with the status 204
       user: {
         username: 'john',
         password: 'doe'
-      }
+      },
+      ignoreSsl: true
     }
     const result = await Restqapi.Generator(query)
     const expectedResult = `
@@ -302,9 +303,15 @@ Then I should receive a response with the status 204
       method: 'DELETE',
       protocol: 'http:',
       hostname: 'www.example.com',
+      rejectUnauthorized: false,
+    }
+
+    const expectedHeaders = {
+      'x-api-key': 'xxx-yyy-zzz',
     }
     expect(got.mock.calls.length).toBe(1)
     expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
+    expect(got.mock.calls[0][0].headers).toEqual(expect.objectContaining(expectedHeaders))
   })
 
 })

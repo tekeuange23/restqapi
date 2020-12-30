@@ -239,7 +239,8 @@ let options = {
   body: {
     hello: "world",
     bonjour: "le monde",
-  }
+  },
+  ignoreSsl: true
 }
 
 ```

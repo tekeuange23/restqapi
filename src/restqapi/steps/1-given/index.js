@@ -43,6 +43,19 @@ module.exports = [
     */
   ['I have the api gateway hosted on {string}', given.gatewayHost, 'Create a new api request targeting on a given api gateway', 'api, url, host, generator'],
 
+  // SSL
+
+  /**
+    * ### Given I want to ignore the ssl certificate
+    * Define if you want to ignore the ssl certificate for the current request
+    *
+    * @example
+    * Given I want to ignore the ssl certificate
+    *
+    * @function ssl
+    */
+  ['I want to ignore the ssl certificate', given.ssl, 'Ignore ssl certification, in case of invalidation, expiration etc...', 'request, ssl, api, generator'],
+
   // Path + method
 
   /**

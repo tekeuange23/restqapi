@@ -365,6 +365,7 @@ Then I should receive a response with the status 204
     const result = await Restqapi.Generator(query)
     const expectedResult = `
 Given I have the api gateway hosted on "http://www.example.com"
+  And I want to ignore the ssl certificate
   And I have the path "/logout"
   And I have the method "DELETE"
   And the header contains "x-api-key" as "xxx-yyy-zzz"

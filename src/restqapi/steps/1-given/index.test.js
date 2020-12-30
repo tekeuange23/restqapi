@@ -6,7 +6,7 @@ describe('#StepDefinition - given', () => {
   test('Configuration', () => {
     const given = require('./index')
     expect(Array.isArray(given)).toBeTruthy()
-    expect(given.length).toBe(43)
+    expect(given.length).toBe(44)
   })
 
   test('Each steps should contains the expected value', () => {

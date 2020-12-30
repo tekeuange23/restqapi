@@ -47,6 +47,7 @@ module.exports = async function(options) {
     request: {
       host: '',
       path: '',
+      ssl: '',
       method: '',
       headers: [],
       query: [],
@@ -66,6 +67,10 @@ module.exports = async function(options) {
 
     if (tags.includes('host')) {
       mapping.request.host = definition.replace('{string}', `"${options.URL.origin}"`)
+    }
+
+    if (tags.includes('ssl') && true === options.ignoreSsl) {
+      mapping.request.ssl = definition
     }
 
     if (tags.includes('path')) {
@@ -153,6 +158,9 @@ ${JSON.stringify(api.response.body, null, 2)}
 
   const result = []
   result.push(`Given ${mapping.request.host}`)
+  if (mapping.request.ssl) {
+    result.push(`  And ${mapping.request.ssl}`)
+  }
   result.push(`  And ${mapping.request.path}`)
   result.push(`  And ${mapping.request.method}`)
   mapping.request.headers.forEach(step => {

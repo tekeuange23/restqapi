@@ -31,6 +31,11 @@ Given.gatewayHost = function (url) {
   this.api.request.setHeader('cookie', getCookie.call(this))
 }
 
+Given.ssl = function() {
+  this.api.request.ignoreSsl()
+}
+
+
 Given.path = function (path) {
   path = this.data.get(path)
   this.api.request.setPath(encodeURI(path))

@@ -148,9 +148,6 @@ describe('# restqapi.Generator', () => {
     const Restqapi = require('./index')
     const query = {
       url: 'http://www.example.com?q=restqa',
-      headers: {
-        'x-api-key': 'xxx-yyy-zzz'
-      },
       body: {
         hello: "world",
         bonjour: "le monde",
@@ -161,7 +158,6 @@ describe('# restqapi.Generator', () => {
 Given I have the api gateway hosted on "http://www.example.com"
   And I have the path "/"
   And I have the method "GET"
-  And the header contains "x-api-key" as "xxx-yyy-zzz"
   And the query parameter contains "q" as "restqa"
   And the payload:
   """

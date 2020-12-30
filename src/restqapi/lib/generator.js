@@ -20,7 +20,7 @@ module.exports = async function(options) {
     api.request.setQueryString(key, value)
   })
 
-  Object.keys(options.headers).forEach((key) => {
+  Object.keys(options.headers || {}).forEach((key) => {
     api.request.setHeader(key, options.headers[key])
   })
 

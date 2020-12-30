@@ -236,7 +236,11 @@ let options = {
     username: 'john',
     password: 'doe'
   },
-  body: {
+  body: { // only if form is not specified
+    hello: "world",
+    bonjour: "le monde",
+  },
+  form: { // only if body is not specified
     hello: "world",
     bonjour: "le monde",
   },

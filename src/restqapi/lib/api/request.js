@@ -90,6 +90,10 @@ const Request = function (baseUrl, id) {
     this.options.body.append(field, value)
   }
 
+  const ignoreSsl = () => {
+    this.options.rejectUnauthorized = false
+  }
+
   return {
     getId,
     getOptions,
@@ -101,7 +105,8 @@ const Request = function (baseUrl, id) {
     setPayload,
     setBaseUrl,
     setQueryString,
-    addFormField
+    addFormField,
+    ignoreSsl
   }
 }
 

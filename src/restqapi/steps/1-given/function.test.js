@@ -7,10 +7,11 @@ describe('#StepDefinition - given - functions', () => {
 
   test('Configuration', () => {
     const fns = Object.keys(Given)
-    expect(fns.length).toBe(21)
+    expect(fns.length).toBe(22)
     const expectedFunctions = [
       'gateway',
       'gatewayHost',
+      'ssl',
       'path',
       'method',
       'methodPath',
@@ -90,6 +91,19 @@ describe('#StepDefinition - given - functions', () => {
       expect($this.api.request.setHeader.mock.calls[0][1]).toEqual('coooookie')
       expect($this.data.get.mock.calls.length).toEqual(1)
       expect($this.data.get.mock.calls[0][0]).toEqual('[[__cookie_jar__]]')
+    })
+
+    test('ssl', () => {
+      const $this = {
+        api: {
+          request: {
+            ignoreSsl: jest.fn()
+          }
+        }
+      }
+      Given.ssl.call($this, '/foo')
+      expect($this.api.request.ignoreSsl.mock.calls.length).toBe(1)
+      expect($this.api.request.ignoreSsl.mock.calls[0][0]).toBe(undefined)
     })
 
     test('path', () => {

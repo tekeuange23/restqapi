@@ -43,6 +43,19 @@ module.exports = [
     */
   ['I have the api gateway hosted on {string}', given.gatewayHost, 'Create a new api request targeting on a given api gateway', 'api, url, host, generator'],
 
+  // SSL
+
+  /**
+    * ### Given I want to ignore the ssl certificate
+    * Define if you want to ignore the ssl certificate for the current request
+    *
+    * @example
+    * Given I want to ignore the ssl certificate
+    *
+    * @function ssl
+    */
+  ['I want to ignore the ssl certificate', given.ssl, 'Ignore ssl certification, in case of invalidation, expiration etc...', 'request, ssl, api, generator'],
+
   // Path + method
 
   /**
@@ -156,18 +169,18 @@ module.exports = [
    *
    * @function AuthorizatioinHeaderBasicAuth
    */
-  ['I use basic access authentication using the username {string} and the password {string}', given.basicAuth, 'Set the basic auth into the authorization request header', 'request, headers, authorization, basic auth'],
-  ['I use basic access authentication using the username {data} and the password {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
-  ['I use basic access authentication using the username {string} and the password {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
-  ['I use basic access authentication using the username {data} and the password {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
-  ['I have the basic auth user {string} pass {string}', given.basicAuth, 'Set the basic auth into the authorization request header', 'request, headers, authorization, basic auth'],
-  ['I have the basic auth user {string} pass {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
-  ['I have the basic auth user {data} pass {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
-  ['I have the basic auth user {data} pass {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
-  ['I use basic auth with {string} / {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
-  ['I use basic auth with {data} / {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
-  ['I use basic auth with {string} / {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
-  ['I use basic auth with {data} / {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, headers, authorization, basic auth'],
+  ['I use basic access authentication using the username {string} and the password {string}', given.basicAuth, 'Set the basic auth into the authorization request header', 'request, authorization, basic auth'],
+  ['I use basic access authentication using the username {data} and the password {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I use basic access authentication using the username {string} and the password {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I use basic access authentication using the username {data} and the password {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I have the basic auth user {string} pass {string}', given.basicAuth, 'Set the basic auth into the authorization request header', 'request, authorization, basic auth, generator'],
+  ['I have the basic auth user {string} pass {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I have the basic auth user {data} pass {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I have the basic auth user {data} pass {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I use basic auth with {string} / {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I use basic auth with {data} / {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I use basic auth with {string} / {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I use basic auth with {data} / {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
 
   //  ****************************************************************************************************
   //  Query String
@@ -369,7 +382,7 @@ module.exports = [
    *
    * @function FormBody
    */
-  ['I add the form value {string} as {string}', given.form, 'Adding value into form request body', 'request, body, form'],
+  ['I add the form value {string} as {string}', given.form, 'Adding value into form request body', 'request, body, form, generator'],
   ['I add the form value {string} as {int}', given.form, 'Adding value into form request body', 'request, body, form, number'],
   ['I add the form value {string} as {float}', given.form, 'Adding value into form request body', 'request, body, form, float'],
   ['I add the form value {string} as {data}', given.form, 'Adding placeholded value into form request body', 'request, body, form'],

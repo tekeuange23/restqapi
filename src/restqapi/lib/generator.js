@@ -14,16 +14,32 @@ module.exports = async function(options) {
     url: options.url
   }
 
-
   let api = new API({ config })
   api.request.setMethod(options.method)
   options.URL.searchParams.forEach((value, key) => {
     api.request.setQueryString(key, value)
   })
 
+  Object.keys(options.headers || {}).forEach((key) => {
+    api.request.setHeader(key, options.headers[key])
+  })
+
   if (options.body) {
     api.request.setPayload(options.body)
   }
+
+  if (true === options.ignoreSsl) {
+    api.request.ignoreSsl()
+  }
+
+  if (options.user) {
+    const encoded = Buffer.from(options.user.username + ':' + options.user.password, 'utf8').toString('base64')
+    api.request.setHeader('authorization', `Basic ${encoded}`)
+  }
+
+  Object.keys(options.form || {}).forEach((key) => {
+    api.request.addFormField(key, options.form[key])
+  })
   
   await api.run()
 
@@ -31,10 +47,12 @@ module.exports = async function(options) {
     request: {
       host: '',
       path: '',
+      ssl: '',
       method: '',
       headers: [],
       query: [],
-      body: null
+      body: null,
+      form: []
     },
     action: '',
     response: {
@@ -51,6 +69,10 @@ module.exports = async function(options) {
       mapping.request.host = definition.replace('{string}', `"${options.URL.origin}"`)
     }
 
+    if (tags.includes('ssl') && true === options.ignoreSsl) {
+      mapping.request.ssl = definition
+    }
+
     if (tags.includes('path')) {
       mapping.request.path = definition.replace('{string}', `"${options.URL.pathname}"`)
     }
@@ -58,13 +80,29 @@ module.exports = async function(options) {
     if (tags.includes('method')) {
       mapping.request.method = definition.replace('{string}', `"${options.method}"`)
     }
+
+    if (tags.includes('basic auth') && options.user) {
+      let _def = definition
+        .replace('{string}', `"${options.user.username}"`)
+        .replace('{string}', `"${options.user.password}"`)
+      mapping.request.headers.push(_def)
+    }
     
+    if (tags.includes('form') && options.form) {
+      Object.keys(options.form).forEach((key) => {
+        let _def = definition
+          .replace('{string}', `"${key}"`)
+          .replace('{string}', `"${options.form[key]}"`)
+        mapping.request.form.push(_def)
+      })
+    }
+
     if (tags.includes('qs')) {
       options.URL.searchParams.forEach((value, key) => {
-        definition = definition
+        let _def = definition
           .replace('{string}', `"${key}"`)
           .replace('{string}', `"${value}"`)
-        mapping.request.query.push(definition)
+        mapping.request.query.push(_def)
       })
     }
 
@@ -120,12 +158,18 @@ ${JSON.stringify(api.response.body, null, 2)}
 
   const result = []
   result.push(`Given ${mapping.request.host}`)
+  if (mapping.request.ssl) {
+    result.push(`  And ${mapping.request.ssl}`)
+  }
   result.push(`  And ${mapping.request.path}`)
   result.push(`  And ${mapping.request.method}`)
   mapping.request.headers.forEach(step => {
     result.push(`  And ${step}`)
   })
   mapping.request.query.forEach(step => {
+    result.push(`  And ${step}`)
+  })
+  mapping.request.form.forEach(step => {
     result.push(`  And ${step}`)
   })
   if (mapping.request.body) {

@@ -232,10 +232,19 @@ let options = {
   headers: {
     'x-api-key': 'xxx-yyy-zzz'
   },
-  body: {
+  user: {
+    username: 'john',
+    password: 'doe'
+  },
+  body: { // only if form is not specified
     hello: "world",
     bonjour: "le monde",
-  }
+  },
+  form: { // only if body is not specified
+    hello: "world",
+    bonjour: "le monde",
+  },
+  ignoreSsl: true
 }
 
 ```

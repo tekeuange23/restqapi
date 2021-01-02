@@ -10,7 +10,6 @@ const Request = function (baseUrl, id) {
     port: url.port,
     protocol: url.protocol,
     pathname: url.pathname,
-    // strictSSL: false,
     hooks: {
       afterResponse: [
         response => {

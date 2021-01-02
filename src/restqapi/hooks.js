@@ -28,6 +28,10 @@ module.exports = function (config, { Before, BeforeAll, After, AfterAll }) {
     return 'skipped'
   })
 
+  Before('@insecure', function () {
+    this.insecure = true
+  })
+
   After(function (scenario) {
     this.log = this.log || console.log
     if (this.debug.length) {

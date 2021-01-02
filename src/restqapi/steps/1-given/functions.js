@@ -23,12 +23,26 @@ function getCookie () {
 
 Given.gateway = function () {
   this.api = this.createApi()
-  this.api.request.setHeader('cookie', getCookie.call(this))
+  let cookie = getCookie.call(this)
+  if (cookie) { 
+    this.api.request.setHeader('cookie', cookie)
+  }
+
+  if (true === this.insecure) {
+    this.api.request.ignoreSsl()
+  }
 }
 
 Given.gatewayHost = function (url) {
   this.api = this.createApi(url)
-  this.api.request.setHeader('cookie', getCookie.call(this))
+  let cookie = getCookie.call(this)
+  if (cookie) { 
+    this.api.request.setHeader('cookie', cookie)
+  }
+
+  if (true === this.insecure) {
+    this.api.request.ignoreSsl()
+  }
 }
 
 Given.ssl = function() {

@@ -53,7 +53,7 @@ describe('# hooks', () => {
 
     Hooks(config, fns)
 
-    expect(fns.Before.mock.calls.length).toBe(3)
+    expect(fns.Before.mock.calls.length).toBe(4)
     expect(typeof fns.Before.mock.calls[0][0]).toBe('function')
     expect($this.setConfig.mock.calls.length).toBe(1)
     expect($this.setConfig.mock.calls[0][0]).toEqual({ data: {}, foo: 'bar' })
@@ -67,6 +67,11 @@ describe('# hooks', () => {
     expect(fns.Before.mock.calls[2][0]).toBe('@wip')
     expect(typeof fns.Before.mock.calls[2][1]).toBe('function')
     expect(fns.Before.mock.results[2].value).toBe('skipped')
+
+    expect(fns.Before.mock.calls[3][0]).toBe('@insecure')
+    expect(typeof fns.Before.mock.calls[3][1]).toBe('function')
+    expect($this.insecure).toBe(true)
+
 
     expect(fns.BeforeAll.mock.calls.length).toBe(0)
 
@@ -123,7 +128,7 @@ describe('# hooks', () => {
 
     Hooks(config, fns)
 
-    expect(fns.Before.mock.calls.length).toBe(3)
+    expect(fns.Before.mock.calls.length).toBe(4)
     expect(typeof fns.Before.mock.calls[0][0]).toBe('function')
     expect($this.setConfig.mock.calls.length).toBe(1)
     expect($this.setConfig.mock.calls[0][0]).toEqual({ foo: 'bar' })

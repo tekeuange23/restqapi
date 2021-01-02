@@ -87,7 +87,7 @@ At the Feature level:
 @insecure
 Feature: All the scenario in this feature will ignore the ssl certificate
 
-Scenario: I will ignore the ssl certifiicate
+Scenario: I will ignore the ssl certificate
 Given I have the api gateway
 ...
 

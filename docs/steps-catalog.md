@@ -19,6 +19,7 @@ All the steps related to the API Request
 * [Given](#module_Given)
     * [~gateway()](#module_Given..gateway)
     * [~gateway()](#module_Given..gateway)
+    * [~ssl()](#module_Given..ssl)
     * [~path()](#module_Given..path)
     * [~method()](#module_Given..method)
     * [~methodPath()](#module_Given..methodPath)
@@ -54,6 +55,14 @@ Define the api gateway hosted on the given on the specific api gateway
 **Example** *(If you want to use a specific host you can use)*  
 ```js
 Given I have the api gateway hosted on "https://api.example.com"
+```
+<a name="module_Given..ssl"></a>
+### Given I want to ignore the ssl certificate
+Define if you want to ignore the ssl certificate for the current request
+
+**Example**  
+```js
+Given I want to ignore the ssl certificate
 ```
 <a name="module_Given..path"></a>
 ### Given I have the path {string}

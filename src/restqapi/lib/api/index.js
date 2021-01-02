@@ -23,7 +23,7 @@ module.exports = function (options) {
   }
   return {
     config,
-    request: new Request(config.url),
+    request: new Request(config.url, config.insecure),
     response: null,
     run,
     toJSON: function () {

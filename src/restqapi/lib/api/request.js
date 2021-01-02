@@ -2,7 +2,7 @@ const dot = require('dot-object')
 const { URL } = require('url')
 const FormData = require('form-data')
 
-const Request = function (baseUrl, id) {
+const Request = function (baseUrl, insecure, id) {
   const url = new URL(baseUrl)
 
   this.options = {
@@ -10,7 +10,6 @@ const Request = function (baseUrl, id) {
     port: url.port,
     protocol: url.protocol,
     pathname: url.pathname,
-    // strictSSL: false,
     hooks: {
       afterResponse: [
         response => {
@@ -31,11 +30,16 @@ const Request = function (baseUrl, id) {
     }
   }
 
+
   const getOptions = () => {
     this.options.headers = this.options.headers || {}
     this.options.headers['x-correlation-id'] = getId()
     this.options.headers['user-agent'] = 'restqa (https://github.com/restqa/restqa)'
     this.options.responseType = this.options.responseType || 'json'
+
+    if (true === insecure) {
+      ignoreSsl()
+    }
 
     return this.options
   }

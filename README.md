@@ -69,6 +69,7 @@ In order to run the test you will need to pass an option object to the RestQapi 
 const config = {
   name: 'local',
   url: 'http://host.docker.internal:8080',
+  insecure: true, // ignore ssl validation
   data: {
     channel: 'google-sheet',
     config: {

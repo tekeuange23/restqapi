@@ -393,7 +393,7 @@ module.exports = [
   //  ****************************************************************************************************
 
   /**
-   * ### I add the form value {string} as {string | int | float | placeholder | data}
+   * ### Given I add the form value {string} as {string | int | float | placeholder | data}
    * Set one or more request form body
    *
    * @category Form Request body
@@ -426,7 +426,7 @@ module.exports = [
   ['I add the form value {string} as {data}', given.form, 'Adding placeholded value into form request body', 'request, body, form'],
 
   /**
-   * ### I add the form value {string} as a file stored at {string | placeholder | data}
+   * ### Given I add the form value {string} as a file stored at {string | placeholder | data}
    * Set one or more request form body
    *
    * @category Form Request body

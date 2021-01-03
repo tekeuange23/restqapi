@@ -20,6 +20,9 @@ module.exports = [
    * ### Then I should receive a response with the status {int}
    * Ensure the response was received with a given status.
    *
+   *
+   * @category Status code
+   *
    * @example
    * Then I should receive a response with the status 200
    * Then I should receive a response with the status 404
@@ -32,6 +35,8 @@ module.exports = [
    * ### Then the response time is under {int} ms
    * Ensure the response time is lower than the given time (in microseconds)
    *
+   * @category Latency
+   *
    * @example
    * Then the response time is under 100ms
    *
@@ -43,6 +48,8 @@ module.exports = [
    * ### Then the header {string} should be {string}
    * Ensure a response header equals the expect value
    *
+   * @category Headers
+   *
    * @example
    * Then the header "Content-Type" should be "application/json"
    *
@@ -53,6 +60,8 @@ module.exports = [
   /**
    * ### Then the response header should contains:
    * Ensure a response header equals the list of values
+   *
+   * @category Headers
    *
    * @example
    * Then the response headers should contains:
@@ -73,6 +82,8 @@ module.exports = [
    * ### Then {string} should be on the response header
    * Ensure a response header contains one specific property
    *
+   * @category Headers
+   *
    * @example
    * Then "Content-Length" should be on the response header
    * Then "X-response-time" should be on the response header
@@ -85,6 +96,8 @@ module.exports = [
   /**
    * ### Then {string} should not be on the response header
    * Ensure a response header doesn't contain one specific property
+   *
+   * @category Headers
    *
    * @example
    * Then "X-response-time" should not be on the response header
@@ -100,6 +113,8 @@ module.exports = [
    * ### Then the response should be empty array
    * Ensure a response body contains an empty array
    *
+   * @category JSON Response body
+   *
    * @example
    * Then the response should be empty array
    *
@@ -110,6 +125,8 @@ module.exports = [
   /**
    * ### Then the response should not be empty array
    * Ensure a response body doesn't contain an empty array
+   *
+   * @category JSON Response body
    *
    * @example
    * Then the response should not be empty array
@@ -122,6 +139,8 @@ module.exports = [
    * ### Then the response should be empty
    * Ensure a response body is empty
    *
+   * @category JSON Response body
+   *
    * @example
    * Then the response should be empty
    *
@@ -132,6 +151,8 @@ module.exports = [
   /**
    * ### Then the response body at {string} should equal {string | int | data }
    * Ensure a JSON response body equals a given value at the JSON path. Equality is determined
+   *
+   * @category JSON Response body
    *
    * @example <caption>Using dot object</caption>
    * Then the response body at "id" should equal 10
@@ -153,6 +174,8 @@ module.exports = [
    * ### Then the response body at {string} should equal true
    * Ensure a JSON response body equals a given boolean value as true
    *
+   * @category JSON Response body
+   *
    * @example <caption>Using dot object</caption>
    * Then the response body at "active" should equal true
    *
@@ -166,6 +189,8 @@ module.exports = [
   /**
    * ### Then the response body at {string} should equal false
    * Ensure a JSON response body equals a given boolean value as false
+   *
+   * @category JSON Response body
    *
    * @example <caption>Using dot object</caption>
    * Then the response body at "active" should equal false
@@ -181,6 +206,8 @@ module.exports = [
    * ### Then the response body at {string} should equal null
    * Ensure a JSON response body equals a given null value
    *
+   * @category JSON Response body
+   *
    * @example <caption>Using dot object</caption>
    * Then the response body at "active" should equal null
    *
@@ -194,6 +221,8 @@ module.exports = [
   /**
    * ### Then the response body at {string} should equal empty
    * Ensure a JSON response body equals an empty string
+   *
+   * @category JSON Response body
    *
    * @example <caption>Using dot object</caption>
    * Then the response body at "active" should equal empty
@@ -209,6 +238,8 @@ module.exports = [
    * ### Then the response body at {string} should be an array
    * Ensure a JSON response body equals an array type
    *
+   * @category JSON Response body
+   *
    * @example <caption>Using dot object</caption>
    * Then the response body at "user.list" should be an array
    *
@@ -222,6 +253,8 @@ module.exports = [
   /**
    * ### Then the response body at {string} should be an array of {int} item(s)
    * Ensure a JSON response body equals an array containing a given items
+   *
+   * @category JSON Response body
    *
    * @example <caption>Using dot object</caption>
    * Then the response body at "user.list" should be an array of 10 item(s)
@@ -237,6 +270,8 @@ module.exports = [
    * ### Then the response body at {string} should be close to now
    * Ensure a JSON response body has a time set close to now ( -/+ 1 minute)
    *
+   * @category JSON Response body
+   *
    * @example <caption>Using dot object</caption>
    * Then the response body at "user.createdAt" should equal close to now
    *
@@ -250,6 +285,8 @@ module.exports = [
   /**
    * ### Then the response body at {string} should not be null
    * Ensure a JSON response body is not null
+   *
+   * @category JSON Response body
    *
    * @example <caption>Using dot object</caption>
    * Then the response body at "user.children" should not be null
@@ -265,6 +302,8 @@ module.exports = [
    * ### Then the response body at {string} should match {string}
    * Ensure a JSON response body matches a given regexp
    *
+   * @category JSON Response body
+   *
    * @example <caption>Using dot object</caption>
    * Then the response body at "user.occupation" should match "/pilot/"
    *
@@ -279,6 +318,8 @@ module.exports = [
    * ### Then the response list contains {int} items
    * Ensure a JSON response body has an array at the root level an contains a given number of items
    *
+   * @category JSON Response body
+   *
    * @example <caption>Using dot object</caption>
    * Then the response list contains "12" items
    *
@@ -289,6 +330,8 @@ module.exports = [
   /**
    * ### Then the response body should be equal to:
    * Verify the response body against a JSON object
+   *
+   * @category JSON Response body
    *
    * @example 
    * Then the response body should be equal to:
@@ -311,6 +354,8 @@ module.exports = [
    * Pick of the reponse header value and add it into the dataset storage
    * This will allow you to reuse value in another step
    *
+   * @category Dataset
+   *
    * @example
    * Then add the value "Content-Type"  from the response header to the dataset as "contentType"
    * Given i have the api gateway
@@ -325,6 +370,8 @@ module.exports = [
    * ### Then add the value {string} from the response body to the dataset as {string}
    * Pick of the reponse body value and add it into the dataset storage
    * This will allow you to reuse value in another step
+   *
+   * @category Dataset
    *
    * @example <caption>Using dot object</caption>
    * Then add the value "user.id"  from the response body to the dataset as "userId"
@@ -344,6 +391,8 @@ module.exports = [
    * ### Then I add the cookie to the jar
    * Add the cookie into the Jar ^^
    * 
+   * @category Cookie
+   *
    * By adding the cookie into the jar the following request will contains the cookie into the header
    *
    * @example
@@ -358,6 +407,8 @@ module.exports = [
    * Print the Request information (url, headers, body, method) into the console
    * This will allow you to debug your scenario.
    *
+   * @category Debug
+   *
    * @example
    * Then I print the request
    *
@@ -370,6 +421,8 @@ module.exports = [
    * Print the Response information (headers, response time,  body) into the console
    * This will allow you to debug your scenario.
    *
+   * @category Debug
+   *
    * @example
    * Then I print the response
    *
@@ -381,6 +434,8 @@ module.exports = [
    * ### Then I print the value {string}
    * Print the a specific information value into the console
    * This will allow you to debug your scenario.
+   *
+   * @category Debug
    *
    * @example
    * Then I print the value "{{ userId }}"

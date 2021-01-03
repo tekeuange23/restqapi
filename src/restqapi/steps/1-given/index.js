@@ -21,6 +21,7 @@ module.exports = [
     * ### Given I have the api gateway
     * Define the api gateway host (take a look at the config file).
     *
+    * @category Host
     *
     * @example
     * Given I have the api gateway
@@ -34,6 +35,7 @@ module.exports = [
     * ### Given I have the api gateway hosted on {string}
     * Define the api gateway hosted on the given on the specific api gateway
     *
+    * @category Host
     *
     * @example <caption>If you want to use a specific host you can use</caption>
     * Given I have the api gateway hosted on "https://api.example.com"
@@ -49,6 +51,8 @@ module.exports = [
     * ### Given I want to ignore the ssl certificate
     * Define if you want to ignore the ssl certificate for the current request
     *
+    * @category Host
+    *
     * @example
     * Given I want to ignore the ssl certificate
     *
@@ -63,6 +67,8 @@ module.exports = [
     * Define the request path
     * placeholder can be used within the path for dynamic call (ex: /users/{{userid}})
     *
+    * @category Path
+    *
     * @example
     * Given I have the path "/users/1"
     * Given I have the path "/users/1/addresses"
@@ -76,6 +82,8 @@ module.exports = [
     * ### Given I have the method {string}
     * Define the request method (default GET)
     * Available : GET, POST, PATCH, PUT, DELETE, OPTIONS, HEAD
+    *
+    * @category Method
     *
     * @example
     * Given I have the method "PATCH"
@@ -106,6 +114,8 @@ module.exports = [
    * ### Given the header contains {string} as {string}
    * Set one request header
    *
+   * @category Headers
+   *
    * @example
    * Given the header contains "Content-Type" as "application/json"
    * Given the header contains "Accept-language" as "en"
@@ -123,6 +133,8 @@ module.exports = [
   /**
    * ### Given I add the headers:
    * Set one or more request headers in a single step.
+   *
+   * @category Headers
    *
    * @example
    * Given I add the headers:
@@ -142,6 +154,8 @@ module.exports = [
    * ### Given I have the bearer token {string}
    * Set the bearer token into the authorization headers
    *
+   * @category Authorization
+   *
    * @example
    * Given I have the bearer token {string}
    *
@@ -156,6 +170,8 @@ module.exports = [
   /**
    * ### Given I use basic access authentication using the username {string} and the password {string}
    * Set the basic authentication into the authorization headers
+   *
+   * @category Authorization
    *
    * @example
    * Given I use basic access authentication using the username {string} and the password {string}
@@ -190,6 +206,8 @@ module.exports = [
    * ### Given the query parameter contains {string} as {string}
    * Set one or more request query parameters (example: /pets?price=10&name=john)
    *
+   * @category Query string
+   *
    * @example <caption>string</caption>
    * Given the query parameter contains "sort" as "price"
    * Given the query parameter contains "name" as "john"
@@ -212,6 +230,8 @@ module.exports = [
    * ### Given I add the query string parameters:
    * Set one or more request query parameter in a single step.
    *
+   * @category Query string
+   *
    * @example
    * Given I add the query string parameters:
    *   | sort     | price |
@@ -233,6 +253,8 @@ module.exports = [
   /**
    * ### Given the payload contains {string} as {string | int | float | placeholder | data}
    * Set one or more request json body (support dot-object or jsonpath property)
+   *
+   * @category JSON Request body
    *
    * @example <caption>string</caption>
    * Given the payload contains "firstname" as "john"
@@ -265,6 +287,8 @@ module.exports = [
    * ### Given the payload contains {string} as null
    * Set a value as null in the json request body (support dot-object or jsonpath property)
    *
+   * @category JSON Request body
+   *
    * @example
    * Given the payload contains "firstname" as null
    * Given the payload contains "user.firstname" as null
@@ -276,6 +300,8 @@ module.exports = [
   /**
    * ### Given the payload contains {string} as true
    * Set a value as true in the json request body (support dot-object or jsonpath property)
+   *
+   * @category JSON Request body
    *
    * @example
    * Given the payload contains "active" as true
@@ -289,6 +315,8 @@ module.exports = [
    * ### Given the payload contains {string} as false
    * Set a value as false in the json request body (support dot-object or jsonpath property)
    *
+   * @category JSON Request body
+   *
    * @example
    * Given the payload contains "active" as false
    * Given the payload contains "user.active" as false
@@ -301,6 +329,8 @@ module.exports = [
    * ### Given the payload contains {string} as empty array
    * Set a value as empty array in the json request body (support dot-object or jsonpath property)
    *
+   * @category JSON Request body
+   *
    * @example
    * Given the payload contains "list" as empty array
    * Given the payload contains "user.list" as empty array
@@ -312,6 +342,8 @@ module.exports = [
   /**
    * ### Given I add the request body:
    * Set one or more request body information in a single step.
+   *
+   * @category JSON Request body
    *
    * @example
    * Given I add the request body:
@@ -330,6 +362,8 @@ module.exports = [
   /**
    * ### Given the payload:
    * Add a JSON request body included in the Gherkin doc strings
+   *
+   * @category JSON Request body
    *
    * @example
    * Given the payload:
@@ -359,6 +393,8 @@ module.exports = [
   /**
    * ### I add the form value {string} as {string | int | float | placeholder | data}
    * Set one or more request form body
+   *
+   * @category Form Request body
    *
    * @example <caption>string</caption>
    * Given I add the form value "firstname" as "john"
@@ -391,6 +427,8 @@ module.exports = [
    * ### I add the form value {string} as a file stored at {string | placeholder | data}
    * Set one or more request form body
    *
+   * @category Form Request body
+   *
    * @example <caption>string</caption>
    * Given I add the form value "file" as a file stored at "avatar.png"
    *
@@ -405,6 +443,8 @@ module.exports = [
   /**
    * ### Given I add the form values:
    * Set one or more request form body information in a single step.
+   *
+   * @category Form Request body
    *
    * @example
    * Given I add the form values:

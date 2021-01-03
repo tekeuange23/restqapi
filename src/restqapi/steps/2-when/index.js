@@ -20,6 +20,7 @@ module.exports = [
     * ### When I run the API
     * Trigger the api call
     *
+    * @category Send
     *
     * @example
     * When I run the API

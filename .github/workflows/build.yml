@@ -19,5 +19,5 @@ jobs:
       env:
         CI: true
     - name: "Trigger the update of the documentation"
-      run: curl --request POST --url https://api.github.com/repos/restqa/documentation/actions/workflows/deploy.yml/dispatches --header "Accept: application/vnd.github.everest-preview+json" --header "Content-Type: application/json" --data "{\"ref\": \"master\"}" -u "$GH_USERNAME:$GH_PASSWORD"
+      run: curl --request POST --url https://api.github.com/repos/restqa/documentation/actions/workflows/deploy.yml/dispatches --header "Accept: application/vnd.github.everest-preview+json" --header "Content-Type: application/json" --data "{\"ref\": \"master\"}" -u "${{GH_USERNAME}}:${{GH_PASSWORD}}"
       

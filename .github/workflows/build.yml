@@ -18,4 +18,4 @@ jobs:
     - run: npm test
       env:
         CI: true
-    - run: 'curl -X POST -u "${{GH_USERNAME}}:${{GH_PASSWORD}}" -H "Content-Type: application/json" -H "Accept: application/vnd.github.everest-preview+json"  --data "{\"ref\": \"master\"}"  https://api.github.com/repos/restqa/documentation/actions/workflows/deploy.yml/dispatches'
+    - run: 'curl -X POST -u "${{secret.GH_USERNAME}}:${{secret.GH_PASSWORD}}" -H "Content-Type: application/json" -H "Accept: application/vnd.github.everest-preview+json"  --data "{\"ref\": \"master\"}"  https://api.github.com/repos/restqa/documentation/actions/workflows/deploy.yml/dispatches'

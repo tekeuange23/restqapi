@@ -95,6 +95,8 @@ module.exports = [
   /**
     * ### Given I send a {string} request to {string}
     * Construct a request to a resource using an HTTP method
+    * 
+    * @category Method
     *
     * @example
     * Given I send a "GET" request to "/customers"

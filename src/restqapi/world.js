@@ -1,4 +1,4 @@
-const { World } = require('@restqa/restqa-plugin-boostrap')
+const { World } = require('@restqa/restqa-plugin-bootstrap')
 const { Api } = require('./lib')
 
 class RestQapiWorld extends World {

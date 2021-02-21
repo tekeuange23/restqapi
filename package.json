@@ -6,15 +6,12 @@
   "scripts": {
     "doc": "jsdoc2md  --partial docs/support/scope.hbs --partial docs/support/header.hbs --files src/restqapi/steps/**/index.js > docs/steps-catalog.md",
     "start:example": "export $(cat .env | xargs) && cucumber-js --require ./src/setup-example.js --fail-fast ./sample-project/features-vigie",
-    "lint": "standard",
-    "lint:fix": "standard --fix",
     "test": "jest",
     "test:watch": "jest --watch --coverage",
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@restqa/restqa-plugin-boostrap": "0.0.2",
-    "@restqa/restqdata": "^0.1.0",
+    "@restqa/restqa-plugin-bootstrap": "0.0.4",
     "cucumber": "^6.0.5",
     "dot-object": "^1.6.0",
     "form-data": "^3.0.0",

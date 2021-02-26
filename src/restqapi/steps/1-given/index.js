@@ -374,6 +374,7 @@ module.exports = [
    *     "firstname": "john",
    *     "lastname": "doe"
    *   }
+   * """
    *
    * @example <caption>Placeholder from datasets</caption>
    * Given the payload:

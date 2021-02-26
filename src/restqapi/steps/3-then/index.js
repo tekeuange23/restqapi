@@ -101,7 +101,7 @@ module.exports = [
    *
    * @example
    * Then "X-response-time" should not be on the response header
-   * Then "poweered-by" should not be on response header
+   * Then "poweered-by" should not be on the response header
    *
    *
    * @function headersNotContains

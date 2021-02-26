@@ -718,7 +718,7 @@ Ensure a JSON response body has an array at the root level an contains a given n
 **Category**: JSON Response body  
 **Example** *(Using dot object)*  
 ```js
-Then the response list should contains 12 items
+Then the response list should contain 12 items
 ```
 <a name="module_Then..bodyJson"></a>
 ### Then the response body should be equal to:

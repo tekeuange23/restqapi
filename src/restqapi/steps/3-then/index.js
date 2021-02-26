@@ -321,7 +321,7 @@ module.exports = [
    * @category JSON Response body
    *
    * @example <caption>Using dot object</caption>
-   * Then the response list should contains 12 items
+   * Then the response list should contain 12 items
    *
    * @function bodyListContainNumberOfItem
    */

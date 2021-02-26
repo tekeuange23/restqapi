@@ -159,10 +159,10 @@ module.exports = [
    * @category Authorization
    *
    * @example
-   * Given I have the bearer token {string}
+   * Given I have the bearer token "xxx-yyy-zzz"
    *
    * @example <caption>Placeholder from datasets</caption>
-   * Given i have the bearer token {{ token }}
+   * Given I have the bearer token {{ token }}
    *
    * @function AuthorizatioinHeaderBearerToken
    */
@@ -176,14 +176,14 @@ module.exports = [
    * @category Authorization
    *
    * @example
-   * Given I use basic access authentication using the username {string} and the password {string}
-   * Given I have the basic auth user {string} pass {string}
-   * Given I use basic auth with {string} / {string}
+   * Given I use basic access authentication using the username "foo" and the password "bar"
+   * Given I have the basic auth user "foo" pass "bar"
+   * Given I use basic auth with "foo" / "bar"
    *
    * @example <caption>Placeholder from datasets</caption>
-   * Given I use basic access authentication using the username {{ username }} and the password {{ password }}
-   * Given I have the basic auth user {{ username }} pass {{ password }}
-   * Given I use basic auth with {{ username }} / {{ password }}
+   * Given I use basic access authentication using the username "foo" and the password "bar"
+   * Given I have the basic auth user "foo" pass "bar"
+   * Given I use basic auth with "foo" / "bar"
    *
    * @function AuthorizatioinHeaderBasicAuth
    */
@@ -264,19 +264,19 @@ module.exports = [
    * Given the payload contains "people.lastname" as "doe"
    *
    * @example <caption>int</caption>
-   * Given the paylaod contains "limit" as 10
-   * Given the paylaod contains "offset" as 30
-   * Given the paylaod contains "page.offset" as 30
+   * Given the payload contains "limit" as 10
+   * Given the payload contains "offset" as 30
+   * Given the payload contains "page.offset" as 30
    *
    * @example <caption>float</caption>
-   * Given the paylaod contains "size" as 1.1
-   * Given the paylaod contains "weight" as 1.0
-   * Given the paylaod contains "body.weight" as 1.0
+   * Given the payload contains "size" as 1.1
+   * Given the payload contains "weight" as 1.0
+   * Given the payload contains "body.weight" as 1.0
    *
    * @example <caption>Placeholder form from datasets</caption>
-   * Given the paylaod contains "sort" as {{ price }}
-   * Given the paylaod contains "name" as {{ name }}
-   * Given the paylaod contains "list.name" as {{ name }}
+   * Given the payload contains "sort" as {{ price }}
+   * Given the payload contains "name" as {{ name }}
+   * Given the payload contains "list.name" as {{ name }}
    *
    * @function JsonPayload
    */

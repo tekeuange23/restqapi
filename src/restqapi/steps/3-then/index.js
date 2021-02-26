@@ -38,7 +38,7 @@ module.exports = [
    * @category Latency
    *
    * @example
-   * Then the response time is under 100ms
+   * Then the response time is under 100 ms
    *
    * @function httpLatency
    */
@@ -101,7 +101,7 @@ module.exports = [
    *
    * @example
    * Then "X-response-time" should not be on the response header
-   * Then "poweered-by" should be not on the response header
+   * Then "poweered-by" should not be on response header
    *
    *
    * @function headersNotContains
@@ -251,20 +251,20 @@ module.exports = [
   ['the response body at {string} should be an array', then.shouldBeAnArray, 'Check if a value is an array in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, array'],
 
   /**
-   * ### Then the response body at {string} should be an array of {int} item(s)
+   * ### Then the response body at {string} should be an array of {int} items
    * Ensure a JSON response body equals an array containing a given items
    *
    * @category JSON Response body
    *
    * @example <caption>Using dot object</caption>
-   * Then the response body at "user.list" should be an array of 10 item(s)
+   * Then the response body at "user.list" should be an array of 10 items
    *
    * @example <caption>Using json path</caption>
-   * Then the response body at "$.user.list" should be an array of 10 item(s)
+   * Then the response body at "$.user.list" should be an array of 10 items
    *
    * @function bodyPropertyIsArrayOfLenght
    */
-  ['the response body at {string} should be an array of {int} item(s)', then.shouldBeAnArrayOfXItems, 'Check if a value is an array of a few items in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, array, array-items'],
+  ['the response body at {string} should be an array of {int} items', then.shouldBeAnArrayOfXItems, 'Check if a value is an array of a few items in the body response (dot-object pattern)', 'api, response, body, jsonpath, dot-object, array, array-items'],
 
   /**
    * ### Then the response body at {string} should be close to now
@@ -315,17 +315,17 @@ module.exports = [
   ['the response body at {string} should match {string}', then.shouldMatch, 'Check if a value match a specific regex', 'api, response, body, jsonpath, dot-object, regexp, regex'],
 
   /**
-   * ### Then the response list contains {int} items
+   * ### Then the response list should contains {int} items
    * Ensure a JSON response body has an array at the root level an contains a given number of items
    *
    * @category JSON Response body
    *
    * @example <caption>Using dot object</caption>
-   * Then the response list contains "12" items
+   * Then the response list should contains "12" items
    *
    * @function bodyListContainNumberOfItem
    */
-  ['the response list should contain {int} item(s)', then.shouldBeArraySize, 'Check if the response list is of a certain size', 'api, response, body, jsonpath, dot-object, array-body'],
+  ['the response list should contain {int} item', then.shouldBeArraySize, 'Check if the response list is of a certain size', 'api, response, body, jsonpath, dot-object, array-body'],
 
   /**
    * ### Then the response body should be equal to:
@@ -357,8 +357,8 @@ module.exports = [
    * @category Dataset
    *
    * @example
-   * Then add the value "Content-Type"  from the response header to the dataset as "contentType"
-   * Given i have the api gateway
+   * Then add the value "Content-Type" from the response header to the dataset as "contentType"
+   * Given I have the api gateway
    *   And the header contains "Content-Type" as {{ contentTypw }}
    *
    *
@@ -374,13 +374,13 @@ module.exports = [
    * @category Dataset
    *
    * @example <caption>Using dot object</caption>
-   * Then add the value "user.id"  from the response body to the dataset as "userId"
-   * Given i have the api gateway
+   * Then add the value "user.id" from the response body to the dataset as "userId"
+   * Given I have the api gateway
    *   And I have the path "/users/{userId}"
    *
    * @example <caption>Using json path</caption>
-   * Then add the value "$.user.id"  from the response body to the dataset as "userId"
-   * Given i have the api gateway
+   * Then add the value "$.user.id" from the response body to the dataset as "userId"
+   * Given I have the api gateway
    *   And I have the path "/users/{{userId}}"
    *
    * @function saveBodyPropertyIntoTheDataset
@@ -396,7 +396,7 @@ module.exports = [
    * By adding the cookie into the jar the following request will contains the cookie into the header
    *
    * @example
-   * Then I add the cookiie to the jar
+   * Then I add the cookie to the jar
    *
    * @function cookiejar
    */

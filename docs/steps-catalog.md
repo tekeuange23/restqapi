@@ -296,6 +296,7 @@ Given the payload:
     "firstname": "john",
     "lastname": "doe"
   }
+"""
 ```
 **Example** *(Placeholder from datasets)*  
 ```js
@@ -547,7 +548,7 @@ Ensure a response header doesn't contain one specific property
 **Example**  
 ```js
 Then "X-response-time" should not be on the response header
-Then "poweered-by" should not be on response header
+Then "poweered-by" should not be on the response header
 ```
 <a name="module_Then..emptyArray"></a>
 ### Then the response should be empty array
@@ -717,7 +718,7 @@ Ensure a JSON response body has an array at the root level an contains a given n
 **Category**: JSON Response body  
 **Example** *(Using dot object)*  
 ```js
-Then the response list should contains "12" items
+Then the response list should contains 12 items
 ```
 <a name="module_Then..bodyJson"></a>
 ### Then the response body should be equal to:

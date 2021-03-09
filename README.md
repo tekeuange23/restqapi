@@ -46,7 +46,7 @@ const options = {
   url: 'http://example.com',
 }
 
-const rQapi = new RestQapi(config)
+const rQapi = new RestQapi(options)
 
 rQapi.setParameterType(defineParameterType)
 rQapi.setSteps({ Given, When, Then })

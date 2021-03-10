@@ -213,6 +213,16 @@ Then.shouldBeLessThan = function(property, value) {
   assert.ok(received < value, `${this.api.response.request.prefix} The response body at "${property}" is not lesser than ${value}, received: ${received}`)
 }
 
+Then.shouldBeLessThanOrEqualTo = function(property, value) {
+  value = this.data.get(value)
+  let received = this.api.response.findInBody(property)
+  if (isNaN(received)) {
+    throw new Error(`${this.api.response.request.prefix} The response body at "${property}" is not a number received: ${received} <${typeof received}>`)
+  }
+  received = Number(received)
+  assert.ok(received <= value, `${this.api.response.request.prefix} The response body at "${property}" is not lesser than or equal to ${value}, received: ${received}`)
+}
+
 /*
  * =========================================
  * Response API DataSet Functions

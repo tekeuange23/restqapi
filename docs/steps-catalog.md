@@ -476,7 +476,7 @@ This will allow you to reuse value in another step
 ```js
 Then add the value "Content-Type" from the response header to the dataset as "contentType"
 Given I have the api gateway
-  And the header contains "Content-Type" as {{ contentTypw }}
+  And the header contains "Content-Type" as {{ contentType }}
 ```
 <a name="module_Then..saveBodyPropertyIntoTheDataset"></a>
 ### Then add the value {string} from the response body to the dataset as {string}
@@ -789,6 +789,10 @@ Verify if a specific value from the response body is greater than an expected va
 ```js
 Then the response body at "$.person.age" should be greater than 10
 ```
+**Example** *(Placeholder from datasets)*  
+```js
+Then the response body at "$.person.age" should be greater than {{ age }}
+```
 <a name="module_Then..lessThan"></a>
 ### Then the response body at {string} should be less than {int}
 Verify if a specific value from the response body is less than an expected value
@@ -797,6 +801,10 @@ Verify if a specific value from the response body is less than an expected value
 **Example**  
 ```js
 Then the response body at "$.person.age" should be less than 10
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Then the response body at "$.person.age" should be less than {{ age }}
 ```
 <a name="module_Then..greaterThanOrEqualTo"></a>
 ### Then the response body at {string} should be greater than or equal to {int}
@@ -807,6 +815,10 @@ Verify if a specific value from the response body is greater than or equal to an
 ```js
 Then the response body at "$.person.age" should be greater than or equal to 10
 ```
+**Example** *(Placeholder from datasets)*  
+```js
+Then the response body at "$.person.age" should be greater than or equal to {{ age }}
+```
 <a name="module_Then..lessThanOrEqualTo"></a>
 ### Then the response body at {string} should be less than or equal to {int}
 Verify if a specific value from the response body is less than or equal to an expected value
@@ -815,6 +827,10 @@ Verify if a specific value from the response body is less than or equal to an ex
 **Example**  
 ```js
 Then the response body at "$.person.age" should be less than or equal to 10
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Then the response body at "$.person.age" should be less than or equal to {{ age }}
 ```
 <a name="module_Then..httpCode"></a>
 ### Then I should receive a response with the status {int}

@@ -374,9 +374,13 @@ module.exports = [
    * @example 
    * Then the response body at "$.person.age" should be greater than 10
    *
+   * @example <caption>Placeholder from datasets</caption>
+   * Then the response body at "$.person.age" should be greater than {{ age }}
+   *
    * @function greaterThan
    */
   ['the response body at {string} should be greater than {int}', then.shouldBeGreaterThan, 'Check if a value in the response body is greater than an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
+  ['the response body at {string} should be greater than {data}', then.shouldBeGreaterThan, 'Check if a value in the response body is greater than an expected value (placeholder)', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
   /**
    * ### Then the response body at {string} should be less than {int}
@@ -387,9 +391,13 @@ module.exports = [
    * @example 
    * Then the response body at "$.person.age" should be less than 10
    *
+   * @example <caption>Placeholder from datasets</caption>
+   * Then the response body at "$.person.age" should be less than {{ age }}
+   *
    * @function lessThan
    */
   ['the response body at {string} should be less than {int}', then.shouldBeLessThan, 'Check if a value in the response body is less than an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
+  ['the response body at {string} should be less than {data}', then.shouldBeLessThan, 'Check if a value in the response body is less than an expected value (placeholder)', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
 
   /**
@@ -401,9 +409,13 @@ module.exports = [
    * @example 
    * Then the response body at "$.person.age" should be greater than or equal to 10
    *
+   * @example <caption>Placeholder from datasets</caption>
+   * Then the response body at "$.person.age" should be greater than or equal to {{ age }}
+   *
    * @function greaterThanOrEqualTo
    */
   ['the response body at {string} should be greater than or equal to {int}', then.shouldBeGreaterThanOrEqualTo, 'Check if a value in the response body is greater than or equal to an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
+  ['the response body at {string} should be greater than or equal to {data}', then.shouldBeGreaterThanOrEqualTo, 'Check if a value in the response body is greater than or equal to an expected value (placeholder)', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
   /**
    * ### Then the response body at {string} should be less than or equal to {int}
@@ -414,9 +426,13 @@ module.exports = [
    * @example 
    * Then the response body at "$.person.age" should be less than or equal to 10
    *
+   * @example <caption>Placeholder from datasets</caption>
+   * Then the response body at "$.person.age" should be less than or equal to {{ age }}
+   *
    * @function lessThanOrEqualTo
    */
   ['the response body at {string} should be less than or equal to {int}', then.shouldBeLessThanOrEqualTo, 'Check if a value in the response body is less than or equal to an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
+  ['the response body at {string} should be less than or equal to {data}', then.shouldBeLessThanOrEqualTo, 'Check if a value in the response body is less than or equal to an expected value (placeholder)', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
   // Response Dataset
 
@@ -430,7 +446,7 @@ module.exports = [
    * @example
    * Then add the value "Content-Type" from the response header to the dataset as "contentType"
    * Given I have the api gateway
-   *   And the header contains "Content-Type" as {{ contentTypw }}
+   *   And the header contains "Content-Type" as {{ contentType }}
    *
    *
    * @function saveHeaderPropertyIntoTheDataset

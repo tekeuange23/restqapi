@@ -9,7 +9,7 @@ describe('#StepDefinition - then - functions', () => {
   test('Configuration', () => {
     const Then = require('./functions')
     const fns = Object.keys(Then)
-    expect(fns.length).toBe(31)
+    expect(fns.length).toBe(32)
     const expectedFunctions = [
       'httpCode',
       'httpTiming',
@@ -36,6 +36,7 @@ describe('#StepDefinition - then - functions', () => {
       'shouldBePropertyJson',
       'shouldBeGreatherThan',
       'shouldBeGreatherThanOrEqualTo',
+      'shouldBeLessThan',
       'addHeaderPropertyToDataset',
       'addBodyPropertyToDataset',
       'cookieJar',
@@ -1255,6 +1256,176 @@ describe('#StepDefinition - then - functions', () => {
         const Then = require('./functions')
         expect(() => {
           Then.shouldBeGreatherThan.call($this, '$.person.age', -110)
+        }).not.toThrow()
+      })
+    })
+
+    describe('shouldBeLessThan', () => {
+      test('Throw error is the response value is not number', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  age: 'twenty-two'
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            }),
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeLessThan.call($this, '$.person.age', 22)
+        }).toThrow(`[POST /users] The response body at "$.person.age" is not a number received: twenty-two <string>`)
+      })
+
+      test('Throw error is the response value (float) is greater than the value', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  age: 30.3
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            }),
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeLessThan.call($this, '$.person.age', 22)
+        }).toThrow(`[POST /users] The response body at "$.person.age" is not lesser than 22, received: 30.3`)
+      })
+
+      test('Throw error is the response value (string) is equal to the value', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  age: '22'
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            }),
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeLessThan.call($this, '$.person.age', 22)
+        }).toThrow(`[POST /users] The response body at "$.person.age" is not lesser than 22, received: 22`)
+      })
+
+      test('To not throw an error if the response value is lesser than the expected value', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  age: '10'
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            }),
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeLessThan.call($this, '$.person.age', 22)
+        }).not.toThrow()
+      })
+
+      test('To not throw an error if the response value is lesser than the expected value (float)', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  age: '-500.4'
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            }),
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeLessThan.call($this, '$.person.age', -110.32)
+        }).not.toThrow()
+      })
+
+      test('To not throw an error if the response value is greater than the expected value (negative value)', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  age: '-500'
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            }),
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeLessThan.call($this, '$.person.age', -110)
         }).not.toThrow()
       })
     })

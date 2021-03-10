@@ -449,6 +449,7 @@ By adding the cookie into the jar the following request will contains the cookie
         * [~httpLatency()](#module_Then..httpLatency)
     * _Sort Numeric_
         * [~greaterThan()](#module_Then..greaterThan)
+        * [~greaterThanOrEqualTo()](#module_Then..greaterThanOrEqualTo)
     * _Status code_
         * [~httpCode()](#module_Then..httpCode)
 
@@ -785,6 +786,15 @@ Verify if a specific value from the response body is greater than an expected va
 **Example**  
 ```js
 Then the response body at "$.person.age" should be greater than 10
+```
+<a name="module_Then..greaterThanOrEqualTo"></a>
+### Then the response body at {string} should be greater than or equal to {int}
+Verify if a specific value from the response body is greater than or equal to an expected value
+
+**Category**: Sort Numeric  
+**Example**  
+```js
+Then the response body at "$.person.age" should be greater than or equal to 10
 ```
 <a name="module_Then..httpCode"></a>
 ### Then I should receive a response with the status {int}

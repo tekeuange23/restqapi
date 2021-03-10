@@ -34,8 +34,8 @@ describe('#StepDefinition - then - functions', () => {
       'shouldBeNow',
       'shouldBeJsonBody',
       'shouldBePropertyJson',
-      'shouldBeGreatherThan',
-      'shouldBeGreatherThanOrEqualTo',
+      'shouldBeGreaterThan',
+      'shouldBeGreaterThanOrEqualTo',
       'shouldBeLessThan',
       'addHeaderPropertyToDataset',
       'addBodyPropertyToDataset',
@@ -920,7 +920,7 @@ describe('#StepDefinition - then - functions', () => {
       })
     })
 
-    describe('shouldBeGreatherThanOrEqualTo', () => {
+    describe('shouldBeGreaterThanOrEqualTo', () => {
       test('Throw error if the response value is not number', () => {
         const $this = {
           data: {
@@ -945,7 +945,7 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThanOrEqualTo.call($this, '$.person.age', 22)
+          Then.shouldBeGreaterThanOrEqualTo.call($this, '$.person.age', 22)
         }).toThrow(`[POST /users] The response body at "$.person.age" is not a number received: twenty-two <string>`)
       })
 
@@ -973,7 +973,7 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThanOrEqualTo.call($this, '$.person.age', 22)
+          Then.shouldBeGreaterThanOrEqualTo.call($this, '$.person.age', 22)
         }).toThrow(`[POST /users] The response body at "$.person.age" is not greater than or equal to 22, received: 10.1`)
       })
 
@@ -1001,7 +1001,7 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThanOrEqualTo.call($this, '$.person.age', 22)
+          Then.shouldBeGreaterThanOrEqualTo.call($this, '$.person.age', 22)
         }).not.toThrow()
       })
 
@@ -1029,7 +1029,7 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThanOrEqualTo.call($this, '$.person.age', 22)
+          Then.shouldBeGreaterThanOrEqualTo.call($this, '$.person.age', 22)
         }).not.toThrow()
       })
 
@@ -1057,7 +1057,7 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThanOrEqualTo.call($this, '$.person.age', -110.32)
+          Then.shouldBeGreaterThanOrEqualTo.call($this, '$.person.age', -110.32)
         }).not.toThrow()
       })
 
@@ -1085,12 +1085,12 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThanOrEqualTo.call($this, '$.person.age', -110)
+          Then.shouldBeGreaterThanOrEqualTo.call($this, '$.person.age', -110)
         }).not.toThrow()
       })
     })
 
-    describe('shouldBeGreatherThan', () => {
+    describe('shouldBeGreaterThan', () => {
       test('Throw error is the response value is not number', () => {
         const $this = {
           data: {
@@ -1115,7 +1115,7 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThan.call($this, '$.person.age', 22)
+          Then.shouldBeGreaterThan.call($this, '$.person.age', 22)
         }).toThrow(`[POST /users] The response body at "$.person.age" is not a number received: twenty-two <string>`)
       })
 
@@ -1143,7 +1143,7 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThan.call($this, '$.person.age', 22)
+          Then.shouldBeGreaterThan.call($this, '$.person.age', 22)
         }).toThrow(`[POST /users] The response body at "$.person.age" is not greater than 22, received: 10.1`)
       })
 
@@ -1171,7 +1171,7 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThan.call($this, '$.person.age', 22)
+          Then.shouldBeGreaterThan.call($this, '$.person.age', 22)
         }).toThrow(`[POST /users] The response body at "$.person.age" is not greater than 22, received: 22`)
       })
 
@@ -1199,7 +1199,7 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThan.call($this, '$.person.age', 22)
+          Then.shouldBeGreaterThan.call($this, '$.person.age', 22)
         }).not.toThrow()
       })
 
@@ -1227,7 +1227,7 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThan.call($this, '$.person.age', -110.32)
+          Then.shouldBeGreaterThan.call($this, '$.person.age', -110.32)
         }).not.toThrow()
       })
 
@@ -1255,7 +1255,7 @@ describe('#StepDefinition - then - functions', () => {
 
         const Then = require('./functions')
         expect(() => {
-          Then.shouldBeGreatherThan.call($this, '$.person.age', -110)
+          Then.shouldBeGreaterThan.call($this, '$.person.age', -110)
         }).not.toThrow()
       })
     })

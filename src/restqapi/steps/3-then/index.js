@@ -376,7 +376,7 @@ module.exports = [
    *
    * @function greaterThan
    */
-  ['the response body at {string} should be greater than {int}', then.shouldBeGreatherThan, 'Check if a value in the response body is greater than an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
+  ['the response body at {string} should be greater than {int}', then.shouldBeGreaterThan, 'Check if a value in the response body is greater than an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
   /**
    * ### Then the response body at {string} should be less than {int}
@@ -403,7 +403,7 @@ module.exports = [
    *
    * @function greaterThanOrEqualTo
    */
-  ['the response body at {string} should be greater than or equal to {int}', then.shouldBeGreatherThanOrEqualTo, 'Check if a value in the response body is greater than or equal to an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
+  ['the response body at {string} should be greater than or equal to {int}', then.shouldBeGreaterThanOrEqualTo, 'Check if a value in the response body is greater than or equal to an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
   // Response Dataset
 

@@ -433,6 +433,7 @@ By adding the cookie into the jar the following request will contains the cookie
         * [~notEmptyArray()](#module_Then..notEmptyArray)
         * [~emptyResponse()](#module_Then..emptyResponse)
         * [~bodyPropertyEqual()](#module_Then..bodyPropertyEqual)
+        * [~bodyPropertyNotEqual()](#module_Then..bodyPropertyNotEqual)
         * [~bodyPropertyJson()](#module_Then..bodyPropertyJson)
         * [~bodyPropertyEqualTrue()](#module_Then..bodyPropertyEqualTrue)
         * [~bodyPropertyEqualFalse()](#module_Then..bodyPropertyEqualFalse)
@@ -615,6 +616,23 @@ Then the response body at "user.lastname" should equal {{ lastname }}
 Then the response body at "$.id" should equal 10
 Then the response body at "$.user.firstname" should equal "john"
 Then the response body at "$.user.lastname" should equal {{ lastname }}
+```
+<a name="module_Then..bodyPropertyNotEqual"></a>
+### Then the response body at {string} should not equal to {string | int | data }
+Ensure a JSON response body not equals a given value at the JSON path. Equality is not determined
+
+**Category**: JSON Response body  
+**Example** *(Using dot object)*  
+```js
+Then the response body at "id" should not equal to 10
+Then the response body at "user.firstname" should not equal to "john"
+Then the response body at "user.lastname" should not equal to {{ lastname }}
+```
+**Example** *(Using json path)*  
+```js
+Then the response body at "$.id" should not equal to 10
+Then the response body at "$.user.firstname" should not equal to "john"
+Then the response body at "$.user.lastname" should not equal to {{ lastname }}
 ```
 <a name="module_Then..bodyPropertyJson"></a>
 ### Then the response body at {string} should be equal to:

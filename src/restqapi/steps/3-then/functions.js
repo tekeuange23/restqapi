@@ -153,6 +153,14 @@ Then.shouldMatch = function (property, value) {
   assert.ok(regex.test(received), err)
 }
 
+Then.shouldNotBeEqual = function(property, value) {
+  value = this.data.get(value)
+  const received = this.api.response.findInBody(property)
+  if (value !== received) return
+  const err = `${this.api.response.request.prefix} The response body property "${property}" should not be equal to ${value} <${typeof value}>, but received : ${received} <${typeof received}>`
+  assert.fail(err)
+}
+
 Then.shouldBeNow = function (property) {
   const received = this.api.response.findInBody(property)
   const diff = Date.now() - new Date(received).getTime()

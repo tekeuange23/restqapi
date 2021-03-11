@@ -9,7 +9,7 @@ describe('#StepDefinition - then - functions', () => {
   test('Configuration', () => {
     const Then = require('./functions')
     const fns = Object.keys(Then)
-    expect(fns.length).toBe(33)
+    expect(fns.length).toBe(34)
     const expectedFunctions = [
       'httpCode',
       'httpTiming',
@@ -31,6 +31,7 @@ describe('#StepDefinition - then - functions', () => {
       'shouldBeAnArray',
       'shouldBeAnArrayOfXItems',
       'shouldMatch',
+      'shouldNotBeEqual',
       'shouldBeNow',
       'shouldBeJsonBody',
       'shouldBePropertyJson',
@@ -763,6 +764,66 @@ describe('#StepDefinition - then - functions', () => {
       })
     })
 
+    describe('shouldNotBeEqual', () => {
+      test('Throw an error if the value is equal', () => {
+        jest.unmock('assert')
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  age: 22
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            }),
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldNotBeEqual.call($this, '$.person.age', 22)
+        }).toThrow(`[POST /users] The response body property "$.person.age" should not be equal to 22 <number>, but received : 22 <number>`)
+      })
+
+      test('To not throw  an error if the value is not equal (same value different type)', () => {
+        jest.unmock('assert')
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  age: '22'
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            }),
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldNotBeEqual.call($this, '$.person.age', 22)
+        }).not.toThrow()
+      })
+    })
+
     test('shouldBeNow ', () => {
       global.Date.now = jest.fn(() => new Date('2019-04-07T10:20:30Z').getTime())
 
@@ -886,7 +947,7 @@ describe('#StepDefinition - then - functions', () => {
         Then.shouldBePropertyJson.call($this, '$.person', json)
       })
 
-      test('Shouldn\'t be equal', () => {
+      test('Throw an error if it is not equal', () => {
         const $this = {
           data: {
             get: _ => _

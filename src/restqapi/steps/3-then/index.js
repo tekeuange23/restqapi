@@ -170,6 +170,28 @@ module.exports = [
   ['the response body at {string} should equal {string}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, string'],
   ['the response body at {string} should equal {int}', then.shouldBeNumber, 'Check a value in the body response as a int (dot-object pattern)', 'api, response, body, jsonpath, dot-object, number'],
 
+  /**
+   * ### Then the response body at {string} should not equal to {string | int | data }
+   * Ensure a JSON response body not equals a given value at the JSON path. Equality is not determined
+   *
+   * @category JSON Response body
+   *
+   * @example <caption>Using dot object</caption>
+   * Then the response body at "id" should not equal to 10
+   * Then the response body at "user.firstname" should not equal to "john"
+   * Then the response body at "user.lastname" should not equal to {{ lastname }}
+   *
+   * @example <caption>Using json path</caption>
+   * Then the response body at "$.id" should not equal to 10
+   * Then the response body at "$.user.firstname" should not equal to "john"
+   * Then the response body at "$.user.lastname" should not equal to {{ lastname }}
+   *
+   * @function bodyPropertyNotEqual
+   */
+  ['the response body at {string} should not equal to {data}', then.shouldNotBeEqual, 'Invalidate a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, data'],
+  ['the response body at {string} should not equal to {string}', then.shouldNotBeEqual, 'Invalidate a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, string'],
+  ['the response body at {string} should not equal to {int}', then.shouldNotBeEqual, 'Invalidate a value in the body response as a int (dot-object pattern)', 'api, response, body, jsonpath, dot-object, number'],
+
 
   /**
    * ### Then the response body at {string} should be equal to:

@@ -433,6 +433,7 @@ By adding the cookie into the jar the following request will contains the cookie
         * [~notEmptyArray()](#module_Then..notEmptyArray)
         * [~emptyResponse()](#module_Then..emptyResponse)
         * [~bodyPropertyEqual()](#module_Then..bodyPropertyEqual)
+        * [~bodyPropertyNotEqual()](#module_Then..bodyPropertyNotEqual)
         * [~bodyPropertyJson()](#module_Then..bodyPropertyJson)
         * [~bodyPropertyEqualTrue()](#module_Then..bodyPropertyEqualTrue)
         * [~bodyPropertyEqualFalse()](#module_Then..bodyPropertyEqualFalse)
@@ -447,6 +448,11 @@ By adding the cookie into the jar the following request will contains the cookie
         * [~bodyJson()](#module_Then..bodyJson)
     * _Latency_
         * [~httpLatency()](#module_Then..httpLatency)
+    * _Sort Numeric_
+        * [~greaterThan()](#module_Then..greaterThan)
+        * [~lessThan()](#module_Then..lessThan)
+        * [~greaterThanOrEqualTo()](#module_Then..greaterThanOrEqualTo)
+        * [~lessThanOrEqualTo()](#module_Then..lessThanOrEqualTo)
     * _Status code_
         * [~httpCode()](#module_Then..httpCode)
 
@@ -471,7 +477,7 @@ This will allow you to reuse value in another step
 ```js
 Then add the value "Content-Type" from the response header to the dataset as "contentType"
 Given I have the api gateway
-  And the header contains "Content-Type" as {{ contentTypw }}
+  And the header contains "Content-Type" as {{ contentType }}
 ```
 <a name="module_Then..saveBodyPropertyIntoTheDataset"></a>
 ### Then add the value {string} from the response body to the dataset as {string}
@@ -610,6 +616,23 @@ Then the response body at "user.lastname" should equal {{ lastname }}
 Then the response body at "$.id" should equal 10
 Then the response body at "$.user.firstname" should equal "john"
 Then the response body at "$.user.lastname" should equal {{ lastname }}
+```
+<a name="module_Then..bodyPropertyNotEqual"></a>
+### Then the response body at {string} should not equal to {string | int | data }
+Ensure a JSON response body not equals a given value at the JSON path. Equality is not determined
+
+**Category**: JSON Response body  
+**Example** *(Using dot object)*  
+```js
+Then the response body at "id" should not equal to 10
+Then the response body at "user.firstname" should not equal to "john"
+Then the response body at "user.lastname" should not equal to {{ lastname }}
+```
+**Example** *(Using json path)*  
+```js
+Then the response body at "$.id" should not equal to 10
+Then the response body at "$.user.firstname" should not equal to "john"
+Then the response body at "$.user.lastname" should not equal to {{ lastname }}
 ```
 <a name="module_Then..bodyPropertyJson"></a>
 ### Then the response body at {string} should be equal to:
@@ -774,6 +797,58 @@ Ensure the response time is lower than the given time (in microseconds)
 **Example**  
 ```js
 Then the response time is under 100 ms
+```
+<a name="module_Then..greaterThan"></a>
+### Then the response body at {string} should be greater than {int}
+Verify if a specific value from the response body is greater than an expected value
+
+**Category**: Sort Numeric  
+**Example**  
+```js
+Then the response body at "$.person.age" should be greater than 10
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Then the response body at "$.person.age" should be greater than {{ age }}
+```
+<a name="module_Then..lessThan"></a>
+### Then the response body at {string} should be less than {int}
+Verify if a specific value from the response body is less than an expected value
+
+**Category**: Sort Numeric  
+**Example**  
+```js
+Then the response body at "$.person.age" should be less than 10
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Then the response body at "$.person.age" should be less than {{ age }}
+```
+<a name="module_Then..greaterThanOrEqualTo"></a>
+### Then the response body at {string} should be greater than or equal to {int}
+Verify if a specific value from the response body is greater than or equal to an expected value
+
+**Category**: Sort Numeric  
+**Example**  
+```js
+Then the response body at "$.person.age" should be greater than or equal to 10
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Then the response body at "$.person.age" should be greater than or equal to {{ age }}
+```
+<a name="module_Then..lessThanOrEqualTo"></a>
+### Then the response body at {string} should be less than or equal to {int}
+Verify if a specific value from the response body is less than or equal to an expected value
+
+**Category**: Sort Numeric  
+**Example**  
+```js
+Then the response body at "$.person.age" should be less than or equal to 10
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Then the response body at "$.person.age" should be less than or equal to {{ age }}
 ```
 <a name="module_Then..httpCode"></a>
 ### Then I should receive a response with the status {int}

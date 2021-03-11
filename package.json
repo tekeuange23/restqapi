@@ -8,7 +8,9 @@
     "start:example": "export $(cat .env | xargs) && cucumber-js --require ./src/setup-example.js --fail-fast ./sample-project/features-vigie",
     "test": "jest",
     "test:watch": "jest --watch --coverage",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "lint:fix": "eslint --fix src/",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@restqa/restqa-plugin-bootstrap": "0.0.4",
@@ -22,18 +24,24 @@
   },
   "main": "src/restqapi/index.js",
   "devDependencies": {
-    "eslint": "^7.16.0",
+    "eslint": "^7.21.0",
+    "eslint-config-standard": "^16.0.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^24.2.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.3.1",
     "jest": "^25.2.7",
     "jest-runner-eslint": "^0.10.0",
     "jsdoc-to-markdown": "^5.0.3",
     "nodemon": "^2.0.3"
   },
-  "eslintConfig": {
-    "parserOptions": {
-      "ecmaVersion": 2017
-    }
-  },
   "jest": {
+    "watchPlugins": [
+      "jest-runner-eslint/watch-fix"
+    ],
+    "moduleFileExtensions": [
+      "js"
+    ],
     "projects": [
       {
         "displayName": "test"
@@ -46,6 +54,11 @@
         ]
       }
     ]
+  },
+  "jest-runner-eslint": {
+    "cliOptions": {
+      "fix": true
+    }
   },
   "repository": {
     "type": "git",

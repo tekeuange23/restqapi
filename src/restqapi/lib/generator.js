@@ -2,7 +2,7 @@ const { URL } = require('url')
 const API = require('./api')
 const Steps = require('../steps')
 
-module.exports = async function(options) {  
+module.exports = async function (options) {
   if (!options) throw new ReferenceError('Please provide an object containing your request')
   if (!options.url) throw new ReferenceError('Please specify your url')
   if (options.method && !['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS', 'DELETE', 'HEAD'].includes(options.method)) throw new TypeError(`The method "${options.method}" is not valid, please use : GET, POST, PUT, PATCH, DELETE, OPTIONS or HEAD`)
@@ -14,7 +14,7 @@ module.exports = async function(options) {
     url: options.url
   }
 
-  let api = new API({ config })
+  const api = new API({ config })
   api.request.setMethod(options.method)
   options.URL.searchParams.forEach((value, key) => {
     api.request.setQueryString(key, value)
@@ -28,7 +28,7 @@ module.exports = async function(options) {
     api.request.setPayload(options.body)
   }
 
-  if (true === options.ignoreSsl) {
+  if (options.ignoreSsl === true) {
     api.request.ignoreSsl()
   }
 
@@ -40,10 +40,10 @@ module.exports = async function(options) {
   Object.keys(options.form || {}).forEach((key) => {
     api.request.addFormField(key, options.form[key])
   })
-  
+
   await api.run()
 
-  let mapping = {
+  const mapping = {
     request: {
       host: '',
       path: '',
@@ -69,7 +69,7 @@ module.exports = async function(options) {
       mapping.request.host = definition.replace('{string}', `"${options.URL.origin}"`)
     }
 
-    if (tags.includes('ssl') && true === options.ignoreSsl) {
+    if (tags.includes('ssl') && options.ignoreSsl === true) {
       mapping.request.ssl = definition
     }
 
@@ -82,15 +82,15 @@ module.exports = async function(options) {
     }
 
     if (tags.includes('basic auth') && options.user) {
-      let _def = definition
+      const _def = definition
         .replace('{string}', `"${options.user.username}"`)
         .replace('{string}', `"${options.user.password}"`)
       mapping.request.headers.push(_def)
     }
-    
+
     if (tags.includes('form') && options.form) {
       Object.keys(options.form).forEach((key) => {
-        let _def = definition
+        const _def = definition
           .replace('{string}', `"${key}"`)
           .replace('{string}', `"${options.form[key]}"`)
         mapping.request.form.push(_def)
@@ -99,7 +99,7 @@ module.exports = async function(options) {
 
     if (tags.includes('qs')) {
       options.URL.searchParams.forEach((value, key) => {
-        let _def = definition
+        const _def = definition
           .replace('{string}', `"${key}"`)
           .replace('{string}', `"${value}"`)
         mapping.request.query.push(_def)
@@ -108,7 +108,7 @@ module.exports = async function(options) {
 
     if (tags.includes('headers') && options.headers) {
       Object.keys(options.headers).forEach(key => {
-        let _definition = definition
+        const _definition = definition
           .replace('{string}', `"${key}"`)
           .replace('{string}', `"${options.headers[key]}"`)
         mapping.request.headers.push(_definition)
@@ -124,17 +124,15 @@ ${JSON.stringify(options.body, null, 2)}
 `
       mapping.request.body = definition.trim()
     }
-
   }
 
-  const When  = (definition, fn, description, tags) => {
+  const When = (definition, fn, description, tags) => {
     if (!tags.includes('generator')) return
 
     if (tags.includes('call')) {
       mapping.action = definition
     }
   }
-
 
   const Then = (definition, fn, description, tags) => {
     if (!tags.includes('generator')) return
@@ -152,9 +150,8 @@ ${JSON.stringify(api.response.body, null, 2)}
       mapping.response.body = definition.trim()
     }
   }
-  
 
-  Steps({Given, When, Then})
+  Steps({ Given, When, Then })
 
   const result = []
   result.push(`Given ${mapping.request.host}`)
@@ -183,4 +180,3 @@ ${JSON.stringify(api.response.body, null, 2)}
 
   return result.join('\n')
 }
-

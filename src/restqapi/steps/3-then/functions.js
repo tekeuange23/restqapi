@@ -153,7 +153,7 @@ Then.shouldMatch = function (property, value) {
   assert.ok(regex.test(received), err)
 }
 
-Then.shouldNotBeEqual = function(property, value) {
+Then.shouldNotBeEqual = function (property, value) {
   value = this.data.get(value)
   const received = this.api.response.findInBody(property)
   if (value !== received) return
@@ -171,7 +171,7 @@ Then.shouldBeNow = function (property) {
 Then.shouldBeJsonBody = function (value) {
   value = this.data.get(value)
   value = JSON.parse(value)
-  let { body } = this.api.response
+  const { body } = this.api.response
   const err = `${this.api.response.request.prefix} The response body should be '${JSON.stringify(value)}', but received : '${JSON.stringify(body)}`
   assert.deepStrictEqual(body, value, err)
 }
@@ -190,7 +190,6 @@ Then.shouldBePropertyJson = function (property, value) {
  * =========================================
  */
 
-
 Then.shouldBeGreaterThan = function (property, value) {
   value = this.data.get(value)
   let received = this.api.response.findInBody(property)
@@ -201,7 +200,7 @@ Then.shouldBeGreaterThan = function (property, value) {
   assert.ok(received > value, `${this.api.response.request.prefix} The response body at "${property}" is not greater than ${value}, received: ${received}`)
 }
 
-Then.shouldBeGreaterThanOrEqualTo = function(property, value) {
+Then.shouldBeGreaterThanOrEqualTo = function (property, value) {
   value = this.data.get(value)
   let received = this.api.response.findInBody(property)
   if (isNaN(received)) {
@@ -211,7 +210,7 @@ Then.shouldBeGreaterThanOrEqualTo = function(property, value) {
   assert.ok(received >= value, `${this.api.response.request.prefix} The response body at "${property}" is not greater than or equal to ${value}, received: ${received}`)
 }
 
-Then.shouldBeLessThan = function(property, value) {
+Then.shouldBeLessThan = function (property, value) {
   value = this.data.get(value)
   let received = this.api.response.findInBody(property)
   if (isNaN(received)) {
@@ -221,7 +220,7 @@ Then.shouldBeLessThan = function(property, value) {
   assert.ok(received < value, `${this.api.response.request.prefix} The response body at "${property}" is not lesser than ${value}, received: ${received}`)
 }
 
-Then.shouldBeLessThanOrEqualTo = function(property, value) {
+Then.shouldBeLessThanOrEqualTo = function (property, value) {
   value = this.data.get(value)
   let received = this.api.response.findInBody(property)
   if (isNaN(received)) {

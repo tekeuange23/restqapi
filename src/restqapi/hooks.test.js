@@ -53,11 +53,11 @@ describe('# hooks', () => {
 
     Hooks(config, fns)
 
-    expect(fns.Before.mock.calls.length).toBe(4)
+    expect(fns.Before.mock.calls).toHaveLength(4)
     expect(typeof fns.Before.mock.calls[0][0]).toBe('function')
-    expect($this.setConfig.mock.calls.length).toBe(1)
+    expect($this.setConfig.mock.calls).toHaveLength(1)
     expect($this.setConfig.mock.calls[0][0]).toEqual({ data: {}, foo: 'bar' })
-    expect($this.data.parse.mock.calls.length).toBe(1)
+    expect($this.data.parse.mock.calls).toHaveLength(1)
     expect($this.data.parse.mock.calls[0][0]).toEqual(feature)
 
     expect(fns.Before.mock.calls[1][0]).toBe('@skip')
@@ -72,16 +72,15 @@ describe('# hooks', () => {
     expect(typeof fns.Before.mock.calls[3][1]).toBe('function')
     expect($this.insecure).toBe(true)
 
+    expect(fns.BeforeAll.mock.calls).toHaveLength(0)
 
-    expect(fns.BeforeAll.mock.calls.length).toBe(0)
-
-    expect(fns.After.mock.calls.length).toBe(1)
-    expect($this.log.mock.calls.length).toBe(4)
+    expect(fns.After.mock.calls).toHaveLength(1)
+    expect($this.log.mock.calls).toHaveLength(4)
     expect($this.log.mock.calls[0][0]).toBe('\n======================== [ DEBUG : The scenario name ] ========================')
     expect($this.log.mock.calls[1][0]).toBe('Simple Value')
     expect($this.log.mock.calls[2][0]).toBe(JSON.stringify({ foo: 'bar' }, null, 2))
     expect($this.log.mock.calls[3][0]).toBe('======================== [ / DEBUG ] ========================')
-    expect($this.attach.mock.calls.length).toBe(1)
+    expect($this.attach.mock.calls).toHaveLength(1)
     const expectedAttachement = JSON.stringify({
       apis: [
         { foo: 'bar' }
@@ -90,7 +89,7 @@ describe('# hooks', () => {
     expect($this.attach.mock.calls[0][0]).toEqual(expectedAttachement)
     expect($this.attach.mock.calls[0][1]).toEqual('application/json')
 
-    expect(fns.AfterAll.mock.calls.length).toBe(0)
+    expect(fns.AfterAll.mock.calls).toHaveLength(0)
 
     expect($this.skipped).toEqual(true)
   })
@@ -128,11 +127,11 @@ describe('# hooks', () => {
 
     Hooks(config, fns)
 
-    expect(fns.Before.mock.calls.length).toBe(4)
+    expect(fns.Before.mock.calls).toHaveLength(4)
     expect(typeof fns.Before.mock.calls[0][0]).toBe('function')
-    expect($this.setConfig.mock.calls.length).toBe(1)
+    expect($this.setConfig.mock.calls).toHaveLength(1)
     expect($this.setConfig.mock.calls[0][0]).toEqual({ foo: 'bar' })
-    expect($this.data.parse.mock.calls.length).toBe(0)
+    expect($this.data.parse.mock.calls).toHaveLength(0)
     expect($this.debug).toEqual([])
   })
 })

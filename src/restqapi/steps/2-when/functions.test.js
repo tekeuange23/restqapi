@@ -3,7 +3,7 @@ describe('#StepDefinition - given - functions', () => {
 
   test('Configuration', () => {
     const fns = Object.keys(When)
-    expect(fns.length).toBe(1)
+    expect(fns).toHaveLength(1)
     const expectedFunctions = [
       'callApi'
     ]
@@ -18,7 +18,7 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       When.callApi.call($this)
-      expect($this.api.run.mock.calls.length).toBe(1)
+      expect($this.api.run.mock.calls).toHaveLength(1)
       expect($this.api.run.mock.calls[0][0]).toBeUndefined()
     })
   })

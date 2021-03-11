@@ -35,7 +35,7 @@ describe('# restqapi', () => {
     const instance = new Restqapi({ a: 'b' })
     instance.setHooks({ foo: 'bar' })
 
-    expect(Hooks.mock.calls.length).toBe(1)
+    expect(Hooks.mock.calls).toHaveLength(1)
     const expectedConfig = {
       a: 'b',
       data: {
@@ -77,7 +77,7 @@ describe('# restqapi', () => {
     const instance = new Restqapi({ a: 'b' })
     instance.setParameterType(defineParameterType)
 
-    expect(defineParameterType.mock.calls.length).toBe(1)
+    expect(defineParameterType.mock.calls).toHaveLength(1)
     expect(defineParameterType.mock.calls[0][0].regexp).toEqual(/\{\{(.*)\}\}/)
     expect(defineParameterType.mock.calls[0][0].name).toEqual('data')
     expect(typeof defineParameterType.mock.calls[0][0].transformer).toEqual('function')
@@ -89,34 +89,32 @@ describe('# restqapi', () => {
       }
     }
     defineParameterType.mock.calls[0][0].transformer.call($this, 'my-data')
-    expect($this.data.get.mock.calls.length).toBe(1)
+    expect($this.data.get.mock.calls).toHaveLength(1)
     expect($this.data.get.mock.calls[0][0]).toBe('{{ my-data }}')
   })
 })
 
-
 describe('# restqapi.Generator', () => {
-  test('throw an error if the parameter is empty', () =>{
+  test('throw an error if the parameter is empty', () => {
     const Restqapi = require('./index')
-    expect(Restqapi.Generator()).rejects.toThrow(new ReferenceError('Please provide an object containing your request'));
+    return expect(Restqapi.Generator()).rejects.toThrow(new ReferenceError('Please provide an object containing your request'))
   })
 
-  test('throw an error if the object doesn\'t contains the url', () =>{
+  test('throw an error if the object doesn\'t contains the url', () => {
     const Restqapi = require('./index')
     const query = {
 
     }
-    expect(Restqapi.Generator(query)).rejects.toThrow(new ReferenceError('Please specify your url'));
+    return expect(Restqapi.Generator(query)).rejects.toThrow(new ReferenceError('Please specify your url'))
   })
 
-  test('throw an error if the method is not valid', () =>{
+  test('throw an error if the method is not valid', () => {
     const Restqapi = require('./index')
     const query = {
       url: 'http://www.example.com',
       method: 'PUUT'
     }
-    expect(Restqapi.Generator(query)).rejects.toThrow(new TypeError('The method "PUUT" is not valid, please use : GET, POST, PUT, PATCH, DELETE, OPTIONS or HEAD'));
-
+    return expect(Restqapi.Generator(query)).rejects.toThrow(new TypeError('The method "PUUT" is not valid, please use : GET, POST, PUT, PATCH, DELETE, OPTIONS or HEAD'))
   })
 
   test('Use method get if it\'s not specified', async () => {
@@ -149,8 +147,8 @@ describe('# restqapi.Generator', () => {
     const query = {
       url: 'http://www.example.com?q=restqa',
       body: {
-        hello: "world",
-        bonjour: "le monde",
+        hello: 'world',
+        bonjour: 'le monde'
       }
     }
     const result = await Restqapi.Generator(query)
@@ -190,11 +188,11 @@ Then I should receive a response with the status 200
         q: 'restqa'
       },
       json: {
-        hello: "world",
-        bonjour: "le monde"
+        hello: 'world',
+        bonjour: 'le monde'
       }
     }
-    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls).toHaveLength(1)
     expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
   })
 
@@ -231,8 +229,8 @@ Then I should receive a response with the status 200
         'content-type': 'multipart/form-data'
       },
       form: {
-        hello: "world",
-        bonjour: "le monde",
+        hello: 'world',
+        bonjour: 'le monde'
       }
     }
     const result = await Restqapi.Generator(query)
@@ -260,7 +258,7 @@ Then I should receive a response with the status 200
     expect(result).toEqual(expectedResult.trim())
 
     const FormData = require('form-data')
-    const form  = new FormData()
+    const form = new FormData()
     form.append('hello', 'world')
     form.append('bonjour', 'le monde')
 
@@ -271,9 +269,9 @@ Then I should receive a response with the status 200
       hostname: 'www.example.com',
       searchParams: {
         q: 'restqa'
-      },
+      }
     }
-    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls).toHaveLength(1)
     expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
     expect(form.toString()).toEqual(got.mock.calls[0][0].body.toString())
   })
@@ -323,12 +321,12 @@ Then I should receive a response with the status 204
       pathname: '/logout',
       method: 'DELETE',
       protocol: 'http:',
-      hostname: 'www.example.com',
+      hostname: 'www.example.com'
     }
-    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls).toHaveLength(1)
     expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
   })
- 
+
   test('Basic auth and ignore ssl', async () => {
     const got = require('got')
     got.mockResolvedValue({
@@ -354,7 +352,7 @@ Then I should receive a response with the status 204
       url: 'http://www.example.com/logout',
       method: 'DELETE',
       headers: {
-        'x-api-key': 'xxx-yyy-zzz',
+        'x-api-key': 'xxx-yyy-zzz'
       },
       user: {
         username: 'john',
@@ -380,15 +378,14 @@ Then I should receive a response with the status 204
       method: 'DELETE',
       protocol: 'http:',
       hostname: 'www.example.com',
-      rejectUnauthorized: false,
+      rejectUnauthorized: false
     }
 
     const expectedHeaders = {
-      'x-api-key': 'xxx-yyy-zzz',
+      'x-api-key': 'xxx-yyy-zzz'
     }
-    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls).toHaveLength(1)
     expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
     expect(got.mock.calls[0][0].headers).toEqual(expect.objectContaining(expectedHeaders))
   })
-
 })

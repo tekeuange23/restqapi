@@ -12,11 +12,11 @@ describe('# api - Module', () => {
     }
     const instance = new Api(options)
 
-    expect(Object.keys(instance).length).toBe(5)
+    expect(Object.keys(instance)).toHaveLength(5)
     expect(Object.keys(instance)).toEqual(['config', 'request', 'response', 'run', 'toJSON'])
     expect(instance.config).toEqual({ url: 'http://test.com' })
     expect(instance.request).toBeInstanceOf(Object)
-    expect(instance.response).toEqual(null)
+    expect(instance.response).toBeNull()
     expect(instance.run).toBeInstanceOf(Function)
   })
 
@@ -57,10 +57,10 @@ describe('# api - Module', () => {
     const instance = new Api(options)
     await instance.run()
 
-    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls).toHaveLength(1)
     expect(got.mock.calls[0][0]).toEqual({ foo: 'bar' })
 
-    expect(Response.mock.calls.length).toBe(1)
+    expect(Response.mock.calls).toHaveLength(1)
     expect(Response.mock.calls[0][0]).toEqual({ statusCode: 201 })
     expect(instance.response).toEqual({ status: 201 })
   })
@@ -104,10 +104,10 @@ describe('# api - Module', () => {
     const instance = new Api(options)
     await instance.run()
 
-    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls).toHaveLength(1)
     expect(got.mock.calls[0][0]).toEqual({ foo: 'bar' })
 
-    expect(Response.mock.calls.length).toBe(1)
+    expect(Response.mock.calls).toHaveLength(1)
     expect(Response.mock.calls[0][0]).toEqual({ statusCode: 401 })
     expect(instance.response).toEqual({ status: 401 })
   })
@@ -138,10 +138,10 @@ describe('# api - Module', () => {
     const instance = new Api(options)
     await expect(instance.run()).rejects.toThrow('Random error')
 
-    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls).toHaveLength(1)
     expect(got.mock.calls[0][0]).toEqual({ foo: 'bar' })
 
-    expect(instance.response).toEqual(null)
+    expect(instance.response).toBeNull()
   })
 
   test('toJson', async () => {
@@ -188,7 +188,7 @@ describe('# api - Module', () => {
     await instance.run()
     const result = instance.toJSON()
 
-    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls).toHaveLength(1)
     expect(got.mock.calls[0][0]).toEqual({ foo: 'bar' })
 
     expect(result).toEqual({
@@ -228,7 +228,7 @@ describe('# api - Module', () => {
     await expect(instance.run()).rejects.toThrow('the error')
     const result = instance.toJSON()
 
-    expect(got.mock.calls.length).toBe(1)
+    expect(got.mock.calls).toHaveLength(1)
     expect(got.mock.calls[0][0]).toEqual({ foo: 'bar' })
 
     expect(result).toEqual({

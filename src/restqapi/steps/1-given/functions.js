@@ -24,32 +24,31 @@ function getCookie () {
 
 Given.gateway = function () {
   this.api = this.createApi()
-  let cookie = getCookie.call(this)
-  if (cookie) { 
+  const cookie = getCookie.call(this)
+  if (cookie) {
     this.api.request.setHeader('cookie', cookie)
   }
 
-  if (true === this.insecure) {
+  if (this.insecure === true) {
     this.api.request.ignoreSsl()
   }
 }
 
 Given.gatewayHost = function (url) {
   this.api = this.createApi(url)
-  let cookie = getCookie.call(this)
-  if (cookie) { 
+  const cookie = getCookie.call(this)
+  if (cookie) {
     this.api.request.setHeader('cookie', cookie)
   }
 
-  if (true === this.insecure) {
+  if (this.insecure === true) {
     this.api.request.ignoreSsl()
   }
 }
 
-Given.ssl = function() {
+Given.ssl = function () {
   this.api.request.ignoreSsl()
 }
-
 
 Given.path = function (path) {
   path = this.data.get(path)
@@ -145,12 +144,12 @@ Given.jsonPayload = function (value) {
   this.api.request.setPayload(value)
 }
 
-Given.jsonFilePayload = function(filename) {
-  if ('.json' !== path.extname(filename)) {
+Given.jsonFilePayload = function (filename) {
+  if (path.extname(filename) !== '.json') {
     throw new Error(`The file "${filename}" should be a .json file`)
   }
 
-  filepath = this.data.get(filename)
+  let filepath = this.data.get(filename)
   filepath = this.data.getFile(filepath)
   let content = fs.readFileSync(filepath).toString('utf-8')
   try {

@@ -95,7 +95,7 @@ module.exports = [
   /**
     * ### Given I send a {string} request to {string}
     * Construct a request to a resource using an HTTP method
-    * 
+    *
     * @category Method
     *
     * @example
@@ -397,7 +397,7 @@ module.exports = [
    * @category JSON Request body
    *
    * @example
-   * Given the payload from a file stored at "my-body.json" 
+   * Given the payload from a file stored at "my-body.json"
    *
    * @example <caption>Placeholder from datasets</caption>
    * Given the payload from a file stored at {{ filename }}

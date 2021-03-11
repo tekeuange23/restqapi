@@ -192,14 +192,13 @@ module.exports = [
   ['the response body at {string} should not be equal to {string}', then.shouldNotBeEqual, 'Invalidate a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, string'],
   ['the response body at {string} should not be equal to {int}', then.shouldNotBeEqual, 'Invalidate a value in the body response as a int (dot-object pattern)', 'api, response, body, jsonpath, dot-object, number'],
 
-
   /**
    * ### Then the response body at {string} should be equal to:
    * Verify a specific property from the response body against a JSON object
    *
    * @category JSON Response body
    *
-   * @example 
+   * @example
    * Then the response body at "$.person" should be equal to:
    * """
    *   {
@@ -375,7 +374,7 @@ module.exports = [
    *
    * @category JSON Response body
    *
-   * @example 
+   * @example
    * Then the response body should be equal to:
    * """
    *   {
@@ -393,7 +392,7 @@ module.exports = [
    *
    * @category Sort Numeric
    *
-   * @example 
+   * @example
    * Then the response body at "$.person.age" should be greater than 10
    *
    * @example <caption>Placeholder from datasets</caption>
@@ -410,7 +409,7 @@ module.exports = [
    *
    * @category Sort Numeric
    *
-   * @example 
+   * @example
    * Then the response body at "$.person.age" should be less than 10
    *
    * @example <caption>Placeholder from datasets</caption>
@@ -421,14 +420,13 @@ module.exports = [
   ['the response body at {string} should be less than {int}', then.shouldBeLessThan, 'Check if a value in the response body is less than an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
   ['the response body at {string} should be less than {data}', then.shouldBeLessThan, 'Check if a value in the response body is less than an expected value (placeholder)', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
-
   /**
    * ### Then the response body at {string} should be greater than or equal to {int}
    * Verify if a specific value from the response body is greater than or equal to an expected value
    *
    * @category Sort Numeric
    *
-   * @example 
+   * @example
    * Then the response body at "$.person.age" should be greater than or equal to 10
    *
    * @example <caption>Placeholder from datasets</caption>
@@ -445,7 +443,7 @@ module.exports = [
    *
    * @category Sort Numeric
    *
-   * @example 
+   * @example
    * Then the response body at "$.person.age" should be less than or equal to 10
    *
    * @example <caption>Placeholder from datasets</caption>
@@ -499,7 +497,7 @@ module.exports = [
   /**
    * ### Then I add the cookie to the jar
    * Add the cookie into the Jar ^^
-   * 
+   *
    * @category Cookie
    *
    * By adding the cookie into the jar the following request will contains the cookie into the header

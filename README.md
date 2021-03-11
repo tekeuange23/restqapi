@@ -1,4 +1,4 @@
-# RestqAPI
+# RestqAPI 🦏
 
 > An Awesome Cucumber library providing ready to use steps to test REST APIs
 

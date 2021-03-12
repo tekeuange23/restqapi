@@ -4,10 +4,21 @@ beforeEach(() => {
 
 describe('#StepDefinition - given - functions', () => {
   const Given = require('./functions')
+  const os = require('os')
+  const fs = require('fs')
+  const path = require('path')
+
+  let filename
+
+  beforeEach(() => {
+    if (filename && fs.existsSync(filename)) {
+      fs.unlinkSync(filename)
+    }
+  })
 
   test('Configuration', () => {
     const fns = Object.keys(Given)
-    expect(fns.length).toBe(22)
+    expect(fns).toHaveLength(23)
     const expectedFunctions = [
       'gateway',
       'gatewayHost',
@@ -28,6 +39,7 @@ describe('#StepDefinition - given - functions', () => {
       'payloadEmptyArray',
       'payloads',
       'jsonPayload',
+      'jsonFilePayload',
       'form',
       'forms',
       'formUpload'
@@ -54,11 +66,11 @@ describe('#StepDefinition - given - functions', () => {
           }
         }
         Given.gateway.call($this)
-        expect($this.createApi.mock.calls.length).toBe(1)
+        expect($this.createApi.mock.calls).toHaveLength(1)
         expect($this.createApi.mock.calls[0][0]).toBeUndefined()
         expect($this.api).toEqual(mockApi)
-        expect($this.api.request.setHeader.mock.calls.length).toEqual(0)
-        expect($this.data.get.mock.calls.length).toEqual(1)
+        expect($this.api.request.setHeader.mock.calls).toHaveLength(0)
+        expect($this.data.get.mock.calls).toHaveLength(1)
         expect($this.data.get.mock.calls[0][0]).toEqual('{{__cookie_jar__}}')
       })
 
@@ -80,15 +92,15 @@ describe('#StepDefinition - given - functions', () => {
           }
         }
         Given.gateway.call($this)
-        expect($this.createApi.mock.calls.length).toBe(1)
+        expect($this.createApi.mock.calls).toHaveLength(1)
         expect($this.createApi.mock.calls[0][0]).toBeUndefined()
         expect($this.api).toEqual(mockApi)
-        expect($this.api.request.setHeader.mock.calls.length).toEqual(1)
+        expect($this.api.request.setHeader.mock.calls).toHaveLength(1)
         expect($this.api.request.setHeader.mock.calls[0][0]).toEqual('cookie')
         expect($this.api.request.setHeader.mock.calls[0][1]).toEqual('coooookie')
-        expect($this.data.get.mock.calls.length).toEqual(1)
+        expect($this.data.get.mock.calls).toHaveLength(1)
         expect($this.data.get.mock.calls[0][0]).toEqual('{{__cookie_jar__}}')
-        expect($this.api.request.ignoreSsl.mock.calls.length).toBe(0)
+        expect($this.api.request.ignoreSsl.mock.calls).toHaveLength(0)
       })
 
       test('gateway with insecure', () => {
@@ -96,7 +108,7 @@ describe('#StepDefinition - given - functions', () => {
           foo: 'bar',
           request: {
             setHeader: jest.fn(),
-            ignoreSsl: jest.fn(),
+            ignoreSsl: jest.fn()
           }
         }
         const $this = {
@@ -110,13 +122,13 @@ describe('#StepDefinition - given - functions', () => {
           insecure: true
         }
         Given.gateway.call($this)
-        expect($this.createApi.mock.calls.length).toBe(1)
+        expect($this.createApi.mock.calls).toHaveLength(1)
         expect($this.createApi.mock.calls[0][0]).toBeUndefined()
         expect($this.api).toEqual(mockApi)
-        expect($this.api.request.setHeader.mock.calls.length).toEqual(0)
-        expect($this.data.get.mock.calls.length).toEqual(1)
+        expect($this.api.request.setHeader.mock.calls).toHaveLength(0)
+        expect($this.data.get.mock.calls).toHaveLength(1)
         expect($this.data.get.mock.calls[0][0]).toEqual('{{__cookie_jar__}}')
-        expect($this.api.request.ignoreSsl.mock.calls.length).toBe(1)
+        expect($this.api.request.ignoreSsl.mock.calls).toHaveLength(1)
       })
     })
 
@@ -138,11 +150,11 @@ describe('#StepDefinition - given - functions', () => {
           }
         }
         Given.gatewayHost.call($this, 'http://example.test')
-        expect($this.createApi.mock.calls.length).toBe(1)
+        expect($this.createApi.mock.calls).toHaveLength(1)
         expect($this.createApi.mock.calls[0][0]).toBe('http://example.test')
         expect($this.api).toEqual(mockApi)
-        expect($this.api.request.setHeader.mock.calls.length).toEqual(0)
-        expect($this.data.get.mock.calls.length).toEqual(1)
+        expect($this.api.request.setHeader.mock.calls).toHaveLength(0)
+        expect($this.data.get.mock.calls).toHaveLength(1)
         expect($this.data.get.mock.calls[0][0]).toEqual('{{__cookie_jar__}}')
       })
 
@@ -167,15 +179,15 @@ describe('#StepDefinition - given - functions', () => {
           }
         }
         Given.gatewayHost.call($this, 'http://example.test')
-        expect($this.createApi.mock.calls.length).toBe(1)
+        expect($this.createApi.mock.calls).toHaveLength(1)
         expect($this.createApi.mock.calls[0][0]).toBe('http://example.test')
         expect($this.api).toEqual(mockApi)
-        expect($this.api.request.setHeader.mock.calls.length).toEqual(1)
+        expect($this.api.request.setHeader.mock.calls).toHaveLength(1)
         expect($this.api.request.setHeader.mock.calls[0][0]).toEqual('cookie')
         expect($this.api.request.setHeader.mock.calls[0][1]).toEqual('coooookie')
-        expect($this.data.get.mock.calls.length).toEqual(1)
+        expect($this.data.get.mock.calls).toHaveLength(1)
         expect($this.data.get.mock.calls[0][0]).toEqual('[[__cookie_jar__]]')
-        expect($this.api.request.ignoreSsl.mock.calls.length).toEqual(0)
+        expect($this.api.request.ignoreSsl.mock.calls).toHaveLength(0)
       })
 
       test('gatewayHost with a insecure url', () => {
@@ -200,15 +212,15 @@ describe('#StepDefinition - given - functions', () => {
           insecure: true
         }
         Given.gatewayHost.call($this, 'http://example.test')
-        expect($this.createApi.mock.calls.length).toBe(1)
+        expect($this.createApi.mock.calls).toHaveLength(1)
         expect($this.createApi.mock.calls[0][0]).toBe('http://example.test')
         expect($this.api).toEqual(mockApi)
-        expect($this.api.request.setHeader.mock.calls.length).toEqual(1)
+        expect($this.api.request.setHeader.mock.calls).toHaveLength(1)
         expect($this.api.request.setHeader.mock.calls[0][0]).toEqual('cookie')
         expect($this.api.request.setHeader.mock.calls[0][1]).toEqual('coooookie')
-        expect($this.data.get.mock.calls.length).toEqual(1)
+        expect($this.data.get.mock.calls).toHaveLength(1)
         expect($this.data.get.mock.calls[0][0]).toEqual('[[__cookie_jar__]]')
-        expect($this.api.request.ignoreSsl.mock.calls.length).toEqual(1)
+        expect($this.api.request.ignoreSsl.mock.calls).toHaveLength(1)
       })
     })
 
@@ -221,8 +233,8 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.ssl.call($this, '/foo')
-      expect($this.api.request.ignoreSsl.mock.calls.length).toBe(1)
-      expect($this.api.request.ignoreSsl.mock.calls[0][0]).toBe(undefined)
+      expect($this.api.request.ignoreSsl.mock.calls).toHaveLength(1)
+      expect($this.api.request.ignoreSsl.mock.calls[0][0]).toBeUndefined()
     })
 
     test('path', () => {
@@ -237,9 +249,9 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.path.call($this, '/foo')
-      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls).toHaveLength(1)
       expect($this.data.get.mock.calls[0][0]).toBe('/foo')
-      expect($this.api.request.setPath.mock.calls.length).toBe(1)
+      expect($this.api.request.setPath.mock.calls).toHaveLength(1)
       expect($this.api.request.setPath.mock.calls[0][0]).toBe('/foo-bar')
     })
 
@@ -252,7 +264,7 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.method.call($this, 'POST')
-      expect($this.api.request.setMethod.mock.calls.length).toBe(1)
+      expect($this.api.request.setMethod.mock.calls).toHaveLength(1)
       expect($this.api.request.setMethod.mock.calls[0][0]).toBe('post')
     })
 
@@ -267,7 +279,7 @@ describe('#StepDefinition - given - functions', () => {
       expect(() => {
         Given.method.call($this, 'POOST')
       }).toThrow(new Error('"POOST" is not a valid http method. Accepted : https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods'))
-      expect($this.api.request.setMethod.mock.calls.length).toBe(0)
+      expect($this.api.request.setMethod.mock.calls).toHaveLength(0)
     })
 
     test('methodPath', () => {
@@ -283,11 +295,11 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.methodPath.call($this, 'PUT', '/bar')
-      expect($this.api.request.setMethod.mock.calls.length).toBe(1)
+      expect($this.api.request.setMethod.mock.calls).toHaveLength(1)
       expect($this.api.request.setMethod.mock.calls[0][0]).toBe('put')
-      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls).toHaveLength(1)
       expect($this.data.get.mock.calls[0][0]).toBe('/bar')
-      expect($this.api.request.setPath.mock.calls.length).toBe(1)
+      expect($this.api.request.setPath.mock.calls).toHaveLength(1)
       expect($this.api.request.setPath.mock.calls[0][0]).toBe('/bar-001')
     })
   })
@@ -305,10 +317,10 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.header.call($this, 'x-foo', 'bar')
-      expect($this.api.request.setHeader.mock.calls.length).toBe(1)
+      expect($this.api.request.setHeader.mock.calls).toHaveLength(1)
       expect($this.api.request.setHeader.mock.calls[0][0]).toBe('x-foo')
       expect($this.api.request.setHeader.mock.calls[0][1]).toBe('bar1')
-      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls).toHaveLength(1)
       expect($this.data.get.mock.calls[0][0]).toBe('bar')
     })
 
@@ -335,12 +347,12 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.headers.call($this, table)
-      expect($this.api.request.setHeader.mock.calls.length).toBe(2)
+      expect($this.api.request.setHeader.mock.calls).toHaveLength(2)
       expect($this.api.request.setHeader.mock.calls[0][0]).toBe('x-foo')
       expect($this.api.request.setHeader.mock.calls[0][1]).toBe('foo-value123')
       expect($this.api.request.setHeader.mock.calls[1][0]).toBe('x-bar')
       expect($this.api.request.setHeader.mock.calls[1][1]).toBe('bar-value123')
-      expect($this.data.get.mock.calls.length).toBe(2)
+      expect($this.data.get.mock.calls).toHaveLength(2)
       expect($this.data.get.mock.calls[0][0]).toBe('foo-value')
       expect($this.data.get.mock.calls[1][0]).toBe('bar-value')
     })
@@ -357,10 +369,10 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.bearer.call($this, 'bar')
-      expect($this.api.request.setHeader.mock.calls.length).toBe(1)
+      expect($this.api.request.setHeader.mock.calls).toHaveLength(1)
       expect($this.api.request.setHeader.mock.calls[0][0]).toBe('authorization')
       expect($this.api.request.setHeader.mock.calls[0][1]).toBe('Bearer bar1')
-      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls).toHaveLength(1)
       expect($this.data.get.mock.calls[0][0]).toBe('Bearer bar')
     })
 
@@ -380,10 +392,10 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.basicAuth.call($this, 'admin', 'password')
-      expect($this.api.request.setHeader.mock.calls.length).toBe(1)
+      expect($this.api.request.setHeader.mock.calls).toHaveLength(1)
       expect($this.api.request.setHeader.mock.calls[0][0]).toBe('authorization')
       expect($this.api.request.setHeader.mock.calls[0][1]).toBe('Basic YWRtaW46UEBzc3cwcmQ=')
-      expect($this.data.get.mock.calls.length).toBe(3)
+      expect($this.data.get.mock.calls).toHaveLength(3)
       expect($this.data.get.mock.calls[0][0]).toBe('admin')
       expect($this.data.get.mock.calls[1][0]).toBe('password')
     })
@@ -402,10 +414,10 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.queryString.call($this, 'param1', 'bar')
-      expect($this.api.request.setQueryString.mock.calls.length).toBe(1)
+      expect($this.api.request.setQueryString.mock.calls).toHaveLength(1)
       expect($this.api.request.setQueryString.mock.calls[0][0]).toBe('param1')
       expect($this.api.request.setQueryString.mock.calls[0][1]).toBe('bar1')
-      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls).toHaveLength(1)
       expect($this.data.get.mock.calls[0][0]).toBe('bar')
     })
 
@@ -432,12 +444,12 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.qs.call($this, table)
-      expect($this.api.request.setQueryString.mock.calls.length).toBe(2)
+      expect($this.api.request.setQueryString.mock.calls).toHaveLength(2)
       expect($this.api.request.setQueryString.mock.calls[0][0]).toBe('param1')
       expect($this.api.request.setQueryString.mock.calls[0][1]).toBe('foo123')
       expect($this.api.request.setQueryString.mock.calls[1][0]).toBe('param2')
       expect($this.api.request.setQueryString.mock.calls[1][1]).toBe('bar123')
-      expect($this.data.get.mock.calls.length).toBe(2)
+      expect($this.data.get.mock.calls).toHaveLength(2)
       expect($this.data.get.mock.calls[0][0]).toBe('foo')
       expect($this.data.get.mock.calls[1][0]).toBe('bar')
     })
@@ -456,10 +468,10 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.payload.call($this, 'param1', 'bar')
-      expect($this.api.request.addPayload.mock.calls.length).toBe(1)
+      expect($this.api.request.addPayload.mock.calls).toHaveLength(1)
       expect($this.api.request.addPayload.mock.calls[0][0]).toBe('param1')
       expect($this.api.request.addPayload.mock.calls[0][1]).toBe('bar1')
-      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls).toHaveLength(1)
       expect($this.data.get.mock.calls[0][0]).toBe('bar')
     })
 
@@ -472,9 +484,9 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.payloadNull.call($this, 'param1')
-      expect($this.api.request.addPayload.mock.calls.length).toBe(1)
+      expect($this.api.request.addPayload.mock.calls).toHaveLength(1)
       expect($this.api.request.addPayload.mock.calls[0][0]).toBe('param1')
-      expect($this.api.request.addPayload.mock.calls[0][1]).toBe(null)
+      expect($this.api.request.addPayload.mock.calls[0][1]).toBeNull()
     })
 
     test('payloadTrue', () => {
@@ -486,7 +498,7 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.payloadTrue.call($this, 'param1')
-      expect($this.api.request.addPayload.mock.calls.length).toBe(1)
+      expect($this.api.request.addPayload.mock.calls).toHaveLength(1)
       expect($this.api.request.addPayload.mock.calls[0][0]).toBe('param1')
       expect($this.api.request.addPayload.mock.calls[0][1]).toBe(true)
     })
@@ -500,7 +512,7 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.payloadFalse.call($this, 'param1')
-      expect($this.api.request.addPayload.mock.calls.length).toBe(1)
+      expect($this.api.request.addPayload.mock.calls).toHaveLength(1)
       expect($this.api.request.addPayload.mock.calls[0][0]).toBe('param1')
       expect($this.api.request.addPayload.mock.calls[0][1]).toBe(false)
     })
@@ -514,7 +526,7 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.payloadEmptyArray.call($this, 'param1')
-      expect($this.api.request.addPayload.mock.calls.length).toBe(1)
+      expect($this.api.request.addPayload.mock.calls).toHaveLength(1)
       expect($this.api.request.addPayload.mock.calls[0][0]).toBe('param1')
       expect($this.api.request.addPayload.mock.calls[0][1]).toStrictEqual([])
     })
@@ -542,12 +554,12 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.payloads.call($this, table)
-      expect($this.api.request.addPayload.mock.calls.length).toBe(2)
+      expect($this.api.request.addPayload.mock.calls).toHaveLength(2)
       expect($this.api.request.addPayload.mock.calls[0][0]).toBe('param.foo1')
       expect($this.api.request.addPayload.mock.calls[0][1]).toBe('foo123')
       expect($this.api.request.addPayload.mock.calls[1][0]).toBe('param.foo2')
       expect($this.api.request.addPayload.mock.calls[1][1]).toBe('bar123')
-      expect($this.data.get.mock.calls.length).toBe(2)
+      expect($this.data.get.mock.calls).toHaveLength(2)
       expect($this.data.get.mock.calls[0][0]).toBe('foo')
       expect($this.data.get.mock.calls[1][0]).toBe('bar')
     })
@@ -561,7 +573,7 @@ describe('#StepDefinition - given - functions', () => {
         },
         data: {
           get: jest.fn(_ => {
-            return _ 
+            return _
           })
         }
       }
@@ -573,9 +585,74 @@ describe('#StepDefinition - given - functions', () => {
       `
 
       Given.jsonPayload.call($this, json)
-      expect($this.api.request.setPayload.mock.calls.length).toBe(1)
+      expect($this.api.request.setPayload.mock.calls).toHaveLength(1)
       expect($this.api.request.setPayload.mock.calls[0][0]).toEqual(JSON.parse(json))
-      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls).toHaveLength(1)
+    })
+
+    describe('jsonFilePayload', () => {
+      test('Throw error if the filename doesn\'t have a "json" exentions', () => {
+        const $this = {
+          api: {
+            request: {
+              setPayload: jest.fn()
+            }
+          },
+          data: {
+            get: jest.fn(_ => _)
+          }
+        }
+
+        expect(() => {
+          Given.jsonFilePayload.call($this, 'body.txt')
+        }).toThrow(new Error('The file "body.txt" should be a .json file'))
+      })
+
+      test('Throw error when the file doesn\'t contain a valid json content', () => {
+        filename = path.resolve(os.tmpdir(), 'body.json')
+        fs.writeFileSync(filename, 'invalid body')
+
+        const $this = {
+          api: {
+            request: {
+              setPayload: jest.fn()
+            }
+          },
+          data: {
+            get: jest.fn(_ => _),
+            getFile: jest.fn().mockReturnValue(filename)
+          }
+        }
+
+        expect(() => {
+          Given.jsonFilePayload.call($this, 'body.json')
+        }).toThrow(new Error('The file "body.json" doesn\'t contain a valid JSON'))
+      })
+
+      test('Load the payload as a json file', () => {
+        const json = {
+          foo: 'bar'
+        }
+        filename = path.resolve(os.tmpdir(), 'body.json')
+        fs.writeFileSync(filename, JSON.stringify(json))
+
+        const $this = {
+          api: {
+            request: {
+              setPayload: jest.fn()
+            }
+          },
+          data: {
+            get: jest.fn(_ => _),
+            getFile: jest.fn().mockReturnValue(filename)
+          }
+        }
+        Given.jsonFilePayload.call($this, 'body.json')
+        expect($this.api.request.setPayload.mock.calls).toHaveLength(1)
+        expect($this.api.request.setPayload.mock.calls[0][0]).toEqual(json)
+        expect($this.data.get.mock.calls).toHaveLength(1)
+        expect($this.data.getFile.mock.calls).toHaveLength(1)
+      })
     })
   })
 
@@ -592,10 +669,10 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.form.call($this, 'param1', 'bar')
-      expect($this.api.request.addFormField.mock.calls.length).toBe(1)
+      expect($this.api.request.addFormField.mock.calls).toHaveLength(1)
       expect($this.api.request.addFormField.mock.calls[0][0]).toBe('param1')
       expect($this.api.request.addFormField.mock.calls[0][1]).toBe('bar1')
-      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls).toHaveLength(1)
       expect($this.data.get.mock.calls[0][0]).toBe('bar')
     })
 
@@ -618,14 +695,14 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.formUpload.call($this, 'file', 'bar.png')
-      expect($this.api.request.addFormField.mock.calls.length).toBe(1)
+      expect($this.api.request.addFormField.mock.calls).toHaveLength(1)
       expect($this.api.request.addFormField.mock.calls[0][0]).toBe('file')
       expect($this.api.request.addFormField.mock.calls[0][1]).toBe('testFile.rs')
-      expect($this.data.get.mock.calls.length).toBe(1)
+      expect($this.data.get.mock.calls).toHaveLength(1)
       expect($this.data.get.mock.calls[0][0]).toBe('bar.png')
-      expect($this.data.getFile.mock.calls.length).toBe(1)
+      expect($this.data.getFile.mock.calls).toHaveLength(1)
       expect($this.data.getFile.mock.calls[0][0]).toBe('bar.png')
-      expect(fs.createReadStream.mock.calls.length).toBe(1)
+      expect(fs.createReadStream.mock.calls).toHaveLength(1)
       expect(fs.createReadStream.mock.calls[0][0]).toBe('/usr/src/app/bar.png')
     })
 
@@ -652,12 +729,12 @@ describe('#StepDefinition - given - functions', () => {
         }
       }
       Given.forms.call($this, table)
-      expect($this.api.request.addFormField.mock.calls.length).toBe(2)
+      expect($this.api.request.addFormField.mock.calls).toHaveLength(2)
       expect($this.api.request.addFormField.mock.calls[0][0]).toBe('param.foo1')
       expect($this.api.request.addFormField.mock.calls[0][1]).toBe('foo123')
       expect($this.api.request.addFormField.mock.calls[1][0]).toBe('param.foo2')
       expect($this.api.request.addFormField.mock.calls[1][1]).toBe('bar123')
-      expect($this.data.get.mock.calls.length).toBe(2)
+      expect($this.data.get.mock.calls).toHaveLength(2)
       expect($this.data.get.mock.calls[0][0]).toBe('foo')
       expect($this.data.get.mock.calls[1][0]).toBe('bar')
     })

@@ -30,14 +30,13 @@ const Request = function (baseUrl, insecure, id) {
     }
   }
 
-
   const getOptions = () => {
     this.options.headers = this.options.headers || {}
     this.options.headers['x-correlation-id'] = getId()
     this.options.headers['user-agent'] = 'restqa (https://github.com/restqa/restqa)'
     this.options.responseType = this.options.responseType || 'json'
 
-    if (true === insecure) {
+    if (insecure === true) {
       ignoreSsl()
     }
 

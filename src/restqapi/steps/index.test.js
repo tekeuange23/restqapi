@@ -25,11 +25,11 @@ describe('#StepDefinition - index', () => {
 
     stepDefinition(obj)
 
-    expect(obj.Given.mock.calls.length).toBe(1)
+    expect(obj.Given.mock.calls).toHaveLength(1)
     expect(obj.Given.mock.calls[0][0]).toEqual(1)
-    expect(obj.When.mock.calls.length).toBe(1)
+    expect(obj.When.mock.calls).toHaveLength(1)
     expect(obj.When.mock.calls[0][0]).toEqual(2)
-    expect(obj.Then.mock.calls.length).toBe(1)
+    expect(obj.Then.mock.calls).toHaveLength(1)
     expect(obj.Then.mock.calls[0][0]).toEqual(3)
   })
 })

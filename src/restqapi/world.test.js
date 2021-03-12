@@ -13,7 +13,7 @@ describe('# world', () => {
       const World = require('./world')
 
       const world = new World({})
-      expect(world.apis.length).toBe(0)
+      expect(world.apis).toHaveLength(0)
       expect(typeof world.createApi).toBe('function')
 
       const config = {
@@ -23,7 +23,7 @@ describe('# world', () => {
       world.setConfig(config)
       world.createApi()
 
-      expect(world.apis.length).toBe(1)
+      expect(world.apis).toHaveLength(1)
       expect(Lib.Api.mock.calls[0][0]).toEqual({ config })
     })
 
@@ -36,7 +36,7 @@ describe('# world', () => {
       const World = require('./world')
 
       const world = new World({})
-      expect(world.apis.length).toBe(0)
+      expect(world.apis).toHaveLength(0)
 
       const config = {
         foo: 'bar'
@@ -45,7 +45,7 @@ describe('# world', () => {
       world.setConfig(config)
       world.createApi('https://example.test')
 
-      expect(world.apis.length).toBe(1)
+      expect(world.apis).toHaveLength(1)
       const expectedConfig = {
         foo: 'bar',
         url: 'https://example.test'

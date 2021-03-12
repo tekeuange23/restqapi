@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 const Given = {}
 
@@ -23,32 +24,31 @@ function getCookie () {
 
 Given.gateway = function () {
   this.api = this.createApi()
-  let cookie = getCookie.call(this)
-  if (cookie) { 
+  const cookie = getCookie.call(this)
+  if (cookie) {
     this.api.request.setHeader('cookie', cookie)
   }
 
-  if (true === this.insecure) {
+  if (this.insecure === true) {
     this.api.request.ignoreSsl()
   }
 }
 
 Given.gatewayHost = function (url) {
   this.api = this.createApi(url)
-  let cookie = getCookie.call(this)
-  if (cookie) { 
+  const cookie = getCookie.call(this)
+  if (cookie) {
     this.api.request.setHeader('cookie', cookie)
   }
 
-  if (true === this.insecure) {
+  if (this.insecure === true) {
     this.api.request.ignoreSsl()
   }
 }
 
-Given.ssl = function() {
+Given.ssl = function () {
   this.api.request.ignoreSsl()
 }
-
 
 Given.path = function (path) {
   path = this.data.get(path)
@@ -142,6 +142,22 @@ Given.jsonPayload = function (value) {
   value = this.data.get(value)
   value = JSON.parse(value)
   this.api.request.setPayload(value)
+}
+
+Given.jsonFilePayload = function (filename) {
+  if (path.extname(filename) !== '.json') {
+    throw new Error(`The file "${filename}" should be a .json file`)
+  }
+
+  let filepath = this.data.get(filename)
+  filepath = this.data.getFile(filepath)
+  let content = fs.readFileSync(filepath).toString('utf-8')
+  try {
+    content = JSON.parse(content)
+  } catch (e) {
+    throw new Error(`The file "${filename}" doesn't contain a valid JSON`)
+  }
+  this.api.request.setPayload(content)
 }
 
 Given.form = function (field, value) {

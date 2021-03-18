@@ -199,7 +199,7 @@ module.exports = [
    * @category JSON Response body
    *
    * @example
-   * Then the response body at "$.person" should be equal to:
+   * Then the response body at "$.person" should equal:
    * """
    *   {
    *     "firstName": "John",

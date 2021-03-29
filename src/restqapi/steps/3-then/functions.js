@@ -1,7 +1,10 @@
 const assert = require('assert')
-const Then = {}
 const moment = require('moment')
 moment.suppressDeprecationWarnings = true
+const fs = require('fs')
+const path = require('path')
+const Ajv = require('ajv')
+const Then = {}
 
 /*
  * =========================================
@@ -269,6 +272,43 @@ Then.shouldBeDateAfter = function (property, value) {
 
 Then.shouldBeDateAfterToday = function (property, value) {
   DateCompare.call(this, property, moment().format('YYYY/MM/DD'), 'after today')
+}
+
+/*
+ * =========================================
+ * Response API JSON schema Functions
+ * =========================================
+ */
+
+Then.shouldMatchPropertyJsonSchema = function (property, filename) {
+  if (path.extname(filename) !== '.json') {
+    throw new Error(`The file "${filename}" should be a .json file`)
+  }
+  let received = this.api.response.body
+  let msg = 'is not matching the expected response body'
+  if (property !== null) {
+    msg = `of the property "${property}" is not matching the expected result`
+    received = this.api.response.findInBody(property)
+  }
+  let filepath = this.data.get(filename)
+  filepath = this.data.getFile(filepath)
+  let schema = fs.readFileSync(filepath).toString('utf-8')
+  try {
+    schema = JSON.parse(schema)
+  } catch (err) {
+    throw new Error(`The file "${filename}" doesn't contain a valid JSON`)
+  }
+
+  const ajv = new Ajv({ allErrors: true })
+  const validate = ajv.compile(schema)
+  if (!validate(received)) {
+    const errors = validate.errors.map(_ => `- ${_.schemaPath} ${_.message}`).join('\n')
+    throw new Error(`${this.api.response.request.prefix} The JSON schema ${msg}: \n ${errors}`)
+  }
+}
+
+Then.shouldMatchJsonSchema = function (filename) {
+  Then.shouldMatchPropertyJsonSchema.call(this, null, filename)
 }
 
 /*

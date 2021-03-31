@@ -474,6 +474,19 @@ module.exports = [
   ['the response body at {string} should be a date before {date}', then.shouldBeDateBefore, 'Check if a date from the response body is before an expected date (placeholder)', 'api, response, body, jsonpath, dot-object, date'],
 
   /**
+   * ### Then the response body at {string} should be a date before today
+   * Verify and compare if a specific date from the response body is comes before the current day
+   *
+   * @category Date
+   *
+   * @example
+   * Then the response body at "$.createdAt" should be a date before today
+   *
+   * @function DateBeforeToday
+   */
+  ['the response body at {string} should be a date before today', then.shouldBeDateBeforeToday, 'Check if a date from the response body is before the current day', 'api, response, body, jsonpath, dot-object, date, today'],
+
+  /**
    * ### Then the response body at {string} should be a date after {string}
    * Verify and compare if a specific date from the response body comes after an expected date
    * The expected date should follow the pattern 'YYYY/MM/DD' (reference: RFC2822)
@@ -491,6 +504,19 @@ module.exports = [
    */
   ['the response body at {string} should be a date after {string}', then.shouldBeDateAfter, 'Check if a date from the response body is after an expected date', 'api, response, body, jsonpath, dot-object, date'],
   ['the response body at {string} should be a date after {date}', then.shouldBeDateAfter, 'Check if a date from the response body is after an expected date (placeholder)', 'api, response, body, jsonpath, dot-object, date'],
+
+  /**
+   * ### Then the response body at {string} should be a date after today
+   * Verify and compare if a specific date from the response body comes after the current day
+   *
+   * @category Date
+   *
+   * @example
+   * Then the response body at "$.createdAt" should be a date after today
+   *
+   * @function DateAfterToday
+   */
+  ['the response body at {string} should be a date after today', then.shouldBeDateAfterToday, 'Check if a date from the response body is after the current day', 'api, response, body, jsonpath, dot-object, date, today'],
 
   // Response Dataset
 

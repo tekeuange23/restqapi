@@ -9,7 +9,7 @@ describe('#StepDefinition - then - functions', () => {
   test('Configuration', () => {
     const Then = require('./functions')
     const fns = Object.keys(Then)
-    expect(fns).toHaveLength(36)
+    expect(fns).toHaveLength(38)
     const expectedFunctions = [
       'httpCode',
       'httpTiming',
@@ -40,7 +40,9 @@ describe('#StepDefinition - then - functions', () => {
       'shouldBeLessThan',
       'shouldBeLessThanOrEqualTo',
       'shouldBeDateBefore',
+      'shouldBeDateBeforeToday',
       'shouldBeDateAfter',
+      'shouldBeDateAfterToday',
       'addHeaderPropertyToDataset',
       'addBodyPropertyToDataset',
       'cookieJar',
@@ -1329,7 +1331,7 @@ describe('#StepDefinition - then - functions', () => {
         }).toThrow('[POST /users] The passed value "202010T21" is not a valid date')
       })
 
-      test('Throw error if the received date greater than the passed date', () => {
+      test('Throw error if the received date after the passed date', () => {
         const $this = {
           data: {
             get: _ => _
@@ -1352,10 +1354,10 @@ describe('#StepDefinition - then - functions', () => {
         const Then = require('./functions')
         expect(() => {
           Then.shouldBeDateBefore.call($this, '$.createDate', '2020/12/11')
-        }).toThrow('[POST /users] The response body at "$.createDate" is not lesser than "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/20" (2020-12-20T00:00:00+00:00)')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not before "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/20" (2020-12-20T00:00:00+00:00)')
       })
 
-      test('Do not throw an error if the passed date is lesser than the received date', () => {
+      test('Do not throw an error if the passed date is before the received date', () => {
         const $this = {
           data: {
             get: _ => _
@@ -1378,6 +1380,98 @@ describe('#StepDefinition - then - functions', () => {
         const Then = require('./functions')
         expect(() => {
           Then.shouldBeDateBefore.call($this, '$.createDate', '2020/12/10')
+        }).not.toThrow()
+      })
+    })
+
+    describe('shouldBeDateBeforeToday', () => {
+      test('Throw error if the received date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: 'twenty-two'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBeforeToday.call($this, '$.createDate')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not a valid date: twenty-two <string>')
+      })
+
+      test('Throw error if the received date greater than today', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/20'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        jest.mock('moment', () => {
+          const moment = jest.requireActual('moment')
+          moment.suppressDeprecationWarnings = true
+          return (d) => jest.fn(moment)(d || '2020-12-11', undefined, false)
+        })
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBeforeToday.call($this, '$.createDate')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not before today "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/20" (2020-12-20T00:00:00+00:00)')
+      })
+
+      test('Do not throw an error if the passed date is before today', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/01'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        jest.mock('moment', () => {
+          const moment = jest.requireActual('moment')
+          moment.suppressDeprecationWarnings = true
+          return (d) => jest.fn(moment)(d || '2020-12-11', undefined, false)
+        })
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBeforeToday.call($this, '$.createDate')
         }).not.toThrow()
       })
     })
@@ -1435,7 +1529,7 @@ describe('#StepDefinition - then - functions', () => {
         }).toThrow('[POST /users] The passed value "202010T21" is not a valid date')
       })
 
-      test('Throw error if the received date greater than the passed date', () => {
+      test('Throw error if the received date before the passed date', () => {
         const $this = {
           data: {
             get: _ => _
@@ -1458,10 +1552,10 @@ describe('#StepDefinition - then - functions', () => {
         const Then = require('./functions')
         expect(() => {
           Then.shouldBeDateAfter.call($this, '$.createDate', '2020/12/11')
-        }).toThrow('[POST /users] The response body at "$.createDate" is not greater than "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/10" (2020-12-10T00:00:00+00:00)')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not after "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/10" (2020-12-10T00:00:00+00:00)')
       })
 
-      test('Do not throw an error if the passed date is greater than the received date', () => {
+      test('Do not throw an error if the passed date is after the received date', () => {
         const $this = {
           data: {
             get: _ => _
@@ -1484,6 +1578,98 @@ describe('#StepDefinition - then - functions', () => {
         const Then = require('./functions')
         expect(() => {
           Then.shouldBeDateAfter.call($this, '$.createDate', '2020/12/11')
+        }).not.toThrow()
+      })
+    })
+
+    describe('shouldBeDateAfterToday', () => {
+      test('Throw error if the received date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: 'twenty-two'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfterToday.call($this, '$.createDate')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not a valid date: twenty-two <string>')
+      })
+
+      test('Throw error if the received date before today', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/01'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        jest.mock('moment', () => {
+          const moment = jest.requireActual('moment')
+          moment.suppressDeprecationWarnings = true
+          return (d) => jest.fn(moment)(d || '2020-12-11', undefined, false)
+        })
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfterToday.call($this, '$.createDate')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not after today "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/01" (2020-12-01T00:00:00+00:00)')
+      })
+
+      test('Do not throw an error if the passed date is after today', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/25'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        jest.mock('moment', () => {
+          const moment = jest.requireActual('moment')
+          moment.suppressDeprecationWarnings = true
+          return (d) => jest.fn(moment)(d || '2020-12-11', undefined, false)
+        })
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfterToday.call($this, '$.createDate')
         }).not.toThrow()
       })
     })

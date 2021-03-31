@@ -247,22 +247,28 @@ function DateCompare (property, value, formula) {
 
   const diff = receivedDate.diff(valueDate)
 
-  let label = 'lesser'
   let result = diff < 0
-  if (formula === 'greater') {
-    label = 'greater'
+  if (/^after/.test(formula)) {
     result = diff > 0
   }
 
-  assert.ok(result, `${this.api.response.request.prefix} The response body at "${property}" is not ${label} than "${value}" (${valueDate.format()}), received: "${received}" (${receivedDate.format()})`)
+  assert.ok(result, `${this.api.response.request.prefix} The response body at "${property}" is not ${formula} "${value}" (${valueDate.format()}), received: "${received}" (${receivedDate.format()})`)
 }
 
 Then.shouldBeDateBefore = function (property, value) {
-  DateCompare.call(this, property, value, 'lesser')
+  DateCompare.call(this, property, value, 'before')
+}
+
+Then.shouldBeDateBeforeToday = function (property, value) {
+  DateCompare.call(this, property, moment().format('YYYY/MM/DD'), 'before today')
 }
 
 Then.shouldBeDateAfter = function (property, value) {
-  DateCompare.call(this, property, value, 'greater')
+  DateCompare.call(this, property, value, 'after')
+}
+
+Then.shouldBeDateAfterToday = function (property, value) {
+  DateCompare.call(this, property, moment().format('YYYY/MM/DD'), 'after today')
 }
 
 /*

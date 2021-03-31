@@ -9,7 +9,7 @@ describe('#StepDefinition - then - functions', () => {
   test('Configuration', () => {
     const Then = require('./functions')
     const fns = Object.keys(Then)
-    expect(fns).toHaveLength(34)
+    expect(fns).toHaveLength(36)
     const expectedFunctions = [
       'httpCode',
       'httpTiming',
@@ -39,6 +39,8 @@ describe('#StepDefinition - then - functions', () => {
       'shouldBeGreaterThanOrEqualTo',
       'shouldBeLessThan',
       'shouldBeLessThanOrEqualTo',
+      'shouldBeDateBefore',
+      'shouldBeDateAfter',
       'addHeaderPropertyToDataset',
       'addBodyPropertyToDataset',
       'cookieJar',
@@ -1270,6 +1272,218 @@ describe('#StepDefinition - then - functions', () => {
         const Then = require('./functions')
         expect(() => {
           Then.shouldBeLessThanOrEqualTo.call($this, '$.person.age', -110)
+        }).not.toThrow()
+      })
+    })
+
+    describe('shouldBeDateBefore', () => {
+      test('Throw error if the received date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: 'twenty-two'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBefore.call($this, '$.createDate', '2020-10-21')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not a valid date: twenty-two <string>')
+      })
+
+      test('Throw error if the passed date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/10'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBefore.call($this, '$.createDate', '202010T21')
+        }).toThrow('[POST /users] The passed value "202010T21" is not a valid date')
+      })
+
+      test('Throw error if the received date greater than the passed date', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/20'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBefore.call($this, '$.createDate', '2020/12/11')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not lesser than "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/20" (2020-12-20T00:00:00+00:00)')
+      })
+
+      test('Do not throw an error if the passed date is lesser than the received date', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/01'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBefore.call($this, '$.createDate', '2020/12/10')
+        }).not.toThrow()
+      })
+    })
+
+    describe('shouldBeDateAfter', () => {
+      test('Throw error if the received date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: 'twenty-two'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfter.call($this, '$.createDate', '2020-10-21')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not a valid date: twenty-two <string>')
+      })
+
+      test('Throw error if the passed date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/10'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfter.call($this, '$.createDate', '202010T21')
+        }).toThrow('[POST /users] The passed value "202010T21" is not a valid date')
+      })
+
+      test('Throw error if the received date greater than the passed date', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/10'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfter.call($this, '$.createDate', '2020/12/11')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not greater than "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/10" (2020-12-10T00:00:00+00:00)')
+      })
+
+      test('Do not throw an error if the passed date is greater than the received date', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/20'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfter.call($this, '$.createDate', '2020/12/11')
         }).not.toThrow()
       })
     })

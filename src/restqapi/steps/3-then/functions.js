@@ -1,5 +1,7 @@
 const assert = require('assert')
 const Then = {}
+const moment = require('moment')
+moment.suppressDeprecationWarnings = true
 
 /*
  * =========================================
@@ -228,6 +230,39 @@ Then.shouldBeLessThanOrEqualTo = function (property, value) {
   }
   received = Number(received)
   assert.ok(received <= value, `${this.api.response.request.prefix} The response body at "${property}" is not lesser than or equal to ${value}, received: ${received}`)
+}
+
+function DateCompare (property, value, formula) {
+  value = this.data.get(value)
+  const received = this.api.response.findInBody(property)
+  const receivedDate = moment(received, undefined, false)
+  if (!receivedDate.isValid()) {
+    throw new Error(`${this.api.response.request.prefix} The response body at "${property}" is not a valid date: ${received} <${typeof received}>`)
+  }
+
+  const valueDate = moment(value, undefined, false)
+  if (!valueDate.isValid()) {
+    throw new Error(`${this.api.response.request.prefix} The passed value "${value}" is not a valid date`)
+  }
+
+  const diff = receivedDate.diff(valueDate)
+
+  let label = 'lesser'
+  let result = diff < 0
+  if (formula === 'greater') {
+    label = 'greater'
+    result = diff > 0
+  }
+
+  assert.ok(result, `${this.api.response.request.prefix} The response body at "${property}" is not ${label} than "${value}" (${valueDate.format()}), received: "${received}" (${receivedDate.format()})`)
+}
+
+Then.shouldBeDateBefore = function (property, value) {
+  DateCompare.call(this, property, value, 'lesser')
+}
+
+Then.shouldBeDateAfter = function (property, value) {
+  DateCompare.call(this, property, value, 'greater')
 }
 
 /*

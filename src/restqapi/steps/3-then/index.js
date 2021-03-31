@@ -454,6 +454,44 @@ module.exports = [
   ['the response body at {string} should be less than or equal to {int}', then.shouldBeLessThanOrEqualTo, 'Check if a value in the response body is less than or equal to an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
   ['the response body at {string} should be less than or equal to {data}', then.shouldBeLessThanOrEqualTo, 'Check if a value in the response body is less than or equal to an expected value (placeholder)', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
+  /**
+   * ### Then the response body at {string} should be a date before {string}
+   * Verify and compare if a specific date from the response body is comes before  an expected date
+   * The expected date should follow the pattern 'YYYY/MM/DD' (reference: RFC2822)
+   *
+   * @category Date
+   *
+   * @example
+   * Then the response body at "$.createdAt" should be a date before "2020/12/01"
+   * Then the response body at "$.createdAt" should be a date before "2020/12/01 23:30:00"
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Then the response body at "$.createdAt" should be a date before {{ my-date }}
+   *
+   * @function DateBefore
+   */
+  ['the response body at {string} should be a date before {string}', then.shouldBeDateBefore, 'Check if a date from the response body is before an expected date', 'api, response, body, jsonpath, dot-object, date'],
+  ['the response body at {string} should be a date before {date}', then.shouldBeDateBefore, 'Check if a date from the response body is before an expected date (placeholder)', 'api, response, body, jsonpath, dot-object, date'],
+
+  /**
+   * ### Then the response body at {string} should be a date after {string}
+   * Verify and compare if a specific date from the response body comes after an expected date
+   * The expected date should follow the pattern 'YYYY/MM/DD' (reference: RFC2822)
+   *
+   * @category Date
+   *
+   * @example
+   * Then the response body at "$.createdAt" should be a date after "2020/12/01"
+   * Then the response body at "$.createdAt" should be a date after "2020/12/01 23:30:00"
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Then the response body at "$.createdAt" should be a date after {{ my-date }}
+   *
+   * @function DateAfter
+   */
+  ['the response body at {string} should be a date after {string}', then.shouldBeDateAfter, 'Check if a date from the response body is after an expected date', 'api, response, body, jsonpath, dot-object, date'],
+  ['the response body at {string} should be a date after {date}', then.shouldBeDateAfter, 'Check if a date from the response body is after an expected date (placeholder)', 'api, response, body, jsonpath, dot-object, date'],
+
   // Response Dataset
 
   /**

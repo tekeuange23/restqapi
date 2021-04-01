@@ -1,4 +1,9 @@
 const assert = require('assert')
+const moment = require('moment')
+moment.suppressDeprecationWarnings = true
+const fs = require('fs')
+const path = require('path')
+const Ajv = require('ajv')
 const Then = {}
 
 /*
@@ -228,6 +233,82 @@ Then.shouldBeLessThanOrEqualTo = function (property, value) {
   }
   received = Number(received)
   assert.ok(received <= value, `${this.api.response.request.prefix} The response body at "${property}" is not lesser than or equal to ${value}, received: ${received}`)
+}
+
+function DateCompare (property, value, formula) {
+  value = this.data.get(value)
+  const received = this.api.response.findInBody(property)
+  const receivedDate = moment(received, undefined, false)
+  if (!receivedDate.isValid()) {
+    throw new Error(`${this.api.response.request.prefix} The response body at "${property}" is not a valid date: ${received} <${typeof received}>`)
+  }
+
+  const valueDate = moment(value, undefined, false)
+  if (!valueDate.isValid()) {
+    throw new Error(`${this.api.response.request.prefix} The passed value "${value}" is not a valid date`)
+  }
+
+  const diff = receivedDate.diff(valueDate)
+
+  let result = diff < 0
+  if (/^after/.test(formula)) {
+    result = diff > 0
+  }
+
+  assert.ok(result, `${this.api.response.request.prefix} The response body at "${property}" is not ${formula} "${value}" (${valueDate.format()}), received: "${received}" (${receivedDate.format()})`)
+}
+
+Then.shouldBeDateBefore = function (property, value) {
+  DateCompare.call(this, property, value, 'before')
+}
+
+Then.shouldBeDateBeforeToday = function (property, value) {
+  DateCompare.call(this, property, moment().format('YYYY/MM/DD'), 'before today')
+}
+
+Then.shouldBeDateAfter = function (property, value) {
+  DateCompare.call(this, property, value, 'after')
+}
+
+Then.shouldBeDateAfterToday = function (property, value) {
+  DateCompare.call(this, property, moment().format('YYYY/MM/DD'), 'after today')
+}
+
+/*
+ * =========================================
+ * Response API JSON schema Functions
+ * =========================================
+ */
+
+Then.shouldMatchPropertyJsonSchema = function (property, filename) {
+  if (path.extname(filename) !== '.json') {
+    throw new Error(`The file "${filename}" should be a .json file`)
+  }
+  let received = this.api.response.body
+  let msg = 'is not matching the expected response body'
+  if (property !== null) {
+    msg = `of the property "${property}" is not matching the expected result`
+    received = this.api.response.findInBody(property)
+  }
+  let filepath = this.data.get(filename)
+  filepath = this.data.getFile(filepath)
+  let schema = fs.readFileSync(filepath).toString('utf-8')
+  try {
+    schema = JSON.parse(schema)
+  } catch (err) {
+    throw new Error(`The file "${filename}" doesn't contain a valid JSON`)
+  }
+
+  const ajv = new Ajv({ allErrors: true })
+  const validate = ajv.compile(schema)
+  if (!validate(received)) {
+    const errors = validate.errors.map(_ => `- ${_.schemaPath} ${_.message}`).join('\n')
+    throw new Error(`${this.api.response.request.prefix} The JSON schema ${msg}: \n ${errors}`)
+  }
+}
+
+Then.shouldMatchJsonSchema = function (filename) {
+  Then.shouldMatchPropertyJsonSchema.call(this, null, filename)
 }
 
 /*

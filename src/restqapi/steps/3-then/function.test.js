@@ -1,6 +1,14 @@
 const Response = require('../../lib/api/response')
+const os = require('os')
+const fs = require('fs')
+const path = require('path')
+
+let filename
 
 beforeEach(() => {
+  if (filename && fs.existsSync(filename)) {
+    fs.unlinkSync(filename)
+  }
   jest.resetModules()
   jest.clearAllMocks()
 })
@@ -9,7 +17,7 @@ describe('#StepDefinition - then - functions', () => {
   test('Configuration', () => {
     const Then = require('./functions')
     const fns = Object.keys(Then)
-    expect(fns).toHaveLength(34)
+    expect(fns).toHaveLength(40)
     const expectedFunctions = [
       'httpCode',
       'httpTiming',
@@ -39,6 +47,12 @@ describe('#StepDefinition - then - functions', () => {
       'shouldBeGreaterThanOrEqualTo',
       'shouldBeLessThan',
       'shouldBeLessThanOrEqualTo',
+      'shouldBeDateBefore',
+      'shouldBeDateBeforeToday',
+      'shouldBeDateAfter',
+      'shouldBeDateAfterToday',
+      'shouldMatchPropertyJsonSchema',
+      'shouldMatchJsonSchema',
       'addHeaderPropertyToDataset',
       'addBodyPropertyToDataset',
       'cookieJar',
@@ -1274,6 +1288,402 @@ describe('#StepDefinition - then - functions', () => {
       })
     })
 
+    describe('shouldBeDateBefore', () => {
+      test('Throw error if the received date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: 'twenty-two'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBefore.call($this, '$.createDate', '2020-10-21')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not a valid date: twenty-two <string>')
+      })
+
+      test('Throw error if the passed date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/10'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBefore.call($this, '$.createDate', '202010T21')
+        }).toThrow('[POST /users] The passed value "202010T21" is not a valid date')
+      })
+
+      test('Throw error if the received date after the passed date', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/20'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBefore.call($this, '$.createDate', '2020/12/11')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not before "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/20" (2020-12-20T00:00:00+00:00)')
+      })
+
+      test('Do not throw an error if the passed date is before the received date', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/01'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBefore.call($this, '$.createDate', '2020/12/10')
+        }).not.toThrow()
+      })
+    })
+
+    describe('shouldBeDateBeforeToday', () => {
+      test('Throw error if the received date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: 'twenty-two'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBeforeToday.call($this, '$.createDate')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not a valid date: twenty-two <string>')
+      })
+
+      test('Throw error if the received date greater than today', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/20'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        jest.mock('moment', () => {
+          const moment = jest.requireActual('moment')
+          moment.suppressDeprecationWarnings = true
+          return (d) => jest.fn(moment)(d || '2020-12-11', undefined, false)
+        })
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBeforeToday.call($this, '$.createDate')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not before today "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/20" (2020-12-20T00:00:00+00:00)')
+      })
+
+      test('Do not throw an error if the passed date is before today', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/01'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        jest.mock('moment', () => {
+          const moment = jest.requireActual('moment')
+          moment.suppressDeprecationWarnings = true
+          return (d) => jest.fn(moment)(d || '2020-12-11', undefined, false)
+        })
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateBeforeToday.call($this, '$.createDate')
+        }).not.toThrow()
+      })
+    })
+
+    describe('shouldBeDateAfter', () => {
+      test('Throw error if the received date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: 'twenty-two'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfter.call($this, '$.createDate', '2020-10-21')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not a valid date: twenty-two <string>')
+      })
+
+      test('Throw error if the passed date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/10'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfter.call($this, '$.createDate', '202010T21')
+        }).toThrow('[POST /users] The passed value "202010T21" is not a valid date')
+      })
+
+      test('Throw error if the received date before the passed date', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/10'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfter.call($this, '$.createDate', '2020/12/11')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not after "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/10" (2020-12-10T00:00:00+00:00)')
+      })
+
+      test('Do not throw an error if the passed date is after the received date', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/20'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfter.call($this, '$.createDate', '2020/12/11')
+        }).not.toThrow()
+      })
+    })
+
+    describe('shouldBeDateAfterToday', () => {
+      test('Throw error if the received date is not valid', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: 'twenty-two'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfterToday.call($this, '$.createDate')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not a valid date: twenty-two <string>')
+      })
+
+      test('Throw error if the received date before today', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/01'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        jest.mock('moment', () => {
+          const moment = jest.requireActual('moment')
+          moment.suppressDeprecationWarnings = true
+          return (d) => jest.fn(moment)(d || '2020-12-11', undefined, false)
+        })
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfterToday.call($this, '$.createDate')
+        }).toThrow('[POST /users] The response body at "$.createDate" is not after today "2020/12/11" (2020-12-11T00:00:00+00:00), received: "2020/12/01" (2020-12-01T00:00:00+00:00)')
+      })
+
+      test('Do not throw an error if the passed date is after today', () => {
+        const $this = {
+          data: {
+            get: _ => _
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                createDate: '2020/12/25'
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+
+        jest.mock('moment', () => {
+          const moment = jest.requireActual('moment')
+          moment.suppressDeprecationWarnings = true
+          return (d) => jest.fn(moment)(d || '2020-12-11', undefined, false)
+        })
+
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldBeDateAfterToday.call($this, '$.createDate')
+        }).not.toThrow()
+      })
+    })
+
     describe('shouldBeGreaterThan', () => {
       test('Throw error is the response value is not number', () => {
         const $this = {
@@ -1610,6 +2020,229 @@ describe('#StepDefinition - then - functions', () => {
         const Then = require('./functions')
         expect(() => {
           Then.shouldBeLessThan.call($this, '$.person.age', -110)
+        }).not.toThrow()
+      })
+    })
+
+    describe('shouldMatchPropertyJsonSchema', () => {
+      test('throw an error if file is not json', () => {
+        const $this = {}
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldMatchPropertyJsonSchema.call($this, '$.person', 'person.js')
+        }).toThrow(new Error('The file "person.js" should be a .json file'))
+      })
+
+      test('throw an error if the file doesn\'t contains a valid JSON', () => {
+        filename = path.resolve(os.tmpdir(), 'person.json')
+        const content = `
+        ---
+        foo: bar
+        `
+        fs.writeFileSync(filename, content)
+        const $this = {
+          data: {
+            get: _ => _,
+            getFile: () => filename
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  firstname: true,
+                  lastname: 100
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldMatchPropertyJsonSchema.call($this, '$.person', 'person.json')
+        }).toThrow(new Error('The file "person.json" doesn\'t contain a valid JSON'))
+      })
+
+      test('throw an error if the json schema file is not matching the property in the response body', () => {
+        filename = path.resolve(os.tmpdir(), 'person.json')
+        const content = JSON.stringify({
+          type: 'object',
+          properties: {
+            firstname: {
+              type: 'string'
+            },
+            lastname: {
+              type: 'string'
+            }
+          },
+          additionalProperties: false
+        })
+        fs.writeFileSync(filename, content)
+        const $this = {
+          data: {
+            get: _ => _,
+            getFile: () => filename
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  firstname: true,
+                  lastname: 100
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldMatchPropertyJsonSchema.call($this, '$.person', 'person.json')
+        }).toThrow(new Error('[POST /users] The JSON schema of the property "$.person" is not matching the expected result: \n - #/properties/firstname/type must be string\n- #/properties/lastname/type must be string'))
+      })
+
+      test('Do not throw an error if the json schema file is matching the property in the response body', () => {
+        filename = path.resolve(os.tmpdir(), 'person.json')
+        const content = JSON.stringify({
+          type: 'object',
+          properties: {
+            firstname: {
+              type: 'string'
+            },
+            lastname: {
+              type: 'string'
+            }
+          },
+          additionalProperties: false
+        })
+        fs.writeFileSync(filename, content)
+        const $this = {
+          data: {
+            get: _ => _,
+            getFile: () => filename
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  firstname: 'John',
+                  lastname: 'Doe'
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldMatchPropertyJsonSchema.call($this, '$.person', 'person.json')
+        }).not.toThrow()
+      })
+    })
+
+    describe('shouldMatchJsonSchema', () => {
+      test('throw an error if the json schema file is not matching the all response body', () => {
+        filename = path.resolve(os.tmpdir(), 'user.json')
+        const content = JSON.stringify({
+          type: 'object',
+          properties: {
+            firstname: {
+              type: 'string'
+            },
+            lastname: {
+              type: 'string'
+            }
+          },
+          additionalProperties: false
+        })
+        fs.writeFileSync(filename, content)
+        const $this = {
+          data: {
+            get: _ => _,
+            getFile: () => filename
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  firstname: true,
+                  lastname: 100
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldMatchJsonSchema.call($this, 'user.json')
+        }).toThrow(new Error('[POST /users] The JSON schema is not matching the expected response body: \n - #/additionalProperties must NOT have additional properties'))
+      })
+
+      test('Do not throw  an error if the json schema file is matching the all response body', () => {
+        filename = path.resolve(os.tmpdir(), 'user.json')
+        const content = JSON.stringify({
+          type: 'object',
+          properties: {
+            person: {
+              type: 'object',
+              properties: {
+                firstname: {
+                  type: 'string'
+                },
+                lastname: {
+                  type: 'string'
+                }
+              }
+            }
+          }
+        })
+        fs.writeFileSync(filename, content)
+        const $this = {
+          data: {
+            get: _ => _,
+            getFile: () => filename
+          },
+          api: {
+            response: new Response({
+              headers: {
+                'content-type': 'application/json'
+              },
+              body: {
+                person: {
+                  firstname: 'John',
+                  lastname: 'Doe'
+                }
+              },
+              request: {
+                prefix: '[POST /users]'
+              }
+            })
+          }
+        }
+        const Then = require('./functions')
+        expect(() => {
+          Then.shouldMatchJsonSchema.call($this, 'user.json')
         }).not.toThrow()
       })
     })

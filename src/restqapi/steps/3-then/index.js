@@ -166,9 +166,9 @@ module.exports = [
    *
    * @function bodyPropertyEqual
    */
-  ['the response body at {string} should equal {data}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, data'],
-  ['the response body at {string} should equal {string}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, string'],
-  ['the response body at {string} should equal {int}', then.shouldBeNumber, 'Check a value in the body response as a int (dot-object pattern)', 'api, response, body, jsonpath, dot-object, number'],
+  ['the response body at {string} should be equal to {data}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, data'],
+  ['the response body at {string} should be equal to {string}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, string'],
+  ['the response body at {string} should be equal to {int}', then.shouldBeNumber, 'Check a value in the body response as a int (dot-object pattern)', 'api, response, body, jsonpath, dot-object, number'],
 
   /**
    * ### Then the response body at {string} should not be equal to {string | int | data }
@@ -388,7 +388,7 @@ module.exports = [
 
   /**
    * ### Then the response body at {string} should be greater than {int}
-   * Verify if a specific value from the response body is greater than an expected value
+   * Verify if a specific value from the response body is greater than the expected value
    *
    * @category Sort Numeric
    *
@@ -456,7 +456,7 @@ module.exports = [
 
   /**
    * ### Then the response body at {string} should be a date before {string}
-   * Verify and compare if a specific date from the response body is comes before  an expected date
+   * Verify and compare if a specific date from the response body comes before the expected date
    * The expected date should follow the pattern 'YYYY/MM/DD' (reference: RFC2822)
    *
    * @category Date
@@ -470,8 +470,8 @@ module.exports = [
    *
    * @function DateBefore
    */
-  ['the response body at {string} should be a date before {string}', then.shouldBeDateBefore, 'Check if a date from the response body is before an expected date', 'api, response, body, jsonpath, dot-object, date'],
-  ['the response body at {string} should be a date before {date}', then.shouldBeDateBefore, 'Check if a date from the response body is before an expected date (placeholder)', 'api, response, body, jsonpath, dot-object, date'],
+  ['the response body at {string} should be a date before {string}', then.shouldBeDateBefore, 'Check if a date from the response body is before the expected date', 'api, response, body, jsonpath, dot-object, date'],
+  ['the response body at {string} should be a date before {date}', then.shouldBeDateBefore, 'Check if a date from the response body is before the expected date (placeholder)', 'api, response, body, jsonpath, dot-object, date'],
 
   /**
    * ### Then the response body at {string} should be a date before today

@@ -518,6 +518,46 @@ module.exports = [
    */
   ['the response body at {string} should be a date after today', then.shouldBeDateAfterToday, 'Check if a date from the response body is after the current day', 'api, response, body, jsonpath, dot-object, date, today'],
 
+  /*
+   * ### Then the response body should match the json schema from {string}
+   * Validate the format of the response body using the [JSON Schema](https://json-schema.org/) definition.
+   * The JSON need to be defined on a .json file.
+   * In order to use this feature you need to specify the location of you test data storage.
+   * The validation is based on the [Ajv](https://ajv.js.org/), feel free to look at the options.
+   *
+   * @category Validation
+   *
+   * @example
+   * Then the response body should match the json schema from "person.json"
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Then the response body should match the json schema from {{ file }}
+   *
+   * @function jsonschema
+   */
+  ['the response body should match the json schema from {string}', then.shouldMatchJsonSchema, 'Check if a value in the response body is less than or equal to an expected value', 'api, response, body, jsonpath, dot-object, schema, json-schema, jsonschema'],
+  ['the response body should match the json schema from {data}', then.shouldMatchJsonSchema, 'Check if a value in the response body is less than or equal to an expected value (placeholder)', 'api, response, body, jsonpath, dot-object, schema, json-schema, jsonschema'],
+
+  /**
+   * ### Then the response body at {string} should match the json schema from {string}
+   * Validate the format of a specific value from the response body using the [JSON Schema](https://json-schema.org/) definition.
+   * The JSON need to be defined on a .json file.
+   * In order to use this feature you need to specify the location of you test data storage.
+   * The validation is based on the [Ajv](https://ajv.js.org/), feel free to look at the options.
+   *
+   * @category Validation
+   *
+   * @example
+   * Then the response body at "$.person" should match the json schema from "person.json"
+   *
+   * @example <caption>Placeholder from datasets</caption>
+   * Then the response body at "$.person" should match the json schema from {{ file }}
+   *
+   * @function jsonschema
+   */
+  ['the response body at {string} should match the json schema from {string}', then.shouldMatchPropertyJsonSchema, 'Check if a value in the response body is a JSON schema definition', 'api, response, body, jsonpath, dot-object, schema, json-schema, jsonschema'],
+  ['the response body at {string} should match the json schema from {data}', then.shouldMatchPropertyJsonSchema, 'Check if a value in the response body is a JSON schema definition (placeholder)', 'api, response, body, jsonpath, dot-object, schema, json-schema, jsonschema'],
+
   // Response Dataset
 
   /**

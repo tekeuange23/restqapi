@@ -460,6 +460,8 @@ By adding the cookie into the jar the following request will contains the cookie
         * [~lessThanOrEqualTo()](#module_Then..lessThanOrEqualTo)
     * _Status code_
         * [~httpCode()](#module_Then..httpCode)
+    * _Validation_
+        * [~jsonschema()](#module_Then..jsonschema)
 
 <a name="module_Then..cookiejar"></a>
 ### Then I add the cookie to the jar
@@ -912,4 +914,20 @@ Ensure the response was received with a given status.
 ```js
 Then I should receive a response with the status 200
 Then I should receive a response with the status 404
+```
+<a name="module_Then..jsonschema"></a>
+### Then the response body at {string} should match the json schema from {string}
+Validate the format of a specific value from the response body using the [JSON Schema](https://json-schema.org/) definition.
+The JSON need to be defined on a .json file.
+In order to use this feature you need to specify the location of you test data storage.
+The validation is based on the [Ajv](https://ajv.js.org/), feel free to look at the options.
+
+**Category**: Validation  
+**Example**  
+```js
+Then the response body at "$.person" should match the json schema from "person.json"
+```
+**Example** *(Placeholder from datasets)*  
+```js
+Then the response body at "$.person" should match the json schema from {{ file }}
 ```

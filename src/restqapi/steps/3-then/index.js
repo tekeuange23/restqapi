@@ -471,7 +471,7 @@ module.exports = [
    * @function DateBefore
    */
   ['the response body at {string} should be a date before {string}', then.shouldBeDateBefore, 'Check if a date from the response body is before the expected date', 'api, response, body, jsonpath, dot-object, date'],
-  ['the response body at {string} should be a date before {date}', then.shouldBeDateBefore, 'Check if a date from the response body is before the expected date (placeholder)', 'api, response, body, jsonpath, dot-object, date'],
+  ['the response body at {string} should be a date before {data}', then.shouldBeDateBefore, 'Check if a date from the response body is before the expected date (placeholder)', 'api, response, body, jsonpath, dot-object, date'],
 
   /**
    * ### Then the response body at {string} should be a date before today
@@ -503,7 +503,7 @@ module.exports = [
    * @function DateAfter
    */
   ['the response body at {string} should be a date after {string}', then.shouldBeDateAfter, 'Check if a date from the response body is after an expected date', 'api, response, body, jsonpath, dot-object, date'],
-  ['the response body at {string} should be a date after {date}', then.shouldBeDateAfter, 'Check if a date from the response body is after an expected date (placeholder)', 'api, response, body, jsonpath, dot-object, date'],
+  ['the response body at {string} should be a date after {data}', then.shouldBeDateAfter, 'Check if a date from the response body is after an expected date (placeholder)', 'api, response, body, jsonpath, dot-object, date'],
 
   /**
    * ### Then the response body at {string} should be a date after today

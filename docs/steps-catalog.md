@@ -412,7 +412,9 @@ All the steps related to the API response
 
 
 * [Then](#module_Then)
-    * _Cookie_
+    * _Cookie
+
+By adding the cookie into the jar the following request will contains the cookie into the header_
         * [~cookiejar()](#module_Then..cookiejar)
     * _Dataset_
         * [~saveHeaderPropertyIntoTheDataset()](#module_Then..saveHeaderPropertyIntoTheDataset)
@@ -459,14 +461,15 @@ All the steps related to the API response
     * _Status code_
         * [~httpCode()](#module_Then..httpCode)
     * _Validation_
-        * [~jsonschemaProperty()](#module_Then..jsonschemaProperty)
+        * [~jsonschema()](#module_Then..jsonschema)
 
 <a name="module_Then..cookiejar"></a>
 ### Then I add the cookie to the jar
 Add the cookie into the Jar ^^
-By adding the cookie into the jar the following request will contains the cookie into the header
 
-**Category**: Cookie  
+**Category**: Cookie
+
+By adding the cookie into the jar the following request will contains the cookie into the header  
 **Example**  
 ```js
 Then I add the cookie to the jar
@@ -912,7 +915,7 @@ Ensure the response was received with a given status.
 Then I should receive a response with the status 200
 Then I should receive a response with the status 404
 ```
-<a name="module_Then..jsonschemaProperty"></a>
+<a name="module_Then..jsonschema"></a>
 ### Then the response body at {string} should match the json schema from {string}
 Validate the format of a specific value from the response body using the [JSON Schema](https://json-schema.org/) definition.
 The JSON need to be defined on a .json file.

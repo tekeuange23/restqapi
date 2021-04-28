@@ -5,7 +5,7 @@ const {
   setWorldConstructor
 } = require('cucumber')
 
-const RestQapi = require('./restqapi')
+const RestQapi = require('../src/restqapi')
 
 const config = {
   name: 'local',

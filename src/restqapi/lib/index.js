@@ -1,4 +1,5 @@
 module.exports = {
   Api: require('./api'),
-  Generator: require('./generator')
+  Generator: require('./generator'),
+  Performance: require('./performance')
 }

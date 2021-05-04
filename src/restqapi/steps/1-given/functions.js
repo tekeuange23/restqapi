@@ -25,7 +25,7 @@ function getCookie () {
 Given.gateway = function () {
   this.api = this.createApi()
   const cookie = getCookie.call(this)
-  if (cookie) {
+  if (cookie && cookie !== 'undefined') {
     this.api.request.setHeader('cookie', cookie)
   }
 

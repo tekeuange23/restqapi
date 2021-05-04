@@ -1,16 +1,7 @@
-// const moment = require('moment')
-// const { v4: uuidv4 } = require('uuid')
+const Performance = require('./lib/performance')
+const path = require('path')
 
 module.exports = function (config, { Before, BeforeAll, After, AfterAll }) {
-  /*
-  const restqa = {
-    uuid: uuidv4(),
-    startTime: moment().format(),
-    env: String(process.env.RESTQA_ENV).toLowerCase(),
-    configFile: process.env.RESTQA_CONFIG
-  }
-  */
-
   Before(async function (scenario) {
     this.setConfig(config)
     if (this.data && config.data) {
@@ -31,6 +22,18 @@ module.exports = function (config, { Before, BeforeAll, After, AfterAll }) {
   Before('@insecure', function () {
     this.insecure = true
   })
+
+  if (config.performance) {
+    config.performance.outputFolder = config.performance.outputFolder || path.resolve(process.cwd(), 'tests', 'performance')
+    const perf = Performance(config.performance)
+
+    After('@performance', function (scenario) {
+      perf.add(this.apis, scenario)
+    })
+    AfterAll(function () {
+      perf.print()
+    })
+  }
 
   After(function (scenario) {
     this.log = this.log || console.log

@@ -25,13 +25,14 @@ module.exports = function (config, { Before, BeforeAll, After, AfterAll }) {
 
   if (config.performance) {
     config.performance.outputFolder = config.performance.outputFolder || path.resolve(process.cwd(), 'tests', 'performance')
+    config.performance.onlySuccess = (config.performance.onlySuccess === undefined) ? true : Boolean(config.performance.onlySuccess)
     const perf = Performance(config.performance)
 
     After('@performance', function (scenario) {
-      perf.add(this.apis, scenario)
+      perf.add(this.apis, scenario) && this.attach('Generate performance test scenario')
     })
     AfterAll(function () {
-      perf.print()
+      perf.generate()
     })
   }
 

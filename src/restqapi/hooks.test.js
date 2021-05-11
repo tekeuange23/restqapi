@@ -127,7 +127,7 @@ describe('# hooks', () => {
       foo: 'bar',
       data: {},
       performance: {
-        type: 'artillery'
+        tool: 'artillery'
       }
     }
 
@@ -185,8 +185,9 @@ describe('# hooks', () => {
       data: {},
       foo: 'bar',
       performance: {
-        type: 'artillery',
-        outputFolder: path.resolve(process.cwd(), 'tests', 'performance')
+        tool: 'artillery',
+        outputFolder: path.resolve(process.cwd(), 'tests', 'performance'),
+        onlySuccess: true
       }
     })
     expect($this.data.parse.mock.calls).toHaveLength(1)
@@ -219,14 +220,16 @@ describe('# hooks', () => {
     expect($this.log.mock.calls[1][0]).toBe('Simple Value')
     expect($this.log.mock.calls[2][0]).toBe(JSON.stringify({ foo: 'bar' }, null, 2))
     expect($this.log.mock.calls[3][0]).toBe('======================== [ / DEBUG ] ========================')
-    expect($this.attach.mock.calls).toHaveLength(1)
+
+    expect($this.attach.mock.calls).toHaveLength(2)
+    expect($this.attach.mock.calls[0][0]).toBe('Generate performance test scenario')
     const expectedAttachement = JSON.stringify({
       apis: [
         { foo: 'bar' }
       ]
     })
-    expect($this.attach.mock.calls[0][0]).toEqual(expectedAttachement)
-    expect($this.attach.mock.calls[0][1]).toEqual('application/json')
+    expect($this.attach.mock.calls[1][0]).toEqual(expectedAttachement)
+    expect($this.attach.mock.calls[1][1]).toEqual('application/json')
 
     expect($this.skipped).toEqual(true)
   })

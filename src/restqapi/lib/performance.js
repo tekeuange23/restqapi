@@ -3,14 +3,14 @@ const fs = require('fs')
 const YAML = require('yaml')
 
 function Performance (config = {}) {
-  if (['artillery'].includes(config.type) === false) {
-    throw new Error('The performance property "type" should be specify. (available: artillery)')
+  if (['artillery'].includes(config.tool) === false) {
+    throw new Error('The performance property "tool" should be specify. (available: artillery)')
   }
 
   const features = {}
   const add = (apis, scenario) => {
     if (apis.length === 0) return false
-    if (scenario.result.status !== 'passed') return false
+    if (scenario.result.status !== 'passed' && config.onlySuccess === true) return false
 
     const filename = path.basename(scenario.sourceLocation.uri, '.feature') + '.yml'
     features[filename] = features[filename] || []
@@ -18,7 +18,7 @@ function Performance (config = {}) {
     return true
   }
 
-  const print = () => {
+  const generate = () => {
     if (fs.existsSync(config.outputFolder) === false) {
       fs.mkdirSync(config.outputFolder, { recursive: true })
     }
@@ -45,8 +45,14 @@ function Performance (config = {}) {
               if (options.body) {
                 obj.formData = clean(api.request.bodyBackup)
               }
+
+              obj.expect = [{
+                statusCode: api.response.statusCode
+              }, {
+                contentType: api.response.headers['content-type'].split('/').pop()
+              }]
               const result = {}
-              result[options.method || 'get'] = obj
+              result[(options.method || 'get').toLowerCase()] = obj
               return result
             })
           }
@@ -61,7 +67,7 @@ function Performance (config = {}) {
   return {
     features,
     add,
-    print
+    generate
   }
 }
 

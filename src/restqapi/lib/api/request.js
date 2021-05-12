@@ -5,6 +5,8 @@ const FormData = require('form-data')
 const Request = function (baseUrl, insecure, id) {
   const url = new URL(baseUrl)
 
+  const bodyBackup = {}
+
   this.options = {
     hostname: url.hostname,
     port: url.port,
@@ -91,6 +93,7 @@ const Request = function (baseUrl, insecure, id) {
   const addFormField = (field, value) => {
     this.options.body = this.options.body || new FormData()
     this.options.body.append(field, value)
+    bodyBackup[field] = value
   }
 
   const ignoreSsl = () => {
@@ -109,7 +112,8 @@ const Request = function (baseUrl, insecure, id) {
     setBaseUrl,
     setQueryString,
     addFormField,
-    ignoreSsl
+    ignoreSsl,
+    bodyBackup
   }
 }
 

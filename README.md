@@ -86,6 +86,7 @@ const config = {
 
 ```
 
+
 -------------------------------
 
 ### `Options`
@@ -201,6 +202,47 @@ This repository comes with few examples, in order to run them, invoke the follow
 
 ```
 npm run start:example
+```
+
+## Perfomance test generation
+
+Have you ever face that challenge of maintaining your performance test files ?
+
+This is why RestQApi is proposing a way to translate your current feature files into your favorite performance tool format.
+
+Only 2 simple test are required:
+
+#### 1. Update your configuration file
+
+Into your configuration file you wiil need to select your performance tool by adding the following.
+
+Example if you want to select [artillery](https://artillery.io/) as the perfomance toole
+
+```
+const config = {
+  name: 'local',
+  url: 'https://jsonplaceholder.typicode.com',
+  performance: {
+    type: 'artillery'
+  }
+}
+```
+
+Currently the performance tool available are: 
+
+* [artillery](https://artillery.io)
+
+If you are working with an other tool (k6, jmeter, etc..), please open an issue. We will prioritize the development.
+
+#### 2. Select the scenario to translate as test performance fixture
+
+In order to select the list of scenario you will just need to use the tag `@performance`, then from there during the processing RestQApi will create all the performance files.
+
+Example:
+```
+@performance
+Scenario: I retrive the list of information
+Given I have the api gateway
 ```
 
 ## Generator 

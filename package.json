@@ -5,7 +5,7 @@
   "description": "REST API Functional Test engine based on Gerkin - RestQa",
   "scripts": {
     "doc": "jsdoc2md  --partial docs/support/scope.hbs --partial docs/support/header.hbs --files src/restqapi/steps/**/index.js > docs/steps-catalog.md",
-    "start:example": "export $(cat .env | xargs) && cucumber-js --require ./src/setup-example.js --fail-fast ./sample-project/features",
+    "example": "cucumber-js --require ./example/setup.js --fail-fast ./example/features",
     "test": "jest",
     "test:watch": "jest --watch --coverage",
     "test:coverage": "jest --coverage",
@@ -21,7 +21,8 @@
     "got": "^10.6.0",
     "jsonpath": "^1.0.2",
     "moment": "^2.18.1",
-    "uuid": "^3.4.0"
+    "uuid": "^3.4.0",
+    "yaml": "^1.10.2"
   },
   "main": "src/restqapi/index.js",
   "devDependencies": {

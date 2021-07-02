@@ -259,24 +259,46 @@ describe('#StepDefinition - then - functions', () => {
       }).not.toThrow('[POST /users] The response body should be empty')
     })
 
-    test('shouldBeNumber', () => {
-      const $this = {
-        data: {
-          get: jest.fn().mockReturnValue(456)
-        },
-        api: {
-          response: {
-            findInBody: jest.fn((_) => 123),
-            request: {
-              prefix: '[POST /users]'
+    describe('shouldBeNumber', () => {
+      test('shouldBeNumber', () => {
+        const $this = {
+          data: {
+            get: jest.fn().mockReturnValue(456)
+          },
+          api: {
+            response: {
+              findInBody: jest.fn((_) => 123),
+              request: {
+                prefix: '[POST /users]'
+              }
             }
           }
         }
-      }
 
-      expect(() => {
-        Then.shouldBeNumber.call($this, 'foo', '{{ val }}')
-      }).toThrow('[POST /users] The response body property foo should be 456 but received 123')
+        expect(() => {
+          Then.shouldBeNumber.call($this, 'foo', '{{ val }}')
+        }).toThrow('[POST /users] The response body property foo should be 456<number> but received 123<number>')
+      })
+
+      test('shouldBeNumber but it\'s different type', () => {
+        const $this = {
+          data: {
+            get: jest.fn().mockReturnValue(123)
+          },
+          api: {
+            response: {
+              findInBody: jest.fn((_) => '123'),
+              request: {
+                prefix: '[POST /users]'
+              }
+            }
+          }
+        }
+
+        expect(() => {
+          Then.shouldBeNumber.call($this, 'foo', '{{ val }}')
+        }).toThrow('[POST /users] The response body property foo should be 123<number> but received 123<string>')
+      })
     })
 
     test('shouldBeTrue', () => {

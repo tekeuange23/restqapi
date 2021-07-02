@@ -49,7 +49,7 @@ function Performance (config = {}) {
               obj.expect = [{
                 statusCode: api.response.statusCode
               }, {
-                contentType: api.response.headers['content-type'].split('/').pop().split(';').shift()
+                contentType: getContentType(api.response.headers['content-type'])
               }]
               const result = {}
               result[(options.method || 'get').toLowerCase()] = obj
@@ -76,6 +76,10 @@ function clean (obj) {
     if (obj[key] !== undefined) result[key] = obj[key]
     return result
   }, {})
+}
+
+function getContentType (headerContentType) {
+  return String(headerContentType.split('/').pop()).split(';').shift()
 }
 
 module.exports = Performance

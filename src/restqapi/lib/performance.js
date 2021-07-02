@@ -49,7 +49,7 @@ function Performance (config = {}) {
               obj.expect = [{
                 statusCode: api.response.statusCode
               }, {
-                contentType: api.response.headers['content-type'].split('/').pop()
+                contentType: api.response.headers['content-type'].split('/').pop().split(';').shift()
               }]
               const result = {}
               result[(options.method || 'get').toLowerCase()] = obj

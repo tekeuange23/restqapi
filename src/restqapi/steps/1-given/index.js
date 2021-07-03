@@ -226,7 +226,7 @@ module.exports = [
    */
   ['the query parameter contains {string} as {data}', given.queryString, 'add a placeholded value to request query parameter (ex "gender" : {{ gender }} for "gender=1")', 'request, query string, qs'],
   ['the query parameter contains {string} as {string}', given.queryString, 'add a string value to request query parameter  (ex "gender" : "MALE" for "gender=MALE")', 'request, query string, qs, generator'],
-  ['the query parameter contains {string} as {int}', given.queryString, 'add a string value to request query parameter (ex "gender" : "1" for "gender=1")', 'request, query string, qs'],
+  ['the query parameter contains {string} as {float}', given.queryString, 'add a string value to request query parameter (ex "gender" : "1" for "gender=1")', 'request, query string, qs'],
 
   /**
    * ### Given I add the query string parameters:
@@ -282,8 +282,7 @@ module.exports = [
    */
   ['the payload contains {string} as {data}', given.payload, 'add a property with placeholded value to the request body, the pattern used is dot-object  ( ex: "quotes.detail.id" -> {{quoteId}})', 'request, body, restqdata'],
   ['the payload contains {string} as {string}', given.payload, 'add a property with string value to the request body, the pattern used is dot-object  ( ex: "quotes.detail.id" -> "ASD12355")', 'request, body, dot'],
-  ['the payload contains {string} as {int}', given.payload, 'add a property with int value to the request body, the pattern used is dot-object  ( ex: "quotes.detail.amount" -> 200)', 'request, body, dot'],
-  ['the payload contains {string} as {float}', given.payload, 'add a property with float value to the request body, the pattern used is dot-object  ( ex: "quotes.detail.amount" -> 200)', 'request, body, dot'],
+  ['the payload contains {string} as {float}', given.payload, 'add a property with int value to the request body, the pattern used is dot-object  ( ex: "quotes.detail.amount" -> 200)', 'request, body, dot'],
 
   /**
    * ### Given the payload contains {string} as null
@@ -440,7 +439,6 @@ module.exports = [
    * @function FormBody
    */
   ['I add the form value {string} as {string}', given.form, 'Adding value into form request body', 'request, body, form, generator'],
-  ['I add the form value {string} as {int}', given.form, 'Adding value into form request body', 'request, body, form, number'],
   ['I add the form value {string} as {float}', given.form, 'Adding value into form request body', 'request, body, form, float'],
   ['I add the form value {string} as {data}', given.form, 'Adding placeholded value into form request body', 'request, body, form'],
 

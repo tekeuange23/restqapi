@@ -168,7 +168,7 @@ module.exports = [
    */
   ['the response body at {string} should equal {data}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, data'],
   ['the response body at {string} should equal {string}', then.shouldBeString, 'Check a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, string'],
-  ['the response body at {string} should equal {int}', then.shouldBeNumber, 'Check a value in the body response as a int (dot-object pattern)', 'api, response, body, jsonpath, dot-object, number'],
+  ['the response body at {string} should equal {float}', then.shouldBeNumber, 'Check a value in the body response as a int (dot-object pattern)', 'api, response, body, jsonpath, dot-object, number'],
 
   /**
    * ### Then the response body at {string} should not be equal to {string | int | data }
@@ -190,7 +190,7 @@ module.exports = [
    */
   ['the response body at {string} should not be equal to {data}', then.shouldNotBeEqual, 'Invalidate a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, data'],
   ['the response body at {string} should not be equal to {string}', then.shouldNotBeEqual, 'Invalidate a value in the body response as a string (dot-object pattern)', 'api, response, body, jsonpath, dot-object, string'],
-  ['the response body at {string} should not be equal to {int}', then.shouldNotBeEqual, 'Invalidate a value in the body response as a int (dot-object pattern)', 'api, response, body, jsonpath, dot-object, number'],
+  ['the response body at {string} should not be equal to {float}', then.shouldNotBeEqual, 'Invalidate a value in the body response as a int (dot-object pattern)', 'api, response, body, jsonpath, dot-object, number'],
 
   /**
    * ### Then the response body at {string} should be equal to:
@@ -400,7 +400,7 @@ module.exports = [
    *
    * @function greaterThan
    */
-  ['the response body at {string} should be greater than {int}', then.shouldBeGreaterThan, 'Check if a value in the response body is greater than an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
+  ['the response body at {string} should be greater than {float}', then.shouldBeGreaterThan, 'Check if a value in the response body is greater than an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
   ['the response body at {string} should be greater than {data}', then.shouldBeGreaterThan, 'Check if a value in the response body is greater than an expected value (placeholder)', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
   /**
@@ -417,7 +417,7 @@ module.exports = [
    *
    * @function lessThan
    */
-  ['the response body at {string} should be less than {int}', then.shouldBeLessThan, 'Check if a value in the response body is less than an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
+  ['the response body at {string} should be less than {float}', then.shouldBeLessThan, 'Check if a value in the response body is less than an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
   ['the response body at {string} should be less than {data}', then.shouldBeLessThan, 'Check if a value in the response body is less than an expected value (placeholder)', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
   /**
@@ -434,7 +434,7 @@ module.exports = [
    *
    * @function greaterThanOrEqualTo
    */
-  ['the response body at {string} should be greater than or equal to {int}', then.shouldBeGreaterThanOrEqualTo, 'Check if a value in the response body is greater than or equal to an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
+  ['the response body at {string} should be greater than or equal to {float}', then.shouldBeGreaterThanOrEqualTo, 'Check if a value in the response body is greater than or equal to an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
   ['the response body at {string} should be greater than or equal to {data}', then.shouldBeGreaterThanOrEqualTo, 'Check if a value in the response body is greater than or equal to an expected value (placeholder)', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
   /**
@@ -451,7 +451,7 @@ module.exports = [
    *
    * @function lessThanOrEqualTo
    */
-  ['the response body at {string} should be less than or equal to {int}', then.shouldBeLessThanOrEqualTo, 'Check if a value in the response body is less than or equal to an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
+  ['the response body at {string} should be less than or equal to {float}', then.shouldBeLessThanOrEqualTo, 'Check if a value in the response body is less than or equal to an expected value', 'api, response, body, jsonpath, dot-object, number, numeric'],
   ['the response body at {string} should be less than or equal to {data}', then.shouldBeLessThanOrEqualTo, 'Check if a value in the response body is less than or equal to an expected value (placeholder)', 'api, response, body, jsonpath, dot-object, number, numeric'],
 
   /**

@@ -76,7 +76,7 @@ Then.shouldBeEmptyResponse = function () {
 Then.shouldBeNumber = function (property, value) {
   const received = this.api.response.findInBody(property)
   value = this.data.get(value)
-  const err = `${this.api.response.request.prefix} The response body property ${property} should be ${value} but received ${received}`
+  const err = `${this.api.response.request.prefix} The response body property ${property} should be ${value}<${typeof value}> but received ${received}<${typeof received}>`
   assert.strictEqual(received, Number(value), err)
 }
 

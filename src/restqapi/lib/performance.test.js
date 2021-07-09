@@ -353,7 +353,7 @@ describe('#lib - performance', () => {
           response: Response({
             statusCode: 200,
             headers: {
-              'content-type': 'application/json'
+              'content-type': 'application/json; charset=utf-8'
             }
           })
         }]

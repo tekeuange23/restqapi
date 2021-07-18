@@ -15,7 +15,6 @@
   "dependencies": {
     "@restqa/restqa-plugin-bootstrap": "0.0.4",
     "ajv": "^8.0.1",
-    "cucumber": "^6.0.5",
     "dot-object": "^1.6.0",
     "form-data": "^3.0.0",
     "got": "^10.6.0",

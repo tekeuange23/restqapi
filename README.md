@@ -18,13 +18,13 @@ Based on [cucumber-js](https://github.com/cucumber/cucumber-js), the library exp
 Using npm:
 
 ```
-npm install @restqa/restqapi cucumber
+npm install @restqa/restqapi @cucumber/cucumber
 ```
 
 Using yarn:
 
 ```
-yarn add @restqa/restqapi cucumber
+yarn add @restqa/restqapi @cucumber/cucumber
 ```
 
 Then you will need to create or update your `world.js` file:
@@ -37,7 +37,7 @@ const {
   Given, When, Then,
   defineParameterType,
   setWorldConstructor
-} = require('cucumber')
+} = require('@cucumber/cucumber')
 
 const RestQapi = require('./restqapi')
 

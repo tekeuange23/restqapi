@@ -195,10 +195,10 @@ module.exports = [
   ['I have the basic auth user {string} pass {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
   ['I have the basic auth user {data} pass {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
   ['I have the basic auth user {data} pass {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
-  ['I use basic auth with {string} / {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
-  ['I use basic auth with {data} / {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
-  ['I use basic auth with {string} / {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
-  ['I use basic auth with {data} / {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I use basic auth with {string} \\/ {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I use basic auth with {data} \\/ {string}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I use basic auth with {string} \\/ {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
+  ['I use basic auth with {data} \\/ {data}', given.basicAuth, 'Set the basic auth into the authorization request header (placeholder)', 'request, authorization, basic auth'],
 
   //  ****************************************************************************************************
   //  Query String

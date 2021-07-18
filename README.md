@@ -11,7 +11,7 @@ Based on [cucumber-js](https://github.com/cucumber/cucumber-js), the library exp
 ## Requirements
 
 * Node.js >= 12
-* Cucumber >= 6.0.5
+* Cucumber >= 7.0.0
 
 ## Installation
 

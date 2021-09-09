@@ -28,10 +28,65 @@ module.exports = function (options) {
     run,
     toJSON: function () {
       return {
+        curl: this.getCurl(),
         request: this.request.getOptions(),
         response: this.response && this.response.getResult(),
         error: error && error.message
       }
+    },
+    getCurl: function () {
+      let { protocol, hostname, pathname, method, searchParams, headers, json } = this.request.getOptions()
+      const { bodyBackup } = this.request
+      const curlCommand = []
+
+      // console.log({ ...bodyBackup, xyz: 1111111111 })
+      // console.log(this.request.getOptions())
+
+      // method
+      method = method || 'GET'
+      curlCommand.push('curl -X ' + method)
+
+      // header
+      for (const key in headers) {
+        if (['x-correlation-id', 'user-agent'].includes(key)) {
+          continue
+        }
+        curlCommand.push(' -H "' + key + ': ' + headers[key] + '"')
+      }
+
+      // Content-Type: json
+      if (json) {
+        curlCommand.push(' -H "Content-Type: application/json" --data \'' + JSON.stringify(json) + '\'')
+      }
+
+      // Content-Type: application/x-www-form-urlencoded
+      if (Object.keys(bodyBackup).length !== 0) {
+        const data = []
+        for (const key in bodyBackup) {
+          data.push(' --data \'' + key + '=' + bodyBackup[key] + '\'')
+        }
+        curlCommand.push(' -H "Content-Type: application/x-www-form-urlencoded"' + data.join(''))
+      }
+
+      // ignoreSSL
+      if (this.request.getOptions().rejectUnauthorized === false) {
+        curlCommand.push(' -k')
+      }
+
+      // URL + PATH
+      curlCommand.push(' --url ' + protocol + '//' + hostname + pathname)
+
+      // searchParams
+      if (searchParams) {
+        curlCommand.push('?')
+        const params = []
+        for (const key in searchParams) {
+          params.push(key + '=' + searchParams[key])
+        }
+        curlCommand.push(params.join('&'))
+      }
+
+      return curlCommand.join('')
     }
   }
 }

@@ -12,8 +12,8 @@ describe('# api - Module', () => {
     }
     const instance = new Api(options)
 
-    expect(Object.keys(instance)).toHaveLength(5)
-    expect(Object.keys(instance)).toEqual(['config', 'request', 'response', 'run', 'toJSON'])
+    expect(Object.keys(instance)).toHaveLength(6)
+    expect(Object.keys(instance)).toEqual(['config', 'request', 'response', 'run', 'toJSON', 'getCurl'])
     expect(instance.config).toEqual({ url: 'http://test.com' })
     expect(instance.request).toBeInstanceOf(Object)
     expect(instance.response).toBeNull()
@@ -21,16 +21,6 @@ describe('# api - Module', () => {
   })
 
   test('run - successfull call', async () => {
-    jest.mock('./request', () => {
-      return jest.fn().mockImplementation(() => {
-        return {
-          getOptions: jest.fn(() => {
-            return { foo: 'bar' }
-          })
-        }
-      })
-    })
-
     const got = require('got')
     jest.mock('got', () => {
       return jest.fn().mockResolvedValue({
@@ -58,7 +48,7 @@ describe('# api - Module', () => {
     await instance.run()
 
     expect(got.mock.calls).toHaveLength(1)
-    expect(got.mock.calls[0][0]).toEqual({ foo: 'bar' })
+    expect(got.mock.calls[0][0]).toEqual(instance.request.getOptions())
 
     expect(Response.mock.calls).toHaveLength(1)
     expect(Response.mock.calls[0][0]).toEqual({ statusCode: 201 })
@@ -66,16 +56,6 @@ describe('# api - Module', () => {
   })
 
   test('run - successfull call But api response is not a 2XX', async () => {
-    jest.mock('./request', () => {
-      return jest.fn().mockImplementation(() => {
-        return {
-          getOptions: jest.fn(() => {
-            return { foo: 'bar' }
-          })
-        }
-      })
-    })
-
     const got = require('got')
     jest.mock('got', () => {
       return jest.fn().mockRejectedValue({
@@ -105,7 +85,7 @@ describe('# api - Module', () => {
     await instance.run()
 
     expect(got.mock.calls).toHaveLength(1)
-    expect(got.mock.calls[0][0]).toEqual({ foo: 'bar' })
+    expect(got.mock.calls[0][0]).toEqual(instance.request.getOptions())
 
     expect(Response.mock.calls).toHaveLength(1)
     expect(Response.mock.calls[0][0]).toEqual({ statusCode: 401 })
@@ -113,16 +93,6 @@ describe('# api - Module', () => {
   })
 
   test('run - unsuccessfull call (random error)', async () => {
-    jest.mock('./request', () => {
-      return jest.fn().mockImplementation(() => {
-        return {
-          getOptions: jest.fn(() => {
-            return { foo: 'bar' }
-          })
-        }
-      })
-    })
-
     const got = require('got')
     jest.mock('got', () => {
       return jest.fn().mockRejectedValue(new Error('Random error'))
@@ -139,7 +109,7 @@ describe('# api - Module', () => {
     await expect(instance.run()).rejects.toThrow('Random error')
 
     expect(got.mock.calls).toHaveLength(1)
-    expect(got.mock.calls[0][0]).toEqual({ foo: 'bar' })
+    expect(got.mock.calls[0][0]).toEqual(instance.request.getOptions())
 
     expect(instance.response).toBeNull()
   })

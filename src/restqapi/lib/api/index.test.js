@@ -218,7 +218,7 @@ describe('# api - Module', () => {
     })
   })
 
-  describe.only('get curl command (default method: GET)', () => {
+  describe('get curl command (default method: GET)', () => {
     test('curl with url', () => {
       const Api = require('./index')
       const options = {

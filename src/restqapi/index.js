@@ -1,47 +1,71 @@
-const World = require('./world')
-const Hooks = require('./hooks')
-const Steps = require('./steps')
+const { Api } = require('./lib')
+const Performance = require('./lib/performance')
+const path = require('path')
 
-const RestQapi = function (config) {
-  let _world = World
+let performanceInstance
 
-  config.data = config.data || {}
+module.exports = {
+  name: 'restqapi',
+  steps: {
+    given: require('./steps/1-given'),
+    when: require('./steps/2-when'),
+    then: require('./steps/3-then')
+  },
+  hooks: {
+    before: function (scenario) {
+      this.apis = []
+      this.createApi = (url) => {
+        const options = {
+          config: this.getConfig('restqapi')
+        }
 
-  if (!config.data.startSymbol) {
-    config.data.startSymbol = '{{'
-  }
+        if (url) {
+          options.config.url = url
+        }
 
-  if (!config.data.endSymbol) {
-    config.data.endSymbol = '}}'
-  }
+        const api = new Api(options)
+        this.apis.push(api)
+        return api
+      }
 
-  return {
-    setParameterType (defineParameterType) {
-      const regexp = new RegExp(`${config.data.startSymbol.replace(/(?=\W)/g, '\\')}(.*)${config.data.endSymbol.replace(/(?=\W)/g, '\\')}`)
-      defineParameterType({
-        regexp,
-        transformer: function (value) {
-          value = `${config.data.startSymbol} ${value} ${config.data.endSymbol}`
-          return this.data.get(value)
-        },
-        name: 'data'
-      })
+      if (scenario.pickle.tags.find(_ => _.name === '@insecure')) {
+        this.insecure = true
+      }
     },
-    setSteps (obj) {
-      Steps(obj)
+    after: function (scenario) {
+      if (this.debug && this.debug.length) {
+        this.log(`\n======================== [ DEBUG : ${scenario.pickle.name} ] ========================`)
+        this.debug.forEach(item => {
+          if (typeof item === 'object') item = JSON.stringify(item, null, 2)
+          this.log(item)
+        })
+        this.log('======================== [ / DEBUG ] ========================')
+      }
+      const attachements = {
+        apis: this.apis.map(_ => _.toJSON())
+      }
+      this.attach(JSON.stringify(attachements), 'application/json')
     },
-    setHooks (obj) {
-      Hooks(config, obj)
+    performance: {
+      before: function (scenario) {
+        const { performance } = this.getConfig('restqapi')
+        if (performance) {
+          performance.outputFolder = performance.outputFolder || path.resolve(process.cwd(), 'tests', 'performance')
+          performance.onlySuccess = (performance.onlySuccess === undefined) ? true : Boolean(performance.onlySuccess)
+          performanceInstance = new Performance(performance)
+        }
+      },
+      after: function (scenario) {
+        if (performanceInstance) {
+          performanceInstance.add(this.apis, scenario) && this.attach('Generate performance test scenario')
+        }
+      }
     },
-    setWorld (world) {
-      _world = world
-    },
-    getWorld () {
-      return _world
+    afterAll: function () {
+      if (performanceInstance) {
+        performanceInstance.generate()
+      }
     }
-  }
+  },
+  generator: require('./lib/generator')
 }
-
-RestQapi.Generator = require('./lib/generator')
-
-module.exports = RestQapi

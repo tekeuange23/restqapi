@@ -58,9 +58,6 @@ describe('#StepDefinition - given - functions', () => {
         }
         const $this = {
           createApi: jest.fn().mockReturnValue(mockApi),
-          _config: {
-            data: {}
-          },
           data: {
             get: jest.fn().mockReturnValue(undefined)
           }
@@ -84,9 +81,6 @@ describe('#StepDefinition - given - functions', () => {
         }
         const $this = {
           createApi: jest.fn().mockReturnValue(mockApi),
-          _config: {
-            data: {}
-          },
           data: {
             get: jest.fn().mockReturnValue('coooookie')
           }
@@ -113,9 +107,6 @@ describe('#StepDefinition - given - functions', () => {
         }
         const $this = {
           createApi: jest.fn().mockReturnValue(mockApi),
-          _config: {
-            data: {}
-          },
           data: {
             get: jest.fn().mockReturnValue(undefined)
           },
@@ -142,9 +133,6 @@ describe('#StepDefinition - given - functions', () => {
         }
         const $this = {
           createApi: jest.fn().mockReturnValue(mockApi),
-          _config: {
-            data: {}
-          },
           data: {
             get: jest.fn().mockReturnValue(undefined)
           }
@@ -168,14 +156,12 @@ describe('#StepDefinition - given - functions', () => {
         }
         const $this = {
           createApi: jest.fn().mockReturnValue(mockApi),
-          _config: {
-            data: {
+          data: {
+            get: jest.fn().mockReturnValue('coooookie'),
+            options: {
               startSymbol: '[[',
               endSymbol: ']]'
             }
-          },
-          data: {
-            get: jest.fn().mockReturnValue('coooookie')
           }
         }
         Given.gatewayHost.call($this, 'http://example.test')
@@ -200,14 +186,12 @@ describe('#StepDefinition - given - functions', () => {
         }
         const $this = {
           createApi: jest.fn().mockReturnValue(mockApi),
-          _config: {
-            data: {
+          data: {
+            get: jest.fn().mockReturnValue('coooookie'),
+            options: {
               startSymbol: '[[',
               endSymbol: ']]'
             }
-          },
-          data: {
-            get: jest.fn().mockReturnValue('coooookie')
           },
           insecure: true
         }

@@ -13,6 +13,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
+    "@restqa/plugin": "0.0.1",
     "@restqa/restqa-plugin-bootstrap": "0.0.4",
     "ajv": "^8.0.1",
     "dot-object": "^1.6.0",
@@ -23,7 +24,7 @@
     "uuid": "^3.4.0",
     "yaml": "^1.10.2"
   },
-  "main": "src/restqapi/index.js",
+  "main": "src/index.js",
   "devDependencies": {
     "eslint": "^7.21.0",
     "eslint-config-standard": "^16.0.2",

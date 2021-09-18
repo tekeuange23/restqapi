@@ -59,7 +59,7 @@ describe('#lib - performance', () => {
           },
           status: 'failed'
         },
-        sourceLocation: {
+        pickle: {
           line: 4,
           uri: 'example/features/users.api.feature'
         }
@@ -89,7 +89,7 @@ describe('#lib - performance', () => {
           },
           status: 'passed'
         },
-        sourceLocation: {
+        pickle: {
           line: 4,
           uri: 'example/features/users.api.feature'
         }
@@ -121,6 +121,7 @@ describe('#lib - performance', () => {
         ]
         const scenario = {
           pickle: {
+            uri: 'example/features/users.api.feature',
             language: 'en',
             locations: [{
               column: 1,
@@ -146,10 +147,6 @@ describe('#lib - performance', () => {
               operator: 'strictEqual'
             },
             status: 'passed'
-          },
-          sourceLocation: {
-            line: 4,
-            uri: 'example/features/users.api.feature'
           }
         }
 
@@ -200,6 +197,7 @@ describe('#lib - performance', () => {
         apis[0].request.setHeader('cookie', undefined)
         const scenario = {
           pickle: {
+            uri: 'example/features/users.api.feature',
             language: 'en',
             locations: [{
               column: 1,
@@ -225,10 +223,6 @@ describe('#lib - performance', () => {
               operator: 'strictEqual'
             },
             status: 'passed'
-          },
-          sourceLocation: {
-            line: 4,
-            uri: 'example/features/users.api.feature'
           }
         }
 
@@ -279,6 +273,7 @@ describe('#lib - performance', () => {
         apis[0].request.setQueryString('filter', 'title')
         const scenario = {
           pickle: {
+            uri: 'example/features/users.api.feature',
             language: 'en',
             locations: [{
               column: 1,
@@ -304,10 +299,6 @@ describe('#lib - performance', () => {
               operator: 'strictEqual'
             },
             status: 'passed'
-          },
-          sourceLocation: {
-            line: 4,
-            uri: 'example/features/users.api.feature'
           }
         }
 
@@ -362,6 +353,7 @@ describe('#lib - performance', () => {
         apis[0].request.addPayload('person.lastName', 'doe')
         const scenario = {
           pickle: {
+            uri: 'example/features/users.api.feature',
             language: 'en',
             locations: [{
               column: 1,
@@ -387,10 +379,6 @@ describe('#lib - performance', () => {
               operator: 'strictEqual'
             },
             status: 'failed'
-          },
-          sourceLocation: {
-            line: 4,
-            uri: 'example/features/users.api.feature'
           }
         }
 
@@ -459,6 +447,7 @@ describe('#lib - performance', () => {
 
         const scenario = {
           pickle: {
+            uri: 'example/features/users.api.feature',
             language: 'en',
             locations: [{
               column: 1,
@@ -484,10 +473,6 @@ describe('#lib - performance', () => {
               operator: 'strictEqual'
             },
             status: 'passed'
-          },
-          sourceLocation: {
-            line: 4,
-            uri: 'example/features/users.api.feature'
           }
         }
 

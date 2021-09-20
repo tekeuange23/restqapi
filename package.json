@@ -13,7 +13,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@restqa/plugin": "0.0.1",
+    "@restqa/plugin": "0.0.2",
     "ajv": "^8.0.1",
     "dot-object": "^1.6.0",
     "form-data": "^3.0.0",

@@ -1,8 +1,8 @@
-const When = {}
+const When = {};
 
 When.callApi = async function () {
-  const result = await this.api.run()
-  return result
-}
+  const result = await this.api.run();
+  return result;
+};
 
-module.exports = When
+module.exports = When;

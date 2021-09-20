@@ -1,24 +1,43 @@
-const {
-  After, AfterAll, Before, BeforeAll,
-  Given, When, Then,
-  defineParameterType,
-  setWorldConstructor
-} = require('@cucumber/cucumber')
+const cucumber = require('@cucumber/cucumber')
+const RestQAPI = require('../src/index')
 
-const RestQapi = require('../src/restqapi')
 
-const config = {
-  name: 'local',
-  url: 'https://jsonplaceholder.typicode.com',
-  performance: {
-    tool: 'artillery'
+class World {
+
+  constructor({ attach }) {
+    this.attach = attach
+  }
+
+  get data() {
+    return {
+      options: {
+        startSymbol: '}}',
+        endSymbol: '{{'
+      },
+      get: (val) => {
+        return val
+      }
+    }
+  }
+
+  getConfig () {
+    return {
+      name: 'local',
+      url: 'https://jsonplaceholder.typicode.com',
+      performance: {
+        tool: 'artillery'
+      }
+    }
   }
 }
 
-const rQapi = new RestQapi(config)
-
-rQapi.setParameterType(defineParameterType)
-rQapi.setSteps({ Given, When, Then })
-rQapi.setHooks({ Before, BeforeAll, After, AfterAll })
-
-setWorldConstructor(rQapi.getWorld())
+RestQAPI._commit(cucumber, {})
+cucumber.defineParameterType({
+  regexp: /{{ (.*) }}/,
+  transformer: function (value) {
+    value = `{{ ${value} }}`
+    return this.data.get(value)
+  },
+  name: 'data'
+})
+cucumber.setWorldConstructor(World)

@@ -10,9 +10,9 @@ function Performance (config = {}) {
   const features = {}
   const add = (apis, scenario) => {
     if (apis.length === 0) return false
-    if (scenario.result.status !== 'passed' && config.onlySuccess === true) return false
+    if (scenario.result.status.toLowerCase() !== 'passed' && config.onlySuccess === true) return false
 
-    const filename = path.basename(scenario.sourceLocation.uri, '.feature') + '.yml'
+    const filename = path.basename(scenario.pickle.uri, '.feature') + '.yml'
     features[filename] = features[filename] || []
     features[filename].push({ apis, scenario })
     return true

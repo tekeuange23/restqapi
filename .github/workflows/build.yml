@@ -18,4 +18,5 @@ jobs:
     - run: npm test
       env:
         CI: true
+    - run: npm run example
     - run: 'curl -X POST -u "${{secrets.GH_USERNAME}}:${{secrets.GH_PASSWORD}}" -H "Content-Type: application/json" -H "Accept: application/vnd.github.everest-preview+json"  --data "{\"ref\": \"master\"}"  https://api.github.com/repos/restqa/documentation/actions/workflows/deploy.yml/dispatches'

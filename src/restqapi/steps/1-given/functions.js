@@ -14,12 +14,14 @@ function getCookie () {
   let {
     startSymbol,
     endSymbol
-  } = this._config.data
+  } = this.data.options || {}
 
   startSymbol = startSymbol || '{{'
   endSymbol = endSymbol || '}}'
 
-  return this.data.get(`${startSymbol}__cookie_jar__${endSymbol}`)
+  const key = `${startSymbol}__cookie_jar__${endSymbol}`
+  const value = this.data.get(key)
+  return key === value ? undefined : value
 }
 
 Given.gateway = function () {

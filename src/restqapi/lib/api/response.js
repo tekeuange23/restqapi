@@ -1,28 +1,30 @@
-const dot = require('dot-object')
-const jp = require('jsonpath')
+const dot = require("dot-object");
+const jp = require("jsonpath");
 
 const Response = function (result) {
-  const { request, statusCode, headers, body, timing } = result
+  const {request, statusCode, headers, body, timing} = result;
 
-  const isJson = /application\/json/i.test(headers['content-type'] || '')
+  const isJson = /application\/json/i.test(headers["content-type"] || "");
 
-  let dotBody = {}
+  let dotBody = {};
 
   if (isJson) {
-    dotBody = dot.dot(body || {})
+    dotBody = dot.dot(body || {});
   }
 
   const findInBody = (property) => {
-    if (property.charAt(0) === '$') { // if $ is the first char we will use jsonpath
-      return jp.query(body || {}, property, 1)[0]
-    } else { // Otherwise we use simple dotObject
-      return dotBody[property]
+    if (property.charAt(0) === "$") {
+      // if $ is the first char we will use jsonpath
+      return jp.query(body || {}, property, 1)[0];
+    } else {
+      // Otherwise we use simple dotObject
+      return dotBody[property];
     }
-  }
+  };
 
   const findInHeader = (property) => {
-    return headers[property] || headers[property.toLowerCase()]
-  }
+    return headers[property] || headers[property.toLowerCase()];
+  };
 
   const getOptions = () => {
     return {
@@ -30,8 +32,8 @@ const Response = function (result) {
       headers,
       timing,
       body
-    }
-  }
+    };
+  };
 
   return {
     request,
@@ -45,7 +47,7 @@ const Response = function (result) {
     getOptions,
     isJson,
     dotBody
-  }
-}
+  };
+};
 
-module.exports = Response
+module.exports = Response;

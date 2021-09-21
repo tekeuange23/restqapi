@@ -1,25 +1,23 @@
-describe('#StepDefinition - given - functions', () => {
-  const When = require('./functions')
+describe("#StepDefinition - given - functions", () => {
+  const When = require("./functions");
 
-  test('Configuration', () => {
-    const fns = Object.keys(When)
-    expect(fns).toHaveLength(1)
-    const expectedFunctions = [
-      'callApi'
-    ]
-    expect(fns).toEqual(expectedFunctions)
-  })
+  test("Configuration", () => {
+    const fns = Object.keys(When);
+    expect(fns).toHaveLength(1);
+    const expectedFunctions = ["callApi"];
+    expect(fns).toEqual(expectedFunctions);
+  });
 
-  describe('Default Functions', () => {
-    test('callApi', () => {
+  describe("Default Functions", () => {
+    test("callApi", () => {
       const $this = {
         api: {
           run: jest.fn().mockResolvedValue(true)
         }
-      }
-      When.callApi.call($this)
-      expect($this.api.run.mock.calls).toHaveLength(1)
-      expect($this.api.run.mock.calls[0][0]).toBeUndefined()
-    })
-  })
-})
+      };
+      When.callApi.call($this);
+      expect($this.api.run.mock.calls).toHaveLength(1);
+      expect($this.api.run.mock.calls[0][0]).toBeUndefined();
+    });
+  });
+});

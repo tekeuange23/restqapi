@@ -1,391 +1,269 @@
+const RestQAPI = require("./index");
+const Request = require("./lib/api/request");
+const Response = require("./lib/api/response");
+const path = require("path");
+const os = require("os");
+const fs = require("fs");
+const YAML = require("yaml");
+
 afterEach(() => {
-  jest.resetModules()
-})
+  jest.resetModules();
+});
 
-describe('# restqapi', () => {
-  test('setSteps', () => {
-    const Restqapi = require('./index')
+describe("#restqapi - index", () => {
+  test("name", () => {
+    expect(RestQAPI.name).toEqual("restqapi");
+  });
 
-    const instance = new Restqapi({
-      data: {
-        startSymbol: '[[',
-        endSymbol: ']]'
-      }
-    })
+  test("steps", () => {
+    expect(RestQAPI.steps.given).not.toHaveLength(0);
+    expect(RestQAPI.steps.when).not.toHaveLength(0);
+    expect(RestQAPI.steps.then).not.toHaveLength(0);
+  });
 
-    const Definitions = {
-      Given: jest.fn(),
-      When: jest.fn(),
-      Then: jest.fn()
-    }
-    instance.setSteps(Definitions)
-
-    expect(Definitions.Given).toHaveBeenCalled()
-    expect(Definitions.When).toHaveBeenCalled()
-    expect(Definitions.Then).toHaveBeenCalled()
-  })
-
-  test('setHooks', () => {
-    const Hooks = require('./hooks')
-    jest.mock('./hooks')
-    Hooks.mockReturnValue(1)
-
-    const Restqapi = require('./index')
-
-    const instance = new Restqapi({ a: 'b' })
-    instance.setHooks({ foo: 'bar' })
-
-    expect(Hooks.mock.calls).toHaveLength(1)
-    const expectedConfig = {
-      a: 'b',
-      data: {
-        startSymbol: '{{',
-        endSymbol: '}}'
-      }
-    }
-    expect(Hooks.mock.calls[0][0]).toEqual(expectedConfig)
-    expect(Hooks.mock.calls[0][1]).toEqual({ foo: 'bar' })
-  })
-
-  test('getWorld', () => {
-    const World = require('./world')
-    jest.mock('./world')
-
-    const Restqapi = require('./index')
-
-    const instance = new Restqapi({ a: 'b' })
-    const world = instance.getWorld()
-
-    expect(world).toEqual(World)
-  })
-
-  test('setWorld', () => {
-    const Restqapi = require('./index')
-
-    const newWorld = 'my-world'
-    const instance = new Restqapi({ a: 'b' })
-    instance.setWorld(newWorld)
-    const world = instance.getWorld()
-
-    expect(world).toEqual('my-world')
-  })
-
-  test('setParameterType', () => {
-    const Restqapi = require('./index')
-    const defineParameterType = jest.fn()
-
-    const instance = new Restqapi({ a: 'b' })
-    instance.setParameterType(defineParameterType)
-
-    expect(defineParameterType.mock.calls).toHaveLength(1)
-    expect(defineParameterType.mock.calls[0][0].regexp).toEqual(/\{\{(.*)\}\}/)
-    expect(defineParameterType.mock.calls[0][0].name).toEqual('data')
-    expect(typeof defineParameterType.mock.calls[0][0].transformer).toEqual('function')
-
-    // test the transformer
-    const $this = {
-      data: {
-        get: jest.fn()
-      }
-    }
-    defineParameterType.mock.calls[0][0].transformer.call($this, 'my-data')
-    expect($this.data.get.mock.calls).toHaveLength(1)
-    expect($this.data.get.mock.calls[0][0]).toBe('{{ my-data }}')
-  })
-})
-
-describe('# restqapi.Generator', () => {
-  test('throw an error if the parameter is empty', () => {
-    const Restqapi = require('./index')
-    return expect(Restqapi.Generator()).rejects.toThrow(new ReferenceError('Please provide an object containing your request'))
-  })
-
-  test('throw an error if the object doesn\'t contains the url', () => {
-    const Restqapi = require('./index')
-    const query = {
-
-    }
-    return expect(Restqapi.Generator(query)).rejects.toThrow(new ReferenceError('Please specify your url'))
-  })
-
-  test('throw an error if the method is not valid', () => {
-    const Restqapi = require('./index')
-    const query = {
-      url: 'http://www.example.com',
-      method: 'PUUT'
-    }
-    return expect(Restqapi.Generator(query)).rejects.toThrow(new TypeError('The method "PUUT" is not valid, please use : GET, POST, PUT, PATCH, DELETE, OPTIONS or HEAD'))
-  })
-
-  test('Use method get if it\'s not specified', async () => {
-    const got = require('got')
-    got.mockResolvedValue({
-      restqa: {
-        statusCode: 200,
-        req: {
-          path: '/'
-        },
-        timings: {
-          phases: {
-            total: 1000
-          }
-        },
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: {
-          foo: 'bar',
-          number: 12,
-          booTrue: true,
-          booFalse: false,
-          null: null
+  describe("hooks", () => {
+    test("before", () => {
+      const scenario = {
+        pickle: {
+          tags: []
         }
-      }
-    })
-    jest.mock('got')
-    const Restqapi = require('./index')
-    const query = {
-      url: 'http://www.example.com?q=restqa',
-      body: {
-        hello: 'world',
-        bonjour: 'le monde'
-      }
-    }
-    const result = await Restqapi.Generator(query)
-    const expectedResult = `
-Given I have the api gateway hosted on "http://www.example.com"
-  And I have the path "/"
-  And I have the method "GET"
-  And the query parameter contains "q" as "restqa"
-  And the payload:
-  """
-{
-  "hello": "world",
-  "bonjour": "le monde"
-}
-  """
-When I run the API
-Then I should receive a response with the status 200
-  And the response body should be equal to:
-  """
-{
-  "foo": "bar",
-  "number": 12,
-  "booTrue": true,
-  "booFalse": false,
-  "null": null
-}
-  """
-`
-    expect(result).toEqual(expectedResult.trim())
+      };
 
-    const expectedOptions = {
-      pathname: '/',
-      method: 'GET',
-      protocol: 'http:',
-      hostname: 'www.example.com',
-      searchParams: {
-        q: 'restqa'
-      },
-      json: {
-        hello: 'world',
-        bonjour: 'le monde'
-      }
-    }
-    expect(got.mock.calls).toHaveLength(1)
-    expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
-  })
+      const $this = {
+        getConfig: jest.fn().mockReturnValue({
+          url: "https://example.com"
+        })
+      };
 
-  test('Get a form request body', async () => {
-    const got = require('got')
-    got.mockResolvedValue({
-      restqa: {
-        statusCode: 200,
-        req: {
-          path: '/'
-        },
-        timings: {
-          phases: {
-            total: 1000
-          }
-        },
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: {
-          foo: 'bar',
-          number: 12,
-          booTrue: true,
-          booFalse: false,
-          null: null
+      RestQAPI.hooks.before.call($this, scenario);
+      expect($this.apis).toHaveLength(0);
+      expect($this.createApi).not.toBeUndefined();
+      $this.createApi();
+      expect($this.apis).toHaveLength(1);
+      expect($this.apis[0].config.url).toBe("https://example.com");
+
+      $this.createApi("https://example.dev");
+      expect($this.apis).toHaveLength(2);
+      expect($this.apis[1].config.url).toBe("https://example.dev");
+    });
+
+    test("before with insecure tag", () => {
+      const scenario = {
+        pickle: {
+          tags: [
+            {
+              name: "@insecure",
+              astNodeId: "faf08f9e-f046-4fcf-b974-70fd5bf30598"
+            }
+          ]
         }
-      }
-    })
-    jest.mock('got')
-    const Restqapi = require('./index')
-    const query = {
-      url: 'http://www.example.com?q=restqa',
-      headers: {
-        'content-type': 'multipart/form-data'
-      },
-      form: {
-        hello: 'world',
-        bonjour: 'le monde'
-      }
-    }
-    const result = await Restqapi.Generator(query)
-    const expectedResult = `
-Given I have the api gateway hosted on "http://www.example.com"
-  And I have the path "/"
-  And I have the method "GET"
-  And the header contains "content-type" as "multipart/form-data"
-  And the query parameter contains "q" as "restqa"
-  And I add the form value "hello" as "world"
-  And I add the form value "bonjour" as "le monde"
-When I run the API
-Then I should receive a response with the status 200
-  And the response body should be equal to:
-  """
-{
-  "foo": "bar",
-  "number": 12,
-  "booTrue": true,
-  "booFalse": false,
-  "null": null
-}
-  """
-`
-    expect(result).toEqual(expectedResult.trim())
+      };
+      const $this = {
+        getConfig: jest.fn().mockReturnValue({
+          url: "https://example.com"
+        })
+      };
 
-    const FormData = require('form-data')
-    const form = new FormData()
-    form.append('hello', 'world')
-    form.append('bonjour', 'le monde')
+      RestQAPI.hooks.before.call($this, scenario);
+      expect($this.apis).toHaveLength(0);
+      expect($this.insecure).toBe(true);
+      expect($this.createApi).not.toBeUndefined();
+    });
 
-    const expectedOptions = {
-      pathname: '/',
-      method: 'GET',
-      protocol: 'http:',
-      hostname: 'www.example.com',
-      searchParams: {
-        q: 'restqa'
-      }
-    }
-    expect(got.mock.calls).toHaveLength(1)
-    expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
-    expect(form.toString()).toEqual(got.mock.calls[0][0].body.toString())
-  })
+    test("after", () => {
+      const scenario = {
+        name: "sc1",
+        pickle: {
+          name: "The scenario name",
+          tags: []
+        }
+      };
 
-  test('No response body', async () => {
-    const got = require('got')
-    got.mockResolvedValue({
-      restqa: {
-        statusCode: 204,
-        req: {
-          path: '/'
-        },
-        timings: {
-          phases: {
-            total: 1000
+      const $this = {
+        debug: [
+          "Simple Value",
+          {
+            foo: "bar"
           }
+        ],
+        log: jest.fn(),
+        attach: jest.fn(),
+        data: {
+          parse: jest.fn()
         },
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: null
-      }
-    })
-    jest.mock('got')
-    const Restqapi = require('./index')
-    const query = {
-      url: 'http://www.example.com/logout',
-      method: 'DELETE',
-      headers: {
-        'x-api-key': 'xxx-yyy-zzz',
-        'x-foo': 'bar'
-      }
-    }
-    const result = await Restqapi.Generator(query)
-    const expectedResult = `
-Given I have the api gateway hosted on "http://www.example.com"
-  And I have the path "/logout"
-  And I have the method "DELETE"
-  And the header contains "x-api-key" as "xxx-yyy-zzz"
-  And the header contains "x-foo" as "bar"
-When I run the API
-Then I should receive a response with the status 204
-`
-    expect(result).toEqual(expectedResult.trim())
-
-    const expectedOptions = {
-      pathname: '/logout',
-      method: 'DELETE',
-      protocol: 'http:',
-      hostname: 'www.example.com'
-    }
-    expect(got.mock.calls).toHaveLength(1)
-    expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
-  })
-
-  test('Basic auth and ignore ssl', async () => {
-    const got = require('got')
-    got.mockResolvedValue({
-      restqa: {
-        statusCode: 204,
-        req: {
-          path: '/'
-        },
-        timings: {
-          phases: {
-            total: 1000
+        apis: [
+          {
+            toJSON: () => {
+              return {
+                foo: "bar"
+              };
+            }
           }
-        },
-        headers: {
-          'content-type': 'application/json'
-        },
-        body: null
-      }
-    })
-    jest.mock('got')
-    const Restqapi = require('./index')
-    const query = {
-      url: 'http://www.example.com/logout',
-      method: 'DELETE',
-      headers: {
-        'x-api-key': 'xxx-yyy-zzz'
-      },
-      user: {
-        username: 'john',
-        password: 'doe'
-      },
-      ignoreSsl: true
-    }
-    const result = await Restqapi.Generator(query)
-    const expectedResult = `
-Given I have the api gateway hosted on "http://www.example.com"
-  And I want to ignore the ssl certificate
-  And I have the path "/logout"
-  And I have the method "DELETE"
-  And the header contains "x-api-key" as "xxx-yyy-zzz"
-  And I have the basic auth user "john" pass "doe"
-When I run the API
-Then I should receive a response with the status 204
-`
-    expect(result).toEqual(expectedResult.trim())
+        ]
+      };
 
-    const expectedOptions = {
-      pathname: '/logout',
-      method: 'DELETE',
-      protocol: 'http:',
-      hostname: 'www.example.com',
-      rejectUnauthorized: false
-    }
+      RestQAPI.hooks.after.call($this, scenario);
+      expect($this.log.mock.calls).toHaveLength(4);
+      expect($this.log.mock.calls[0][0]).toBe(
+        "\n======================== [ DEBUG : The scenario name ] ========================"
+      );
+      expect($this.log.mock.calls[1][0]).toBe("Simple Value");
+      expect($this.log.mock.calls[2][0]).toBe(
+        JSON.stringify({foo: "bar"}, null, 2)
+      );
+      expect($this.log.mock.calls[3][0]).toBe(
+        "======================== [ / DEBUG ] ========================"
+      );
+      expect($this.attach.mock.calls).toHaveLength(1);
+      const expectedAttachement = JSON.stringify({
+        apis: [{foo: "bar"}]
+      });
+      expect($this.attach.mock.calls[0][0]).toEqual(expectedAttachement);
+      expect($this.attach.mock.calls[0][1]).toEqual("application/json");
+    });
 
-    const expectedHeaders = {
-      'x-api-key': 'xxx-yyy-zzz'
-    }
-    expect(got.mock.calls).toHaveLength(1)
-    expect(got.mock.calls[0][0]).toEqual(expect.objectContaining(expectedOptions))
-    expect(got.mock.calls[0][0].headers).toEqual(expect.objectContaining(expectedHeaders))
-  })
-})
+    describe("performance", () => {
+      let tmpFiles = [];
+
+      beforeEach(() => {
+        tmpFiles.forEach((file) => fs.existsSync(file) && fs.unlinkSync(file));
+        tmpFiles = [];
+      });
+
+      afterEach(() => {
+        jest.resetModules();
+        tmpFiles.forEach((file) => fs.existsSync(file) && fs.unlinkSync(file));
+        tmpFiles = [];
+      });
+
+      test("init with performance config", () => {
+        const config = {
+          url: "https://example.com",
+          performance: {
+            tool: "artillery",
+            outputFolder: path.resolve(os.tmpdir(), "perf"),
+            onlySuccess: true
+          }
+        };
+
+        const $this = {
+          attach: jest.fn(),
+          getConfig: jest.fn().mockReturnValue(config),
+          apis: [
+            {
+              request: new Request("http://localhost", false, "xx-yyy-zzzz"),
+              response: Response({
+                statusCode: 200,
+                headers: {
+                  "content-type": "application/json"
+                }
+              })
+            },
+            {
+              request: new Request("http://localhost", false, "aa-bbb-ccc"),
+              response: Response({
+                statusCode: 404,
+                headers: {
+                  "content-type": "text/html"
+                }
+              })
+            }
+          ]
+        };
+        $this.apis[0].request.setMethod("POST");
+        $this.apis[0].request.addFormField("type", "user");
+        $this.apis[0].request.addFormField("firstName", "john");
+        $this.apis[0].request.addFormField("lastName", "doe");
+
+        tmpFiles.push(
+          path.join(config.performance.outputFolder, "account.api.yml")
+        );
+
+        const scenario = {
+          pickle: {
+            uri: "example/features/account.api.feature",
+            language: "en",
+            locations: [
+              {
+                column: 1,
+                line: 4
+              }
+            ],
+            name: "Successfull creation (no data variable)",
+            steps: [
+              {
+                arguments: [],
+                locations: [
+                  {
+                    column: 7,
+                    line: 5
+                  }
+                ],
+                text: "I have the api gateway"
+              }
+            ]
+          },
+          result: {
+            duration: 1001000000,
+            exception: {
+              actual: 201,
+              code: "ERR_ASSERTION",
+              expected: 200,
+              generatedMessage: false,
+              operator: "strictEqual"
+            },
+            status: "passed"
+          }
+        };
+
+        RestQAPI.hooks.performance.before.call($this, scenario);
+        RestQAPI.hooks.performance.after.call($this, scenario);
+        RestQAPI.hooks.afterAll.call(this);
+
+        const expectedFile = {
+          scenarios: [
+            {
+              name: "Successfull creation (no data variable)",
+              flow: [
+                {
+                  post: {
+                    url: "/",
+                    headers: {
+                      "user-agent": "restqa (https://github.com/restqa/restqa)",
+                      "x-correlation-id": "xx-yyy-zzzz"
+                    },
+                    formData: {
+                      type: "user",
+                      firstName: "john",
+                      lastName: "doe"
+                    },
+                    expect: [{statusCode: 200}, {contentType: "json"}]
+                  }
+                },
+                {
+                  get: {
+                    url: "/",
+                    headers: {
+                      "user-agent": "restqa (https://github.com/restqa/restqa)",
+                      "x-correlation-id": "aa-bbb-ccc"
+                    },
+                    expect: [{statusCode: 404}, {contentType: "html"}]
+                  }
+                }
+              ]
+            }
+          ]
+        };
+
+        expect(fs.existsSync(tmpFiles[0])).toBe(true);
+        const generatedFile = fs.readFileSync(tmpFiles[0]).toString("utf-8");
+        expect(YAML.parse(generatedFile)).toEqual(expectedFile);
+
+        expect($this.attach.mock.calls).toHaveLength(1);
+        expect($this.attach.mock.calls[0][0]).toBe(
+          "Generate performance test scenario"
+        );
+      });
+    });
+  });
+});

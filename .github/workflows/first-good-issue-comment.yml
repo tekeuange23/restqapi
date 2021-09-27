@@ -1,4 +1,4 @@
-me: Issue - Good First Issue
+name: Issue - Good First Issue
 on:
   issues:
     types:

@@ -40,8 +40,7 @@ module.exports = function (options) {
       const curlCommand = []
 
       // method
-      // method = method || 'GET'
-      method = method ? String(method).toUpperCase() : 'GET'
+      method = method || 'GET'
       curlCommand.push('curl -X ' + method)
 
       // header
@@ -82,7 +81,6 @@ module.exports = function (options) {
         curlCommand.push('--url ' + protocol + '//' + hostname + pathname)
       }
 
-      console.log(curlCommand.join(' '))
       return curlCommand.join(' ')
     }
   }

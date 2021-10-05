@@ -363,5 +363,18 @@ describe("# api - Module", () => {
         "curl -X POST -H \"Content-Type: application/x-www-form-urlencoded\" --data 'type=page' --data 'name=john doe' --url http://test.com/accounts"
       );
     });
+
+    test("capitalize curl methods", () => {
+      const Api = require("./index");
+      const options = {
+        config: {
+          url: "http://test.com"
+        }
+      };
+      const instance = new Api(options);
+      instance.request.setMethod("get");
+      const result = instance.getCurl();
+      expect(result).toEqual("curl -X GET --url http://test.com/");
+    });
   });
 });

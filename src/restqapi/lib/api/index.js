@@ -1,26 +1,26 @@
-const got = require("got");
-const Request = require("./request");
-const Response = require("./response");
+const got = require('got')
+const Request = require('./request')
+const Response = require('./response')
 
 module.exports = function (options) {
-  const {config} = options;
-  let error;
+  const { config } = options
+  let error
   const run = async function () {
     try {
-      const options = this.request.getOptions();
+      const options = this.request.getOptions()
       // console.log(options)
-      const result = await got(options);
-      this.response = new Response(result.restqa);
+      const result = await got(options)
+      this.response = new Response(result.restqa)
     } catch (e) {
       // console.log('--------', e)
       if (e.response) {
-        this.response = new Response(e.response.restqa);
+        this.response = new Response(e.response.restqa)
       } else {
-        error = e;
-        throw e;
+        error = e
+        throw e
       }
     }
-  };
+  }
   return {
     config,
     request: new Request(config.url, config.insecure),
@@ -32,71 +32,56 @@ module.exports = function (options) {
         request: this.request.getOptions(),
         response: this.response && this.response.getResult(),
         error: error && error.message
-      };
+      }
     },
     getCurl: function () {
-      let {protocol, hostname, pathname, method, searchParams, headers, json} =
-        this.request.getOptions();
-      const {bodyBackup} = this.request;
-      const curlCommand = [];
+      let { protocol, hostname, pathname, method, searchParams, headers, json } = this.request.getOptions()
+      const { bodyBackup } = this.request
+      const curlCommand = []
 
       // method
-      method = method || "GET";
-      curlCommand.push("curl -X " + method);
+      method = method ? String(method).toUpperCase() : "GET";
+      curlCommand.push('curl -X ' + method)
 
       // header
       for (const key in headers) {
-        if (["x-correlation-id", "user-agent"].includes(key)) {
-          continue;
+        if (['x-correlation-id', 'user-agent'].includes(key)) {
+          continue
         }
-        curlCommand.push('-H "' + key + ": " + headers[key] + '"');
+        curlCommand.push('-H "' + key + ': ' + headers[key] + '"')
       }
 
       // Content-Type: json
       if (json) {
-        curlCommand.push(
-          '-H "Content-Type: application/json" --data \'' +
-            JSON.stringify(json) +
-            "'"
-        );
+        curlCommand.push('-H "Content-Type: application/json" --data \'' + JSON.stringify(json) + '\'')
       }
 
       // Content-Type: application/x-www-form-urlencoded
       if (Object.keys(bodyBackup).length !== 0) {
-        const data = [];
+        const data = []
         for (const key in bodyBackup) {
-          data.push(" --data '" + key + "=" + bodyBackup[key] + "'");
+          data.push(' --data \'' + key + '=' + bodyBackup[key] + '\'')
         }
-        curlCommand.push(
-          '-H "Content-Type: application/x-www-form-urlencoded"' + data.join("")
-        );
+        curlCommand.push('-H "Content-Type: application/x-www-form-urlencoded"' + data.join(''))
       }
 
       // ignoreSSL
       if (this.request.getOptions().rejectUnauthorized === false) {
-        curlCommand.push("-k");
+        curlCommand.push('-k')
       }
 
       // URL + PATH + searchParams
       if (searchParams) {
-        const params = [];
+        const params = []
         for (const key in searchParams) {
-          params.push(key + "=" + searchParams[key]);
+          params.push(key + '=' + searchParams[key])
         }
-        curlCommand.push(
-          "--url " +
-            protocol +
-            "//" +
-            hostname +
-            pathname +
-            "?" +
-            params.join("&")
-        );
+        curlCommand.push('--url ' + protocol + '//' + hostname + pathname + '?' + params.join('&'))
       } else {
-        curlCommand.push("--url " + protocol + "//" + hostname + pathname);
+        curlCommand.push('--url ' + protocol + '//' + hostname + pathname)
       }
 
-      return curlCommand.join(" ");
+      return curlCommand.join(' ')
     }
-  };
-};
+  }
+}
